@@ -96,6 +96,11 @@ seu-projeto/
 │   │   ├── references/           # Guias técnicos sob demanda (ASTF, ASVS, BOLA, SSRF)
 │   │   ├── scripts/              # sarif_builder.py & report_generator.py
 │   │   └── examples/             # Teste BOLA pytest & fetch seguro TypeScript
+│   ├── driven-development/       # Metodologias & Engenharia de Testes (SDD, TDD, BDD, CDD, SecDD)
+│   │   ├── SKILL.md              # Ciclo em 4 fases (SDD -> BDD/SecDD -> TDD -> Pirâmide)
+│   │   ├── references/           # Guias modulares (SDD, TDD, BDD, CDD, SecDD, Pirâmide de Testes)
+│   │   ├── scripts/              # test_runner.py (executor universal e detector de stack)
+│   │   └── examples/             # Schemas Zod, fixtures TDD e arquivos .feature Gherkin
 │   └── jev-system-one/           # Decisões e Guardrails de Alta Velocidade (<100ms)
 │       ├── SKILL.md              # Primitivas Choice, Score, Noul e cascades
 │       ├── references/           # API Reference, Primitivas e Anti-Patterns
@@ -116,6 +121,7 @@ Além dos prompts estruturados invocados manualmente via `@`, este repositório 
 | Skill | Especialidade | Entregáveis & Ferramentas Integradas |
 | :--- | :--- | :--- |
 | [`skills/appsec-auditor`](skills/appsec-auditor/SKILL.md) | **Auditoria de Segurança AppSec (OWASP ASTF / ASVS L2)** | - Fluxo de auditoria em 4 fases com filtro anti-fadiga e cálculo OWASP Risk Rating<br/>- `scripts/sarif_builder.py`: Gerador de relatórios SARIF 2.1.0 para GitHub Security<br/>- `scripts/report_generator.py`: Gerador de relatórios executivos em Markdown e Issues GitHub<br/>- `references/`: Guias modulares (ASTF API, ASVS L2, BOLA/IDOR, SSRF & Egress)<br/>- `examples/`: Teste de abuso BOLA em pytest e cliente fetch seguro em TypeScript |
+| [`skills/driven-development`](skills/driven-development/SKILL.md) | **Engenharia de Software Orientada por Testes (SDD, TDD, BDD, CDD, SecDD)** | - Ciclo em 4 fases: Schemas/Contratos → Critérios/Abuso → Red-Green-Refactor → Pirâmide de Testes<br/>- `scripts/test_runner.py`: Executor universal com detecção automática de stack (Node, Python, Go, Rust)<br/>- `references/`: Guias modulares de SDD, TDD, BDD (Gherkin), CDD (Pact), SecDD (Abuse Cases) e Pirâmide<br/>- `examples/`: Schemas Zod estritos, fixtures de ciclo TDD com AAA e cenários Gherkin |
 | [`skills/jev-system-one`](skills/jev-system-one/SKILL.md) | **Decisões Estruturadas & Guardrails System One (TypeSafe AI)** | - Padrão de Two-Model Cascade (System 1 para decisões <100ms + System 2 para raciocínio)<br/>- Primitivas `Choice`, `Score` e `Noul` com calibração de probabilidade<br/>- `references/`: HTTP API Reference, Primitivas e Jaggedness / Anti-Patterns<br/>- `examples/`: Guardrails LangChain, cascade em TypeScript, scanner híbrido de segredos, auditor de MCP e cálculo de CVSS |
 
 ---

@@ -18,6 +18,11 @@ Evolução arquitetural da suíte para uma plataforma completa de **Prompts Estr
     - `scripts/sarif_builder.py`: Ferramenta CLI e módulo nativo em Python (sem dependências externas) para conversão de achados em SARIF 2.1.0 para o GitHub Code Scanning / GitLab SAST.
     - `scripts/report_generator.py`: Gerador de relatórios Markdown executivos e templates de Issues GitHub prontas para rastreamento.
     - `examples/`: Fixtures práticas executáveis incluindo teste BOLA em pytest (`bola_idor_test.py`) e cliente TypeScript seguro contra SSRF (`ssrf_safe_fetch.ts`).
+  - **`skills/driven-development`**: Skill de engenharia de software orientada por testes, especificações e contratos:
+    - `SKILL.md`: Ciclo em 4 fases cobrindo SDD, BDD, SecDD, TDD (Red-Green-Refactor) e automação de pirâmide de testes.
+    - `references/`: Guias modulares (`sdd-spec-driven.md`, `tdd-red-green-refactor.md`, `bdd-gherkin-scenarios.md`, `cdd-contract-testing.md`, `secdd-abuse-cases.md`, `test-pyramid-strategy.md`).
+    - `scripts/test_runner.py`: Executor universal de testes com detecção automática de ecossistemas (Node, Python, Go, Rust) e saída estruturada em JSON ou terminal.
+    - `examples/`: Schemas Zod com inferência e `.strict()`, fixtures de ciclo TDD com padrão AAA e especificações executáveis Gherkin (`.feature`).
   - **`skills/jev-system-one`**: Skill para integração e arquitetura com modelos System One (TypeSafe AI / Jev):
     - `SKILL.md`: Guia de arquitetura em cascata (System 1 + System 2), primitivas `Choice`, `Score` e `Noul` e aprovação gated por confiança.
     - `references/`: API Reference HTTP/REST, Guia Avançado de Primitivas e Mapeamento de Jaggedness / Anti-Patterns.
@@ -35,8 +40,9 @@ Evolução arquitetural da suíte para uma plataforma completa de **Prompts Estr
     - `vulnerability_triage_cvss.md`: Triagem de falhas e cálculo determinístico de CVSS v3.1/v4.0.
 
 - **Automação & Qualidade (`tests/` e `install.sh`):**
-  - `tests/test_integrity.py`: Adição do teste `test_skills_integrity` (etapa 8/8) validando YAML frontmatter, campos obrigatórios e suíte unitária de skills.
+  - `tests/test_integrity.py`: Adição do teste `test_skills_integrity` (etapa 8/8) validando YAML frontmatter, campos obrigatórios e suítes unitárias de todas as skills.
   - `tests/test_appsec_auditor.py`: 6 testes unitários cobrindo o construtor SARIF 2.1.0, gerador de relatórios e ordenação de achados.
+  - `tests/test_driven_development.py`: 5 testes unitários validando detecção de frameworks de teste e parsing de métricas.
   - `install.sh`: Suporte estendido para instalação da categoria `jev/`.
 
 ## [1.9.0] - 2026-09-15

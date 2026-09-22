@@ -205,12 +205,13 @@ def test_skills_integrity():
             return False
 
     # Executa testes unitários dos scripts das skills
-    appsec_test = ROOT_DIR / "tests" / "test_appsec_auditor.py"
-    if appsec_test.is_file():
-        res = subprocess.run([sys.executable, "-m", "unittest", str(appsec_test)], capture_output=True, text=True)
-        if res.returncode != 0:
-            print(f"❌ ERRO nos testes unitários das skills:\n{res.stderr}")
-            return False
+    for test_file_name in ["test_appsec_auditor.py", "test_driven_development.py"]:
+        test_file = ROOT_DIR / "tests" / test_file_name
+        if test_file.is_file():
+            res = subprocess.run([sys.executable, "-m", "unittest", str(test_file)], capture_output=True, text=True)
+            if res.returncode != 0:
+                print(f"❌ ERRO no teste unitário {test_file_name}:\n{res.stderr}")
+                return False
 
     print(f"✅ Todas as {len(skill_folders)} skills possuem SKILL.md válido e testes unitários verdes.")
     return True

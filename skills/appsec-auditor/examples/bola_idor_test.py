@@ -9,6 +9,20 @@ import pytest
 
 BASE_URL = os.getenv("API_BASE_URL", "http://localhost:3000/api")
 
+
+def is_api_reachable() -> bool:
+    try:
+        requests.get(BASE_URL, timeout=0.2)
+        return True
+    except Exception:
+        return False
+
+
+pytestmark = pytest.mark.skipif(
+    not is_api_reachable(),
+    reason="Live API test server not running (specify API_BASE_URL to run live verification)",
+)
+
 # Test Fixtures: Two distinct tenants with isolated auth tokens
 TENANT_A_TOKEN = os.getenv("TENANT_A_TOKEN", "mock-jwt-tenant-a-user-1")
 TENANT_B_TOKEN = os.getenv("TENANT_B_TOKEN", "mock-jwt-tenant-b-user-2")
