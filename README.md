@@ -3,8 +3,8 @@
 <div align="center">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![GitHub Release](https://img.shields.io/github/v/release/brunoez/prompts?color=blue)](https://github.com/brunoez/prompts/releases/latest)
-[![CI Status](https://github.com/brunoez/prompts/actions/workflows/ci.yml/badge.svg)](https://github.com/brunoez/prompts/actions)
+[![GitHub Release](https://img.shields.io/github/v/release/brunoez/skills-prompts?color=blue)](https://github.com/brunoez/skills-prompts/releases/latest)
+[![CI Status](https://github.com/brunoez/skills-prompts/actions/workflows/ci.yml/badge.svg)](https://github.com/brunoez/skills-prompts/actions)
 [![GitLab CI](https://img.shields.io/badge/GitLab%20CI-Passing-22c55e?logo=gitlab)](.gitlab-ci.yml)
 [![Language](https://img.shields.io/badge/Language-pt--BR-009c3b.svg)](README.md)
 
@@ -29,22 +29,22 @@ O objetivo é transformar a velocidade do **Vibe Coding** em software de **níve
 Instale a suíte de prompts no seu projeto com um único comando:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/brunoez/prompts/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash
 ```
 
 > **Dica de Ferramenta & IDE:** Por padrão, os prompts são instalados no diretório oficial do **Claude Code** (`.claude/prompts/`). Se você usa **VSCode**, **Cursor** ou outros editores:
 > ```bash
 > # Para Claude Code (padrão oficial em .claude/prompts/):
-> curl -sSL https://raw.githubusercontent.com/brunoez/prompts/main/install.sh | bash
+> curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash
 > 
 > # Para VSCode (.agent/prompts/):
-> curl -sSL https://raw.githubusercontent.com/brunoez/prompts/main/install.sh | bash -s -- . vscode
+> curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- . vscode
 > 
 > # Para Cursor (.cursor/rules/):
-> curl -sSL https://raw.githubusercontent.com/brunoez/prompts/main/install.sh | bash -s -- . cursor
+> curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- . cursor
 > 
 > # Para todas as ferramentas simultaneamente (.claude, .agent, .cursor, .windsurf):
-> curl -sSL https://raw.githubusercontent.com/brunoez/prompts/main/install.sh | bash -s -- . all
+> curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- . all
 > ```
 
 ---

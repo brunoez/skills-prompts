@@ -37,7 +37,7 @@ Para manter a consistência e o alto nível técnico de toda a biblioteca, **tod
 
 ## 🌿 Fluxo de Git (GitFlow)
 
-1. Faça um Fork do repositório: `https://github.com/brunoez/prompts`
+1. Faça um Fork do repositório: `https://github.com/brunoez/skills-prompts`
 2. Crie uma branch para sua modificação:
    ```bash
    git checkout -b feat/novo-prompt-mobile

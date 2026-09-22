@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # Script de Instalação Automática da Suíte de Prompts de AppSec & Engenharia
-# Repositório: https://github.com/brunoez/prompts
+# Repositório: https://github.com/brunoez/skills-prompts
 # ==============================================================================
 
 set -e
 
-REPO_URL="https://github.com/brunoez/prompts.git"
-RAW_BASE="https://raw.githubusercontent.com/brunoez/prompts/main"
+REPO_URL="https://github.com/brunoez/skills-prompts.git"
+RAW_BASE="https://raw.githubusercontent.com/brunoez/skills-prompts/main"
 
 # Cores para saída no terminal
 C_RESET='\033[0m'
@@ -21,7 +21,7 @@ C_RED='\033[31m'
 echo -e "${C_CYAN}${C_BOLD}"
 echo "================================================================="
 echo "  🛡️  Instalador da Suíte de Prompts AppSec & Yellow Team"
-echo "  📦 Repositório: https://github.com/brunoez/prompts"
+echo "  📦 Repositório: https://github.com/brunoez/skills-prompts"
 echo "================================================================="
 echo -e "${C_RESET}"
 
@@ -139,5 +139,5 @@ echo -e "${C_CYAN}👉 Como usar no seu ambiente:${C_RESET}"
 echo -e "   1. No Claude Code: use no terminal ou chat (ex: @[.claude/prompts/security/api.md])"
 echo -e "   2. No VSCode: use no Copilot Chat (ex: @workspace @[.agent/prompts/driven-development/sdd_spec_driven.md])"
 echo -e "   3. No Cursor: use as regras em @[.cursor/rules/...]"
-echo -e "   4. Documentação completa em: ${C_BOLD}https://github.com/brunoez/prompts${C_RESET}"
+echo -e "   4. Documentação completa em: ${C_BOLD}https://github.com/brunoez/skills-prompts${C_RESET}"
 echo ""

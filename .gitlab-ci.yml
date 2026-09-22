@@ -1,6 +1,6 @@
 # ==============================================================================
 # GitLab CI Pipeline: Validação de Qualidade e Integridade
-# Repositório: brunoez/prompts
+# Repositório: brunoez/skills-prompts
 # ==============================================================================
 
 stages:

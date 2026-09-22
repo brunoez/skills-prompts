@@ -18,7 +18,7 @@ ai:appsec-audit:
     - pip install reportlab matplotlib
     - |
       if [ ! -d ".agent/prompts" ]; then
-        curl -sSL https://raw.githubusercontent.com/brunoez/prompts/main/install.sh | bash
+        curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash
       fi
   script:
     - echo "🚀 Executando auditoria profunda com IA no GitLab CI..."

@@ -49,7 +49,7 @@ def build_sarif(
     findings: List[Finding],
     tool_name: str = "AppSec Auditor",
     tool_version: str = "1.0.0",
-    information_uri: str = "https://github.com/brunoez/prompts",
+    information_uri: str = "https://github.com/brunoez/skills-prompts",
 ) -> Dict[str, Any]:
     """Converts a list of Finding objects into a compliant SARIF 2.1.0 dictionary."""
     rules_map: Dict[str, Dict[str, Any]] = {}

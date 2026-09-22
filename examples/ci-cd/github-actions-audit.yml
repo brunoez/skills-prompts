@@ -51,7 +51,7 @@ jobs:
       - name: 📥 Instalar Suíte de Prompts de AppSec
         run: |
           if [ ! -d ".agent/prompts" ]; then
-            curl -sSL https://raw.githubusercontent.com/brunoez/prompts/main/install.sh | bash
+            curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash
           fi
 
       - name: 🤖 Executar Auditoria com Agente de IA (CLI)
