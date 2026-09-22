@@ -8,6 +8,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 SCRIPTS_DIR = ROOT_DIR / "skills" / "driven-development" / "scripts"
@@ -21,7 +22,9 @@ from test_runner import (
 
 
 class TestDrivenDevelopmentRunner(unittest.TestCase):
-    def test_detect_test_framework_pytest(self):
+    @patch("shutil.which")
+    def test_detect_test_framework_pytest(self, mock_which):
+        mock_which.side_effect = lambda binary: "/usr/bin/pytest" if binary == "pytest" else None
         with tempfile.TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             (tmp_path / "pytest.ini").touch()
@@ -29,7 +32,19 @@ class TestDrivenDevelopmentRunner(unittest.TestCase):
             self.assertIn("pytest", framework)
             self.assertIn("pytest", cmd)
 
-    def test_detect_test_framework_node(self):
+    @patch("shutil.which")
+    def test_detect_test_framework_python_unittest_fallback(self, mock_which):
+        mock_which.return_value = None
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            (tmp_path / "tests").mkdir()
+            framework, cmd = detect_test_framework(tmp_path)
+            self.assertIn("unittest", framework)
+            self.assertIn("unittest", cmd)
+
+    @patch("shutil.which")
+    def test_detect_test_framework_node(self, mock_which):
+        mock_which.side_effect = lambda binary: "/usr/bin/npm" if binary == "npm" else None
         with tempfile.TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             pkg_json = tmp_path / "package.json"
