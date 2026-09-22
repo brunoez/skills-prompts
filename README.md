@@ -124,6 +124,18 @@ Além dos prompts estruturados invocados manualmente via `@`, este repositório 
 | [`skills/driven-development`](skills/driven-development/SKILL.md) | **Engenharia de Software Orientada por Testes (SDD, TDD, BDD, CDD, SecDD)** | - Ciclo em 4 fases: Schemas/Contratos → Critérios/Abuso → Red-Green-Refactor → Pirâmide de Testes<br/>- `scripts/test_runner.py`: Executor universal com detecção automática de stack (Node, Python, Go, Rust)<br/>- `references/`: Guias modulares de SDD, TDD, BDD (Gherkin), CDD (Pact), SecDD (Abuse Cases) e Pirâmide<br/>- `examples/`: Schemas Zod estritos, fixtures de ciclo TDD com AAA e cenários Gherkin |
 | [`skills/jev-system-one`](skills/jev-system-one/SKILL.md) | **Decisões Estruturadas & Guardrails System One (TypeSafe AI)** | - Padrão de Two-Model Cascade (System 1 para decisões <100ms + System 2 para raciocínio)<br/>- Primitivas `Choice`, `Score` e `Noul` com calibração de probabilidade<br/>- `references/`: HTTP API Reference, Primitivas e Jaggedness / Anti-Patterns<br/>- `examples/`: Guardrails LangChain, cascade em TypeScript, scanner híbrido de segredos, auditor de MCP e cálculo de CVSS |
 
+### 💡 Como Usar as Agent Skills no seu Ambiente
+
+As skills seguem o padrão aberto da indústria ([agentskills.io](https://agentskills.io/specification)) e funcionam de forma autônoma ou guiada:
+
+* **Ativação Autônoma (Semântica):** O agente inspeciona o frontmatter YAML das skills e carrega o workflow automaticamente quando seu pedido corresponder aos gatilhos (ex: *"audite as APIs contra IDOR"* ou *"vamos criar essa funcionalidade aplicando TDD"*).
+* **No Claude Code:** Copie a pasta da skill desejada para `.claude/skills/` (no repositório) ou `~/.claude/skills/` (global para todos os projetos).
+* **No Antigravity / VSCode / Cursor:** Copie para `.agent/skills/` ou `~/.gemini/antigravity-cli/skills/`.
+* **Invocação Direta no Chat:**
+  ```markdown
+  Use a skill @[skills/appsec-auditor] para auditar este repositório e gerar os artefatos SARIF e Markdown.
+  ```
+
 ---
 
 ## 🤖 Como Executar os Prompts em CI/CD no seu Projeto Privado
