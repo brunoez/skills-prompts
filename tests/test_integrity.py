@@ -40,6 +40,14 @@ EXPECTED_PROMPTS = [
     "devops/cicd_pipeline.md",
     "devops/iac_docker_k8s.md",
     "devops/resilience_observability.md",
+    "jev/system_one_architecture.md",
+    "jev/agent_guardrails_safety.md",
+    "jev/intent_routing_dispatch.md",
+    "jev/rag_verification_guardrails.md",
+    "jev/secret_detection_triage.md",
+    "jev/mcp_agent_security_scan.md",
+    "jev/pii_sanitization_guardrail.md",
+    "jev/vulnerability_triage_cvss.md",
 ]
 
 SECURITY_PROMPTS = [
@@ -169,6 +177,45 @@ def test_sync_scripts_unit():
     return True
 
 
+def test_skills_integrity():
+    print("🔍 [8/8] Validando integridade das Agent Skills (YAML frontmatter e testes unitários)...")
+    skills_dir = ROOT_DIR / "skills"
+    if not skills_dir.is_dir():
+        print("❌ ERRO: Diretório 'skills' não encontrado.")
+        return False
+
+    skill_folders = [d for d in skills_dir.iterdir() if d.is_dir()]
+    if not skill_folders:
+        print("❌ ERRO: Nenhuma skill encontrada em skills/")
+        return False
+
+    for folder in skill_folders:
+        skill_md = folder / "SKILL.md"
+        if not skill_md.is_file():
+            print(f"❌ ERRO: Skill {folder.name} não possui SKILL.md")
+            return False
+
+        content = skill_md.read_text(encoding="utf-8")
+        if not content.startswith("---"):
+            print(f"❌ ERRO: Skill {folder.name}/SKILL.md não possui YAML frontmatter")
+            return False
+
+        if "name:" not in content or "description:" not in content:
+            print(f"❌ ERRO: Skill {folder.name}/SKILL.md não possui campos obrigatórios 'name' ou 'description'")
+            return False
+
+    # Executa testes unitários dos scripts das skills
+    appsec_test = ROOT_DIR / "tests" / "test_appsec_auditor.py"
+    if appsec_test.is_file():
+        res = subprocess.run([sys.executable, "-m", "unittest", str(appsec_test)], capture_output=True, text=True)
+        if res.returncode != 0:
+            print(f"❌ ERRO nos testes unitários das skills:\n{res.stderr}")
+            return False
+
+    print(f"✅ Todas as {len(skill_folders)} skills possuem SKILL.md válido e testes unitários verdes.")
+    return True
+
+
 def test_security_standards_coexistence():
     print(f"🔍 [7/7] Validando coexistência de padrões (OWASP ASVS & OWASP Risk Rating) nos {len(SECURITY_PROMPTS)} prompts de segurança...")
     errors = []
@@ -202,6 +249,7 @@ def main():
         test_installer_execution,
         test_sync_scripts_unit,
         test_security_standards_coexistence,
+        test_skills_integrity,
     ]
     
     failed = False

@@ -1,4 +1,4 @@
-# 🛡️ Suíte de Prompts de Engenharia de Software, AppSec & Yellow Team
+# 🛡️ Suíte de Prompts & Agent Skills de Engenharia de Software, AppSec & Yellow Team
 
 <div align="center">
 
@@ -8,9 +8,9 @@
 [![GitLab CI](https://img.shields.io/badge/GitLab%20CI-Passing-22c55e?logo=gitlab)](.gitlab-ci.yml)
 [![Language](https://img.shields.io/badge/Language-pt--BR-009c3b.svg)](README.md)
 
-**A biblioteca definitiva de prompts estruturados de auditoria profunda, arquitetura defensiva e metodologias *Driven Development* para desenvolvedores, arquitetos e agentes de Inteligência Artificial.**
+**A biblioteca definitiva de prompts estruturados e Agent Skills executáveis de auditoria profunda, arquitetura defensiva e metodologias *Driven Development* para desenvolvedores, arquitetos e agentes de Inteligência Artificial.**
 
-[Instalação Rápida](#-instalação-rápida) • [Uso em CI/CD Privado](#-como-executar-os-prompts-em-cicd-no-seu-projeto-privado) • [Qual Prompt Usar?](#-qual-prompt-usar-guia-de-ação-rápida-com-exemplos) • [Catálogo Completo](#-catálogo-completo-de-prompts) • [Contribuição](CONTRIBUTING.md)
+[Instalação Rápida](#-instalação-rápida) • [Agent Skills](#-agent-skills-antigravity-claude-code-cursor--windsurf) • [Uso em CI/CD Privado](#-como-executar-os-prompts-em-cicd-no-seu-projeto-privado) • [Qual Prompt Usar?](#-qual-prompt-usar-guia-de-ação-rápida-com-exemplos) • [Catálogo Completo](#-catálogo-completo-de-prompts) • [Contribuição](CONTRIBUTING.md)
 
 </div>
 
@@ -18,7 +18,7 @@
 
 ## 🇧🇷 Sobre o Projeto
 
-Criado com foco na comunidade brasileira de desenvolvimento e AppSec, este repositório aberto reúne **prompts técnicos de alto nível** projetados para serem executados por Engenheiros Principais ou Agentes de IA (**Claude Code**, **VSCode** / GitHub Copilot, **Cursor** e outros editores como Windsurf e Antigravity).
+Criado com foco na comunidade brasileira de desenvolvimento e AppSec, este repositório aberto reúne **prompts técnicos e Agent Skills de alto nível** projetados para serem executados por Engenheiros Principais ou Agentes de IA (**Claude Code**, **Google Antigravity**, **VSCode** / GitHub Copilot, **Cursor** e outros editores como Windsurf).
 
 O objetivo é transformar a velocidade do **Vibe Coding** em software de **nível corporativo**: seguro contra vulnerabilidades (**OWASP ASTF 2023**, **WSTG v4.2**, **OWASP Top 10 Proactive Controls 2024**, **OWASP ASVS v4.0.3**, **OWASP Risk Rating Methodology** e **OWASP Cheat Sheet Series**), arquiteturalmente consistente (DDD/SDD), resiliente em produção (SRE) e 100% testado (TDD, BDD, SecDD).
 
@@ -77,16 +77,46 @@ seu-projeto/
 │   │   ├── ssrf.md                    # Proactive C10 – Server-Side Request Forgery
 │   │   ├── supply_chain.md            # SCVS, SBOM & Anti-Slopsquatting
 │   │   └── threat_modeling.md         # Modelagem STRIDE-per-Element
-│   └── devops/                   # Infraestrutura & SRE
-│       ├── cicd_pipeline.md           # Hardening de CI/CD & OIDC
-│       ├── iac_docker_k8s.md          # Docker Rootless & K8s
-│       └── resilience_observability.md# SRE & OpenTelemetry
+│   ├── devops/                   # Infraestrutura & SRE
+│   │   ├── cicd_pipeline.md           # Hardening de CI/CD & OIDC
+│   │   ├── iac_docker_k8s.md          # Docker Rootless & K8s
+│   │   └── resilience_observability.md# SRE & OpenTelemetry
+│   └── jev/                      # TypeSafe AI – Decisões System One & Anti-Overkill
+│       ├── system_one_architecture.md # Arquitetura em Cascata & Refatoração System 1
+│       ├── agent_guardrails_safety.md # Guardrails Pré-Execução de Tools em Agentes
+│       ├── intent_routing_dispatch.md # Roteamento de Intenção & Speculative Fan-out
+│       ├── rag_verification_guardrails.md # Verificação de RAG & Fidedignidade de Citações
+│       ├── secret_detection_triage.md # Triagem Semântica de Segredos & Redução de Falsos Positivos
+│       ├── mcp_agent_security_scan.md # Auditoria de Segurança de Agent Skills & Servidores MCP
+│       ├── pii_sanitization_guardrail.md # Sanitização e Mascaramento de PII em Três Camadas
+│       └── vulnerability_triage_cvss.md # Triagem de Falhas e Cálculo Determinístico de CVSS v3.1/v4.0
+├── skills/                       # Agent Skills Executáveis (Padrão aberto agentskills.io)
+│   ├── appsec-auditor/           # Auditoria completa OWASP com geradores SARIF & relatórios
+│   │   ├── SKILL.md              # Workflow em 4 fases e gatilhos autônomos
+│   │   ├── references/           # Guias técnicos sob demanda (ASTF, ASVS, BOLA, SSRF)
+│   │   ├── scripts/              # sarif_builder.py & report_generator.py
+│   │   └── examples/             # Teste BOLA pytest & fetch seguro TypeScript
+│   └── jev-system-one/           # Decisões e Guardrails de Alta Velocidade (<100ms)
+│       ├── SKILL.md              # Primitivas Choice, Score, Noul e cascades
+│       ├── references/           # API Reference, Primitivas e Anti-Patterns
+│       └── examples/             # Guardrails LangChain, TS Cascade, CVSS e PII
 ├── src/                          # Código da sua aplicação
 ├── tests/                        # Testes automatizados
 ├── docs/                         # Relatórios em PDF e SARIF
 ├── CONTEXT.md                    # Dicionário do negócio
 └── CLAUDE.md / .github/copilot-instructions.md / .cursorrules # Regras de IA do projeto
 ```
+
+---
+
+## 🧠 Agent Skills (Antigravity, Claude Code, Cursor & Windsurf)
+
+Além dos prompts estruturados invocados manualmente via `@`, este repositório disponibiliza **Agent Skills** nativas em conformidade com o padrão aberto [Agent Skills](https://agentskills.io/specification). As skills habilitam **ativação semântica autônoma** (`Use when...`), **Progressive Disclosure** (carregamento sob demanda para não estourar o contexto) e **scripts executáveis determinísticos**.
+
+| Skill | Especialidade | Entregáveis & Ferramentas Integradas |
+| :--- | :--- | :--- |
+| [`skills/appsec-auditor`](skills/appsec-auditor/SKILL.md) | **Auditoria de Segurança AppSec (OWASP ASTF / ASVS L2)** | - Fluxo de auditoria em 4 fases com filtro anti-fadiga e cálculo OWASP Risk Rating<br/>- `scripts/sarif_builder.py`: Gerador de relatórios SARIF 2.1.0 para GitHub Security<br/>- `scripts/report_generator.py`: Gerador de relatórios executivos em Markdown e Issues GitHub<br/>- `references/`: Guias modulares (ASTF API, ASVS L2, BOLA/IDOR, SSRF & Egress)<br/>- `examples/`: Teste de abuso BOLA em pytest e cliente fetch seguro em TypeScript |
+| [`skills/jev-system-one`](skills/jev-system-one/SKILL.md) | **Decisões Estruturadas & Guardrails System One (TypeSafe AI)** | - Padrão de Two-Model Cascade (System 1 para decisões <100ms + System 2 para raciocínio)<br/>- Primitivas `Choice`, `Score` e `Noul` com calibração de probabilidade<br/>- `references/`: HTTP API Reference, Primitivas e Jaggedness / Anti-Patterns<br/>- `examples/`: Guardrails LangChain, cascade em TypeScript, scanner híbrido de segredos, auditor de MCP e cálculo de CVSS |
 
 ---
 
@@ -276,6 +306,74 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 
 ---
 
+### ⚡ 4. Jev & System One (TypeSafe AI) – Decisões Estruturadas & Anti-Overkill
+
+* **Para eliminar overkill de LLMs e refatorar fluxos para arquitetura em cascata (System 1 + System 2):**
+  * **Use:** [`prompts/jev/system_one_architecture.md`](prompts/jev/system_one_architecture.md)
+  * **Comando:**
+    ```markdown
+    @[.claude/prompts/jev/system_one_architecture.md]
+    Audite a base de código identificando onde LLMs estão sendo usados para decisões simples e proponha a cascata com Jev.
+    ```
+
+* **Para interceptar e bloquear chamadas perigosas de ferramentas em agentes (Pre-Execution Tool Guardrails):**
+  * **Use:** [`prompts/jev/agent_guardrails_safety.md`](prompts/jev/agent_guardrails_safety.md)
+  * **Comando:**
+    ```markdown
+    @[.claude/prompts/jev/agent_guardrails_safety.md]
+    Implemente um guardrail de execução de tools em tempo real com Jev antes de comandos bash, SQL ou de exclusão.
+    ```
+
+* **Para criar roteadores de intenção e despacho dinâmico de alta velocidade com Speculative Fan-out:**
+  * **Use:** [`prompts/jev/intent_routing_dispatch.md`](prompts/jev/intent_routing_dispatch.md)
+  * **Comando:**
+    ```markdown
+    @[.claude/prompts/jev/intent_routing_dispatch.md]
+    Projete uma camada de despacho dinâmico para triagem de requisições com Jev e roteamento baseado em confiança.
+    ```
+
+* **Para validar fidedignidade de RAG, verificar citações e filtrar ruído sem custo de LLM-as-a-judge:**
+  * **Use:** [`prompts/jev/rag_verification_guardrails.md`](prompts/jev/rag_verification_guardrails.md)
+  * **Comando:**
+    ```markdown
+    @[.claude/prompts/jev/rag_verification_guardrails.md]
+    Audite o pipeline de RAG adicionando re-ranking de passagens e verificação de citações pós-geração com Jev.
+    ```
+
+* **Para eliminar falsos positivos em detecção de segredos e capturar senhas de baixa entropia em configurações:**
+  * **Use:** [`prompts/jev/secret_detection_triage.md`](prompts/jev/secret_detection_triage.md)
+  * **Comando:**
+    ```markdown
+    @[.claude/prompts/jev/secret_detection_triage.md]
+    Construa um pipeline híbrido de pre-commit e CI/CD combinando regex e validação semântica com Jev para triagem de credenciais.
+    ```
+
+* **Para auditar Agent Skills (`SKILL.md`) e configurações MCP contra prompt injection e tool poisoning:**
+  * **Use:** [`prompts/jev/mcp_agent_security_scan.md`](prompts/jev/mcp_agent_security_scan.md)
+  * **Comando:**
+    ```markdown
+    @[.claude/prompts/jev/mcp_agent_security_scan.md]
+    Escaneie os diretórios de Agent Skills e arquivos de configuração MCP com Jev para detectar comportamentos suspeitos antes da instalação.
+    ```
+
+* **Para sanitizar, desambiguar e mascarar dados pessoais (PII) antes de enviar para LLMs ou persistência:**
+  * **Use:** [`prompts/jev/pii_sanitization_guardrail.md`](prompts/jev/pii_sanitization_guardrail.md)
+  * **Comando:**
+    ```markdown
+    @[.claude/prompts/jev/pii_sanitization_guardrail.md]
+    Implemente um guardrail de PII em três camadas com Jev (portão multicategórico + score de sensibilidade IBM + mascaramento).
+    ```
+
+* **Para triagem automatizada de vulnerabilidades/CVEs e cálculo determinístico de CVSS v3.1/v4.0:**
+  * **Use:** [`prompts/jev/vulnerability_triage_cvss.md`](prompts/jev/vulnerability_triage_cvss.md)
+  * **Comando:**
+    ```markdown
+    @[.claude/prompts/jev/vulnerability_triage_cvss.md]
+    Construa uma esteira de triagem de segurança extraindo métricas qualitativas com Jev e calculando a pontuação CVSS determinística em código.
+    ```
+
+---
+
 ## 📚 Catálogo Completo de Prompts
 
 ### 🎯 1. Driven Developments, Contexto & Testes (Guardrails contra Alucinação)
@@ -320,6 +418,21 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 | [`cicd_pipeline.md`](prompts/devops/cicd_pipeline.md) | **Hardening de CI/CD (OWASP CI/CD)** | Prevenção de script injection em GitHub Actions/GitLab CI, autenticação OIDC federada, pinning de actions por SHA256 e runners isolados. |
 | [`iac_docker_k8s.md`](prompts/devops/iac_docker_k8s.md) | **IaC, Containers & K8s** | Terraform IAM least privilege, Docker rootless e multi-stage, K8s securityContext, NetworkPolicies e Probes. |
 | [`resilience_observability.md`](prompts/devops/resilience_observability.md) | **Resiliência & Observabilidade** | Mensageria assíncrona, Dead Letter Queues (DLQ), Circuit Breakers, tracing distribuído com OpenTelemetry e Graceful Shutdown. |
+
+---
+
+### ⚡ 4. Jev & System One Models (TypeSafe AI)
+
+| Prompt | Especialidade | Descrição & Escopo |
+| :--- | :--- | :--- |
+| [`system_one_architecture.md`](prompts/jev/system_one_architecture.md) | **Arquitetura System One & Anti-Overkill** | Diagnóstico de gargalos de LLMs, substituição de parsing de JSON por primitivas tipadas (`Choice`, `Score`, `Noul`) e design de Two-Model Cascades. |
+| [`agent_guardrails_safety.md`](prompts/jev/agent_guardrails_safety.md) | **Guardrails de Agentes & Excessive Agency (OWASP LLM06)** | Interceptação de ferramentas em <100ms, detecção de injeção indireta e aprovação de execução com Confidence-Gated Approval. |
+| [`intent_routing_dispatch.md`](prompts/jev/intent_routing_dispatch.md) | **Roteamento de Intenção & Speculative Fan-out** | Despacho dinâmico de eventos e requisições para lógica determinística, modelos leves ou modelos frontier, com amostragem paralela. |
+| [`rag_verification_guardrails.md`](prompts/jev/rag_verification_guardrails.md) | **Verificação de RAG & Citações (OWASP LLM09)** | Re-ranking de passagens recuperadas, descarte de ruído pré-geração e verificação factual de citações sem custo de LLM-as-a-judge. |
+| [`secret_detection_triage.md`](prompts/jev/secret_detection_triage.md) | **Triagem Semântica de Segredos (ASVS V14)** | Eliminação de falsos positivos (hashes/test seeds) e captura de senhas em configs de baixa entropia com bandas calibradas. |
+| [`mcp_agent_security_scan.md`](prompts/jev/mcp_agent_security_scan.md) | **Auditoria de Agent Skills & MCP (OWASP LLM01/06)** | Varredura estática e semântica de `SKILL.md` e `mcpServers` contra prompt injection, tool description poisoning e supply chain. |
+| [`pii_sanitization_guardrail.md`](prompts/jev/pii_sanitization_guardrail.md) | **Sanitização & Mascaramento de PII (ASVS V8)** | Portão multicategórico de 13 PIIs, score de sensibilidade IBM, desambiguação de dígitos e mascaramento determinístico. |
+| [`vulnerability_triage_cvss.md`](prompts/jev/vulnerability_triage_cvss.md) | **Triagem de Falhas & Cálculo CVSS (ASVS V1.14)** | Elicitação paralela de métricas Base com Jev Choice, Top-2 Probability Spread ($\Delta P$) e cálculo oficial FIRST. |
 
 ---
 

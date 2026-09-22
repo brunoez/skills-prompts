@@ -56,6 +56,14 @@ PROMPT_FILES=(
   "devops/cicd_pipeline.md"
   "devops/iac_docker_k8s.md"
   "devops/resilience_observability.md"
+  "jev/system_one_architecture.md"
+  "jev/agent_guardrails_safety.md"
+  "jev/intent_routing_dispatch.md"
+  "jev/rag_verification_guardrails.md"
+  "jev/secret_detection_triage.md"
+  "jev/mcp_agent_security_scan.md"
+  "jev/pii_sanitization_guardrail.md"
+  "jev/vulnerability_triage_cvss.md"
 )
 
 install_submodule() {
@@ -74,7 +82,7 @@ install_files() {
   local DEST_BASE="$1"
   echo -e "${C_YELLOW}📥 Baixando/Copiando prompts para ${DEST_BASE}...${C_RESET}"
   
-  mkdir -p "${DEST_BASE}/driven-development" "${DEST_BASE}/security" "${DEST_BASE}/devops"
+  mkdir -p "${DEST_BASE}/driven-development" "${DEST_BASE}/security" "${DEST_BASE}/devops" "${DEST_BASE}/jev"
   
   # Se o script estiver rodando dentro do próprio clone local dos prompts:
   SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

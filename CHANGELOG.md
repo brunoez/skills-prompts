@@ -5,6 +5,40 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico (SemVer)](https://semver.org/lang/pt-BR/).
 
+## [2.0.0] - 2026-09-22
+
+### Adicionado & Aprimorado (Lançamento do Ecossistema de Agent Skills & Suíte Jev System One)
+
+Evolução arquitetural da suíte para uma plataforma completa de **Prompts Estruturados + Agent Skills Executáveis**, em total conformidade com o padrão aberto [Agent Skills](https://agentskills.io/specification) para agentes de IA modernos (**Claude Code**, **Google Antigravity**, **Cursor**, **Windsurf** e **VSCode Copilot**).
+
+- **Ecossistema de Agent Skills (`skills/`):**
+  - **`skills/appsec-auditor`**: Skill completa de auditoria de segurança em 4 fases baseada no OWASP ASTF, ASVS v4.0.3 e OWASP Risk Rating:
+    - `SKILL.md`: Frontmatter YAML com acionamento semântico (`Use when...`), diretrizes anti-fadiga e fluxo operacional.
+    - `references/`: Documentação modular sob demanda (`owasp-api-astf.md`, `asvs-v4-checklist.md`, `access-control-bola.md`, `ssrf-prevention.md`, `risk-rating-methodology.md`).
+    - `scripts/sarif_builder.py`: Ferramenta CLI e módulo nativo em Python (sem dependências externas) para conversão de achados em SARIF 2.1.0 para o GitHub Code Scanning / GitLab SAST.
+    - `scripts/report_generator.py`: Gerador de relatórios Markdown executivos e templates de Issues GitHub prontas para rastreamento.
+    - `examples/`: Fixtures práticas executáveis incluindo teste BOLA em pytest (`bola_idor_test.py`) e cliente TypeScript seguro contra SSRF (`ssrf_safe_fetch.ts`).
+  - **`skills/jev-system-one`**: Skill para integração e arquitetura com modelos System One (TypeSafe AI / Jev):
+    - `SKILL.md`: Guia de arquitetura em cascata (System 1 + System 2), primitivas `Choice`, `Score` e `Noul` e aprovação gated por confiança.
+    - `references/`: API Reference HTTP/REST, Guia Avançado de Primitivas e Mapeamento de Jaggedness / Anti-Patterns.
+    - `examples/`: Implementações de guardrails LangChain, cascade em TypeScript, scanner híbrido de segredos, auditor de MCP/skills, sanitizador de PII e cálculo determinístico de CVSS.
+
+- **Nova Categoria de Prompts (`prompts/jev/`):**
+  - Adição de 8 prompts especializados para decisões e guardrails de alta velocidade (<100ms):
+    - `system_one_architecture.md`: Arquitetura em cascata e eliminação de overkill de LLMs.
+    - `agent_guardrails_safety.md`: Guardrails pré-execução de tools para agentes (OWASP LLM06).
+    - `intent_routing_dispatch.md`: Roteamento de intenção e speculative fan-out.
+    - `rag_verification_guardrails.md`: Verificação de fidedignidade e citações em RAG (OWASP LLM09).
+    - `secret_detection_triage.md`: Triagem semântica de segredos e redução de falsos positivos.
+    - `mcp_agent_security_scan.md`: Auditoria de segurança de MCP servers e Agent Skills.
+    - `pii_sanitization_guardrail.md`: Sanitização e mascaramento de PII em três camadas.
+    - `vulnerability_triage_cvss.md`: Triagem de falhas e cálculo determinístico de CVSS v3.1/v4.0.
+
+- **Automação & Qualidade (`tests/` e `install.sh`):**
+  - `tests/test_integrity.py`: Adição do teste `test_skills_integrity` (etapa 8/8) validando YAML frontmatter, campos obrigatórios e suíte unitária de skills.
+  - `tests/test_appsec_auditor.py`: 6 testes unitários cobrindo o construtor SARIF 2.1.0, gerador de relatórios e ordenação de achados.
+  - `install.sh`: Suporte estendido para instalação da categoria `jev/`.
+
 ## [1.9.0] - 2026-09-15
 
 ### Adicionado & Aprimorado (Integração do OWASP ASVS v4.0.3 & OWASP Risk Rating Methodology)
