@@ -1,9 +1,14 @@
-# PROMPT DE AUDITORIA COMPLETA: RESILIÊNCIA, OBSERVABILIDADE, MENSAGERIA & ESTABILIDADE (SRE & YELLOW TEAM)
+# PROMPT DE AUDITORIA COMPLETA: RESILIÊNCIA, OBSERVABILIDADE & SRE (OWASP PROACTIVE C9 & OWASP DSOMM)
 
 ## OBJETIVO
-Atuar como Engenheiro Principal de Confiabilidade (SRE) e Especialista em Arquitetura Resiliente (Yellow Team). Sua missão é auditar o repositório para garantir **alta disponibilidade, resiliência contra falhas em cascata, observabilidade ponta a ponta (Logs Estruturados, Métricas e Tracing Distribuído com OpenTelemetry)** e integridade no processamento assíncrono (**Filas, Mensageria, Dead Letter Queues e Backpressure**). A auditoria também cobre **Logging de Segurança e Monitoramento de Detecção** conforme o **OWASP Top 10 Proactive Controls 2024 — C9**.
+Atuar como Engenheiro Principal de Confiabilidade (SRE), Especialista em Arquitetura Resiliente (Yellow Team) e Líder de Observabilidade de Segurança. Sua missão é auditar o repositório para garantir **alta disponibilidade, resiliência contra falhas em cascata, observabilidade ponta a ponta (Logs Estruturados, Métricas e Tracing Distribuído com OpenTelemetry)** e integridade no processamento assíncrono (**Filas, Mensageria, Dead Letter Queues e Backpressure**), aplicando conjuntamente:
+1. **OWASP Top 10 Proactive Controls 2024 — C9 (Security Logging and Monitoring)** e **OWASP Logging Cheat Sheet Series**;
+2. **OWASP DevSecOps Maturity Model (DSOMM)** — Dimensão **Information Gathering** (Subdimensões: *Logging*, *Monitoring*, *Alerting*, *Resilience & Fault Correlation*);
+3. **Princípios de Engenharia de SRE** (Golden Signals, SLOs, Error Budgets e Chaos Engineering).
 
-Ao final da auditoria, você deve listar os achados no chat/terminal e gerar um relatório completo em formato PDF e templates de Issues em Markdown para o GitHub.
+A auditoria deve avaliar tanto vulnerabilidades operacionais e falhas de estabilidade quanto o **Nível de Maturidade DevSecOps (Níveis 1 a 5 do DSOMM)**: logs estruturados append-only protegidos contra adulteração (WORM), correlação entre Trace IDs e eventos de segurança, rollbacks automatizados de canary baseados em violação de SLOs, detecção de anomalias em tempo real e testes de resiliência ativa (Chaos Security Engineering).
+
+Ao final da auditoria, você deve listar os achados no chat/terminal, apresentar o **Scorecard de Maturidade DSOMM** e gerar um relatório completo em formato PDF e templates de Issues em Markdown para o GitHub.
 
 ---
 
@@ -14,20 +19,20 @@ Ao final da auditoria, você deve listar os achados no chat/terminal e gerar um 
 
 ---
 
-## CHECKLIST DE VALIDAÇÃO PRÁTICA (RESILIÊNCIA & OBSERVABILIDADE)
+## CHECKLIST DE VALIDAÇÃO PRÁTICA (RESILIÊNCIA, SRE & DSOMM INFORMATION GATHERING)
 
-### 1. Mensageria Assíncrona, Filas e Tratamento de Falhas
+### 1. Mensageria Assíncrona, Filas e Tratamento de Falhas (DSOMM Level 2-3)
 - [ ] **Dead Letter Queues (DLQ) e Retry com Backoff:** Verifique se todas as filas e consumidores de eventos possuem Dead Letter Queues configuradas e políticas de retry com *Exponential Backoff* e *Jitter*, impedindo loops infinitos de reprocessamento (*Retry Storms*).
 - [ ] **Detecção de Mensagens Venenosas (Poison Pills):** Verifique se o consumidor de mensagens é capaz de capturar exceções fatais de deserialização/schema e encaminhar a mensagem defeituosa para quarentena sem travar o worker.
 - [ ] **Idempotência no Consumo de Eventos:** Verifique se os consumers registram os IDs de eventos processados em store atômica/banco para evitar processamento duplicado em cenários de reentrega (*At-least-once delivery*).
 - [ ] **Controle de Vazão e Backpressure:** Verifique se os workers assíncronos limitam a quantidade de mensagens consumidas simultaneamente (`prefetch_count` / `concurrency limit`), evitando estouro de memória sob picos de carga.
 
-### 2. Padrões de Resiliência e Prevenção de Falhas em Cascata
+### 2. Padrões de Resiliência e Prevenção de Falhas em Cascata (DSOMM Level 2-4)
 - [ ] **Circuit Breakers em Chamadas Downstream:** Verifique se todas as chamadas HTTP/gRPC para serviços externos ou terceiros utilizam *Circuit Breaker* (ex: Opossum, Resilience4j, Polly, Tenacity), abrindo o circuito após taxas de erro anômalas para preservar o sistema.
 - [ ] **Timeouts Estritos em I/O:** Identifique clientes de rede ou operações de banco de dados sem timeouts explícitos de conexão (`connectTimeout`) e de resposta (`readTimeout`), que possam causar acúmulo infinito de threads.
 - [ ] **Bulkheads (Isolamento de Recursos):** Verifique se pools de conexões e filas de execução são isoladas por domínio crítico, impedindo que a lentidão em uma funcionalidade secundária derrube toda a aplicação.
 
-### 3. Observabilidade Moderna (Logs, Métricas e Tracing)
+### 3. Observabilidade Moderna (Logs, Métricas e Tracing - DSOMM Level 2-4)
 - [ ] **Logs Estruturados em JSON:** Verifique se a aplicação emite logs em formato JSON padronizado com metadados contextuais (`timestamp`, `level`, `service`, `environment`, `userId_hash`, `tenantId`), sem emitir texto livre desestruturado em produção.
 - [ ] **Propagação de Contexto e Correlation IDs (`x-correlation-id`):** Verifique se todas as requisições geram ou propagam um Trace ID único em headers e logs, conectando chamadas do frontend até os logs assíncronos das filas.
 - [ ] **Instrumentação com OpenTelemetry (OTel):** Verifique se o código possui suporte a spans e tracing distribuído para rastrear gargalos de latência entre serviços.
@@ -37,24 +42,21 @@ Ao final da auditoria, você deve listar os achados no chat/terminal e gerar um 
 - [ ] **Manipulação de Sinais de Sistema:** Verifique se a aplicação captura sinais `SIGTERM` e `SIGINT` para drenar requisições em andamento antes de desligar, rejeitando novas conexões com `HTTP 503` durante a drenagem.
 - [ ] **Fechamento Seguro de Conexões:** Garanta que no shutdown o sistema feche conexões de banco de dados, pools do Redis, canais de mensageria e finalize jobs em andamento sem perda de dados.
 
-### 5. Logging de Segurança e Monitoramento de Detecção (OWASP Proactive Control C9)
-
-Aplique o **OWASP Cheat Sheet Series** (*Logging, Application Logging Vocabulary, Logging Cheat Sheet*) e **A09:2021 — Security Logging and Monitoring Failures**.
-
-- [ ] **Eventos de Segurança Auditados:** Verifique se são logados com contexto suficiente (ator, IP, recurso, ação, resultado, timestamp UTC, correlation ID): sucesso e falha de login, logout, troca de senha/e-mail/MFA, falha de autorização (`403`), criação/alteração de permissão e role, acesso a dado sensível/exportação em massa, invalidação de sessão, uso de token de reset, e eventos administrativos.
-- [ ] **Redação de Dados Sensíveis no Log (Anti-Leak):** Verifique que senhas, tokens, chaves, cookies de sessão, PAN/cartão, PII e o corpo bruto de requisições sensíveis **nunca** são gravados em log; existência de um filtro/serializer central de redação aplicado a todos os appenders (inclusive logs de exceção e de acesso).
-- [ ] **Integridade e Retenção dos Logs:** Verifique envio dos logs para um destino centralizado append-only fora do host da aplicação (SIEM/coletor), com retenção definida e proteção contra adulteração/expurgo pelo processo da aplicação; relógio sincronizado (NTP) e timestamps em UTC/ISO-8601.
+### 5. Logging de Segurança, Detecção e Resiliência Ativa (OWASP C9 & DSOMM Information Gathering Level 3-5)
+- [ ] **Eventos de Segurança Auditados:** Verifique se são logados com contexto suficiente (ator, IP, recurso, ação, resultado, timestamp UTC, correlation ID): sucesso e falha de login, logout, troca de senha/e-mail/MFA, falha de autorização (`403`), criação/alteração de permissão e role, acesso a dado sensível/exportação em massa, invalidação de sessão e eventos administrativos.
+- [ ] **Redação de Dados Sensíveis no Log (Anti-Leak):** Verifique que senhas, tokens, chaves, cookies de sessão, PAN/cartão, PII e o corpo bruto de requisições sensíveis **nunca** são gravados em log; existência de um filtro/serializer central de redação aplicado a todos os appenders.
+- [ ] **Integridade, Imutabilidade e Retenção Append-Only (DSOMM Level 3-4):** Verifique envio dos logs para um destino centralizado append-only fora do host da aplicação (SIEM/coletor), com retenção definida e proteção contra adulteração/expurgo pelo processo da aplicação (WORM / Object Lock); relógio sincronizado (NTP) e timestamps em UTC/ISO-8601.
 - [ ] **Prevenção de Log Injection:** Verifique neutralização de CR/LF e caracteres de controle em valores vindos do usuário antes de concatenar em mensagens de log (evita forja de linhas de log e quebra de parsers).
-- [ ] **Vocabulário e Nível Consistentes:** Verifique uso de um vocabulário de eventos padronizado (ex: `authn_login_success`, `authz_fail`, `authn_token_reuse`) e níveis coerentes (evento de segurança não afogado em `DEBUG`).
-- [ ] **Alertas e Casos de Detecção Acionáveis:** Verifique existência de regras de alerta sobre picos de `403`/falha de login, reuso de refresh token, criação de conta admin, desativação de MFA, acesso fora de horário/geografia atípica, e volume anômalo de exportação — com destino de notificação definido (on-call/canal), não apenas dashboard.
-- [ ] **Monitoramento de Disponibilidade do Pipeline de Log:** Verifique alerta para "parou de receber logs" (falha silenciosa do coletor) e para descarte de logs por backpressure.
-- [ ] **Sem Dependência de Log do Cliente:** Verifique que decisões de detecção/forense não dependem de logs gerados no navegador/app móvel (não confiáveis).
+- [ ] **Vocabulário e Nível Consistentes:** Verifique uso de um vocabulário de eventos padronizado (ex: `authn_login_success`, `authz_fail`, `authn_token_reuse`) e níveis coerentes.
+- [ ] **Alertas e Casos de Detecção Acionáveis (DSOMM Level 3-4):** Verifique existência de regras de alerta sobre picos de `403`/falha de login, reuso de refresh token, desativação de MFA e volume anômalo de exportação com destino de notificação definido (on-call/canal PagerDuty/Slack), não apenas dashboard passivo.
+- [ ] **Deploys Canary com Rollback Automatizado sob Anomalia (DSOMM Level 4):** Verifique a existência de pipelines de deploy progressivo (Canary / Blue-Green) com análise contínua de telemetria e rollback automático imediato mediante violação de thresholds de erro ou latência.
+- [ ] **Engenharia de Caos para Segurança e Resiliência (Chaos Security Engineering - DSOMM Level 5):** Verifique a adoção de testes de injeção automatizada de falhas controladas (ex: simulação de indisponibilidade de banco/filas, latência forçada e tempestades de tráfego anômalo) para validar a eficácia real dos Circuit Breakers, DLQs e alertas antes de incidentes de produção.
 
 ---
 
 ## SAÍDA NO CHAT / TERMINAL
 
-Ao finalizar a análise técnica no código, exiba no chat a lista detalhada de achados (arquivo por arquivo, linha por linha), ordenada por prioridade:
+Ao finalizar a análise técnica no código, exiba no chat a auditoria estruturada:
 
 ### PARTE 1: MATRIZ DE PRIORIZAÇÃO E QUICK WINS
 
@@ -72,10 +74,24 @@ Para CADA item listado na tabela, forneça a análise completa:
 - **Esforço de Correção:** [BAIXO | MÉDIO | ALTO]
 - **Tag:** [QUICK WIN] *(se aplicável)*
 - **Arquivo/Linha:** `caminho/do/arquivo.ext:linha`
-- **Categoria:** [DLQ & Retry / Circuit Breaker / Structured Logs / Tracing OTel / Graceful Shutdown]
+- **Categoria:** [DLQ & Retry / Circuit Breaker / Structured Logs / Tracing OTel / Graceful Shutdown / Security Logging / Chaos Resilience]
+- **Mapeamento DSOMM:** [Dimensão / Subdimensão / Nível atingido vs Nível esperado]
 - **Problema:** Explicação direta de como a ausência desse padrão causa instabilidade, indisponibilidade ou cegueira operacional em produção.
 - **Evidência:** Trecho de código atual sem o padrão de resiliência.
 - **Correção Recomendada:** Código devidamente instrumentado ou com padrão de resiliência aplicado.
+
+### PARTE 3: SCORECARD DE MATURIDADE DSOMM (INFORMATION GATHERING & RESILIENCE)
+Apresente uma tabela de avaliação da maturidade DevSecOps do repositório:
+
+| Subdimensão DSOMM | Nível Atual (1-5) | Status | Requisito para Próximo Nível |
+|---|:---:|---|---|
+| **Logging & Tamper-Proof Storage** | Nível [X] | [Em progresso/Adequado] | [Ação necessária] |
+| **Monitoring & Golden Signals** | Nível [X] | [Crítico/Em progresso] | [Ação necessária] |
+| **Alerting & Incident Automation** | Nível [X] | [Em progresso/Adequado] | [Ação necessária] |
+| **Chaos & Resilience Engineering** | Nível [X] | [Crítico/Adequado] | [Ação necessária] |
+
+**Nível Geral de Confiabilidade & Observabilidade:** `Nível X / 5`
+**Roadmap de Evolução:** Resumo em 3 passos para atingir o nível superior na escala DSOMM.
 
 ---
 
@@ -83,13 +99,14 @@ Para CADA item listado na tabela, forneça a análise completa:
 
 DEPOIS DA AUDITORIA, crie e execute um script para gerar um RELATÓRIO EM PDF, visualmente amigável, em pt-BR, salvo em `docs/resilience-audit/relatorio-auditoria-resiliencia.pdf`, contendo:
 
-a) **Capa:** Título "Relatório de Auditoria de Resiliência, Observabilidade e Confiabilidade — <nome do projeto>", data, mapa de mensageria e postura de SRE.
+a) **Capa:** Título "Relatório de Auditoria de Resiliência, Observabilidade e SRE (OWASP C9 & DSOMM) — <nome do projeto>", data, mapa de mensageria e postura geral de maturidade SRE/DevSecOps.
 b) **Resumo Executivo:** Total de riscos por severidade, gráfico de rosca de estabilidade e gráfico de barras por categoria de resiliência.
    - **Paleta oficial:** Crítica `#B91C1C`, Alta `#EA580C`, Média `#D97706`, Baixa `#2563EB`, Ponto Forte `#059669`.
-c) **Pontos Fortes** (logging estruturado, tracing existente) e **Pontos Fracos** (riscos de gargalo, filas sem DLQ).
-d) **Tabela de Achados Detalhados:** Severidade | Componente | Fragilidade Identificada | Solução.
-e) **Guia de Implementação de Golden Signals e Resiliência.**
-f) **Seção Final "ISSUES PARA O GITHUB":** Templates completos de issues para cada ponto de falha mapeado.
+c) **Scorecard e Radar de Maturidade DSOMM:** Gráfico de teia/radar ou tabela comparativa com os níveis 1 a 5 na dimensão *Information Gathering*.
+d) **Pontos Fortes** (logging estruturado, tracing existente) e **Pontos Fracos** (riscos de gargalo, filas sem DLQ, ausência de alertas acionáveis).
+e) **Tabela de Achados Detalhados:** Severidade | Componente | Fragilidade Identificada | Nível DSOMM | Solução.
+f) **Guia de Implementação de Golden Signals, Resiliência e Roadmap de Maturidade.**
+g) **Seção Final "ISSUES PARA O GITHUB":** Templates completos de issues para cada ponto de falha mapeado.
 
 ### REGRAS TÉCNICAS PARA GERAÇÃO DO PDF
 - Use um ambiente isolado (ex: `venv` Python com `reportlab` + `matplotlib`).
@@ -102,5 +119,5 @@ f) **Seção Final "ISSUES PARA O GITHUB":** Templates completos de issues para 
 
 Ao concluir todas as etapas, informe no chat:
 1. A confirmação de geração do relatório em PDF.
-2. A lista de achados no chat (Parte 1 e Parte 2).
+2. A lista de achados no chat (Parte 1 e Parte 2) e o Scorecard DSOMM (Parte 3).
 3. O caminho relativo de todos os arquivos gerados (ex: `docs/resilience-audit/relatorio-auditoria-resiliencia.pdf`, `docs/resilience-audit/generate_report.py`).

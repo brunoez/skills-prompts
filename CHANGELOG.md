@@ -5,6 +5,24 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico (SemVer)](https://semver.org/lang/pt-BR/).
 
+## [2.5.0] - 2026-09-27
+
+### Aprimorado (Integração do OWASP DSOMM na Suíte DevOps, CI/CD & SRE)
+
+- **Adoção do OWASP DevSecOps Maturity Model (DSOMM):**
+  - Integração do modelo de maturidade progressivo (Níveis 1 a 5) em toda a Parte 3 (DevOps, Infraestrutura e SRE), transformando checklists estáticos em roadmaps evolutivos.
+- **Hardening de CI/CD (`prompts/devops/cicd_pipeline.md`):**
+  - Mapeamento para a dimensão **Build and Deployment** do DSOMM.
+  - Adição de verificações para atestações de proveniência **SLSA Level 2+/3+**, geração automatizada de **SBOM (CycloneDX/SPDX)**, assinatura criptográfica de artefatos com **Sigstore / Cosign** (keyless OIDC), proteção de branches com multi-party approvals e **Scorecard de Maturidade DSOMM (Níveis 1 a 5)**.
+- **IaC, Containers & Kubernetes (`prompts/devops/iac_docker_k8s.md`):**
+  - Mapeamento para as dimensões **Implementation** (Infrastructure Hardening, IAM, Container Security) e **Build and Deployment** (Policy Enforcement).
+  - Adição de verificações para imagens mínimas **Distroless / Chainguard**, triagem de CVEs com critérios **CISA KEV / EPSS**, proteção e criptografia de estado `tfstate`, Shift-Left IaC scanning (Checkov/Trivy), **Policy-as-Code na admissão (OPA Gatekeeper / Kyverno)**, reconciliação de drift via **GitOps (ArgoCD/Flux)** e **Scorecard de Maturidade DSOMM**.
+- **Resiliência, Observabilidade & SRE (`prompts/devops/resilience_observability.md`):**
+  - Mapeamento para a dimensão **Information Gathering** (Logging, Monitoring, Alerting, Correlation).
+  - Adição de verificações para armazenamento de logs imutável append-only (WORM / Object Lock), deploys canary com rollback automatizado baseado em violação de SLOs, correlação de eventos de segurança com traces OTel, práticas de **Chaos Security Engineering** e **Scorecard de Maturidade DSOMM**.
+- **Documentação & Relatórios:**
+  - Atualização do `README.md` com menções ao framework OWASP DSOMM, comandos atualizados e nova visão por níveis nos relatórios em PDF.
+
 ## [2.4.0] - 2026-09-27
 
 ### Adicionado (Novo Prompt Orquestrador Mestre: AppSec Auditor 360°)

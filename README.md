@@ -20,7 +20,7 @@
 
 Criado com foco na comunidade brasileira de desenvolvimento e AppSec, este repositório aberto reúne **prompts técnicos e Agent Skills de alto nível** projetados para serem executados por Engenheiros Principais ou Agentes de IA (**Claude Code**, **Google Antigravity**, **VSCode** / GitHub Copilot, **Cursor** e outros editores como Windsurf).
 
-O objetivo é transformar a velocidade do **Vibe Coding** em software de **nível corporativo**: seguro contra vulnerabilidades (**OWASP ASTF 2023**, **WSTG v4.2**, **OWASP Top 10 Proactive Controls 2024**, **OWASP ASVS v4.0.3**, **OWASP Risk Rating Methodology** e **OWASP Cheat Sheet Series**), arquiteturalmente consistente (DDD/SDD), resiliente em produção (SRE) e 100% testado (TDD, BDD, SecDD).
+O objetivo é transformar a velocidade do **Vibe Coding** em software de **nível corporativo**: seguro contra vulnerabilidades (**OWASP ASTF 2023**, **WSTG v4.2**, **OWASP Top 10 Proactive Controls 2024**, **OWASP ASVS v4.0.3**, **OWASP DSOMM (DevSecOps Maturity Model)**, **OWASP Risk Rating Methodology** e **OWASP Cheat Sheet Series**), arquiteturalmente consistente (DDD/SDD), resiliente em produção (SRE) e 100% testado (TDD, BDD, SecDD).
 
 ---
 
@@ -115,10 +115,10 @@ seu-projeto/
 │   │   ├── supply_chain.md            # SCVS, SBOM & Anti-Slopsquatting
 │   │   ├── threat_modeling.md         # Modelagem STRIDE-per-Element
 │   │   └── vcs_security_history.md    # Mineração de Segurança no Git (VCS History)
-│   ├── devops/                   # Infraestrutura & SRE
-│   │   ├── cicd_pipeline.md           # Hardening de CI/CD & OIDC
-│   │   ├── iac_docker_k8s.md          # Docker Rootless & K8s
-│   │   └── resilience_observability.md# SRE & OpenTelemetry
+│   ├── devops/                   # Infraestrutura, CI/CD & SRE (OWASP DSOMM)
+│   │   ├── cicd_pipeline.md           # Hardening de CI/CD, OIDC & DSOMM Build
+│   │   ├── iac_docker_k8s.md          # Docker Rootless, K8s & DSOMM Implementation
+│   │   └── resilience_observability.md# SRE, OpenTelemetry & DSOMM Info Gathering
 │   └── jev/                      # TypeSafe AI – Decisões System One & Anti-Overkill
 │       ├── system_one_architecture.md # Arquitetura em Cascata & Refatoração System 1
 │       ├── agent_guardrails_safety.md # Guardrails Pré-Execução de Tools em Agentes
@@ -395,34 +395,34 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 
 ---
 
-### ⚙️ 3. DevOps, Infraestrutura & Resiliência
+### ⚙️ 3. DevOps, Infraestrutura & Resiliência (OWASP DSOMM)
 
 <details>
 <summary><b>Clique para expandir os comandos e prompts de DevOps, Infraestrutura & SRE</b></summary>
 <br/>
 
-* **Para auditar e proteger a esteira de CI/CD (GitHub Actions / GitLab CI):**
+* **Para auditar a esteira de CI/CD e avaliar a maturidade (OWASP CI/CD & DSOMM Build & Deployment):**
   * **Use:** [`prompts/devops/cicd_pipeline.md`](prompts/devops/cicd_pipeline.md)
   * **Comando:**
     ```markdown
     @[.claude/prompts/devops/cicd_pipeline.md]
-    Audite os workflows contra script injection, configure OIDC e pinning SHA256.
+    Audite os workflows contra script injection, configure OIDC, pinning SHA256, SBOM, Cosign e gere o scorecard DSOMM (Níveis 1 a 5).
     ```
 
-* **Para checar a segurança do Docker (rootless/multi-stage) e manifestos Kubernetes:**
+* **Para checar a segurança de IaC, Docker (Distroless) e Kubernetes (DSOMM Implementation & Policy-as-Code):**
   * **Use:** [`prompts/devops/iac_docker_k8s.md`](prompts/devops/iac_docker_k8s.md)
   * **Comando:**
     ```markdown
     @[.claude/prompts/devops/iac_docker_k8s.md]
-    Audite Dockerfiles e K8s garantindo securityContext restrito e limites.
+    Audite IaC, Dockerfiles e manifestos K8s aplicando Pod Security Standards, políticas OPA/Kyverno e gere o scorecard de maturidade DSOMM.
     ```
 
-* **Para auditar filas, mensageria (DLQ), observabilidade (OTel) e estabilidade SRE:**
+* **Para auditar filas, mensageria (DLQ), observabilidade (OTel), estabilidade SRE e logs append-only (DSOMM Info Gathering):**
   * **Use:** [`prompts/devops/resilience_observability.md`](prompts/devops/resilience_observability.md)
   * **Comando:**
     ```markdown
     @[.claude/prompts/devops/resilience_observability.md]
-    Audite os workers de fila, configure retry com DLQ e graceful shutdown.
+    Audite os workers de fila, configure retry com DLQ, tracing OTel, logs append-only WORM e gere o scorecard de resiliência DSOMM.
     ```
 
 </details>
@@ -553,13 +553,13 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 
 ---
 
-### ⚙️ 3. DevOps, Infraestrutura & Confiabilidade (SRE)
+### ⚙️ 3. DevOps, Infraestrutura & Confiabilidade (SRE & OWASP DSOMM)
 
 | Prompt | Especialidade | Descrição & Escopo |
 | :--- | :--- | :--- |
-| [`cicd_pipeline.md`](prompts/devops/cicd_pipeline.md) | **Hardening de CI/CD (OWASP CI/CD)** | Prevenção de script injection em GitHub Actions/GitLab CI, autenticação OIDC federada, pinning de actions por SHA256 e runners isolados. |
-| [`iac_docker_k8s.md`](prompts/devops/iac_docker_k8s.md) | **IaC, Containers & K8s** | Terraform IAM least privilege, Docker rootless e multi-stage, K8s securityContext, NetworkPolicies e Probes. |
-| [`resilience_observability.md`](prompts/devops/resilience_observability.md) | **Resiliência & Observabilidade** | Mensageria assíncrona, Dead Letter Queues (DLQ), Circuit Breakers, tracing distribuído com OpenTelemetry e Graceful Shutdown. |
+| [`cicd_pipeline.md`](prompts/devops/cicd_pipeline.md) | **Hardening de CI/CD & DSOMM Build** | Prevenção de script injection, autenticação OIDC federada, pinning SHA256, geração de SBOM (CycloneDX), assinatura Sigstore/Cosign, proveniência SLSA e Scorecard de Maturidade DSOMM (Níveis 1-5). |
+| [`iac_docker_k8s.md`](prompts/devops/iac_docker_k8s.md) | **IaC, Containers & DSOMM Implementation** | Terraform IAM least privilege e state security, imagens mínimas Distroless/Chainguard, triagem de CVEs (CISA KEV/EPSS), K8s Pod Security Standards, Policy-as-Code (OPA/Kyverno) e GitOps drift. |
+| [`resilience_observability.md`](prompts/devops/resilience_observability.md) | **SRE, Resiliência & DSOMM Info Gathering** | Mensageria assíncrona com DLQ, Circuit Breakers, tracing distribuído OTel, logs append-only WORM (OWASP C9), canary rollbacks automatizados, Chaos Security Engineering e Scorecard DSOMM. |
 
 ---
 
