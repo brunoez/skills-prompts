@@ -137,7 +137,7 @@ Enriquecimento estritamente aditivo de todos os 13 prompts de segurança e do pr
   - Inclusão de tags `ASVS-V*` e scores de risco no SARIF v2.1.0 para o GitHub Code Scanning.
   - Templates de issues no GitHub com justificativa de risco quantificada.
 - **Engenharia de Software (SDD & BDD):**
-  - Criação do documento formal de especificação arquitetural (SDD) e cenários executáveis Gherkin (BDD) em `docs/superpowers/plans/2026-09-15-owasp-asvs-risk-rating-integration.md`.
+  - Criação do documento formal de especificação arquitetural (SDD) e cenários executáveis Gherkin (BDD) para a integração de ASVS e Risk Rating.
 - **Validação Automatizada de CI/CD (`tests/test_integrity.py`):**
   - Nova bateria `test_security_standards_coexistence` validando continuamente a coexistência de `OWASP ASVS` e `OWASP Risk Rating Methodology` em todos os 14 prompts de segurança.
 

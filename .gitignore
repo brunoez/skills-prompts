@@ -34,3 +34,7 @@ coverage/
 
 # Scratch directory
 scratch/
+
+# Superpowers agent scratch & planning artifacts
+docs/superpowers/
+.superpowers/
