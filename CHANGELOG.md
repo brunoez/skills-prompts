@@ -5,7 +5,30 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico (SemVer)](https://semver.org/lang/pt-BR/).
 
+## [2.1.0] - 2026-09-27
+
+### Adicionado & Aprimorado (Integração das Inovações do Google Mantis)
+
+Evolução metodológica e tática inspirada no projeto [Google Mantis](https://github.com/google/mantis) (*A modular, stack-agnostic toolkit for AI coding agents to autonomously find, reproduce, and patch vulnerabilities*):
+
+- **Evolução da Skill `skills/appsec-auditor` (Fluxo em 5 Fases):**
+  - **Crítica de Viabilidade de Release (`references/viability-critique.md`):** Protocolo anti-alucinação inspirado no `mantis-critic` e `mantis-review` para descartar código inalcançável (dead code), filtrar falhas restritas a `assert` de debug (que somem em release/produção com `python -O`), e verificar neutralização por gateways/DTO pipes.
+  - **Calibração de Severidade Anti-Inflação (`references/risk-rating-methodology.md`):** Adoção da rubrica de calibração numérica do Mantis (Score 1-10) com multiplicadores de evidência e viabilidade para conter a inflação de severidade em LLMs.
+  - **PoC Reproduction Harness (`references/poc-reproduction-harness.md`):** Estratégia em 3 camadas de reprodução (Tier 1: micro-harness unitário em memória $\rightarrow$ Tier 2: teste funcional com mock $\rightarrow$ Tier 3: sandbox isolada com gVisor `runsc --network=none`).
+  - **Atualização dos Scripts e Relatórios (`sarif_builder.py` & `report_generator.py`):** Suporte nativo aos campos `risk_score`, `viability` e `poc_tier` nos relatórios SARIF 2.1.0, Markdown e templates de Issue.
+
+- **Novos Prompts Táticos de AppSec (`prompts/security/`):**
+  - [`adversarial_patching.md`](prompts/security/adversarial_patching.md): Protocolo de correção com separação de deveres (Blue Team patcher vs. Red Team re-attacker), caça a bypasses de encoding/path e teste de regressão automatizado (inspirado no `mantis-patch`).
+  - [`exploit_chaining.md`](prompts/security/exploit_chaining.md): Metodologia para correlacionar múltiplos achados baixos/médios em cadeias de exploração de alto impacto (Super Findings / Kill Chains), com mapeamento de *choke points* defensivos (inspirado no `mantis-chain`).
+  - [`vcs_security_history.md`](prompts/security/vcs_security_history.md): Mineração de histórico Git para rastrear CVEs passados, evitar regressões em refatorações e mapear invariantes históricos (inspirado no `mantis-history`).
+  - [`sec_advisor.md`](prompts/security/sec_advisor.md): Assistente de codificação segura em tempo real (Shift-Left Pair Programming) para orientar o desenvolvedor durante a escrita de código (inspirado no `mantis-advise`).
+
+- **Qualidade, Integridade & Testes:**
+  - Atualização do catálogo em `install.sh`, `tests/test_integrity.py` e `README.md`.
+  - Novos testes unitários em `tests/test_appsec_auditor.py` validando os metadados de calibração e viabilidade.
+
 ## [2.0.0] - 2026-09-22
+
 
 ### Adicionado & Aprimorado (Lançamento do Ecossistema de Agent Skills & Suíte Jev System One)
 

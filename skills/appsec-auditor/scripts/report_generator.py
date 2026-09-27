@@ -89,6 +89,16 @@ def generate_markdown_report(findings: List[Dict[str, Any]], title: str = "Relat
             f"### [{fid}] {emoji} {f.get('title', 'Finding')}",
             f"- **Arquivo:** `{f.get('file_path')}:{f.get('start_line')}`",
             f"- **Severidade:** `{sev}` (Probabilidade: `{f.get('likelihood', 'N/A')}` | Impacto: `{f.get('impact', 'N/A')}`)",
+        ])
+
+        if f.get("risk_score") is not None:
+            lines.append(f"- **Mantis Calibrated Score:** `{f.get('risk_score')}/10.0`")
+        if f.get("viability"):
+            lines.append(f"- **Viabilidade em Release:** `{f.get('viability')}`")
+        if f.get("poc_tier") or f.get("poc_type"):
+            lines.append(f"- **PoC Reproduction Tier:** `{f.get('poc_tier') or f.get('poc_type')}`")
+
+        lines.extend([
             f"- **Classificação:** OWASP: `{f.get('owasp', 'N/A')}` | ASVS: `{f.get('asvs', 'N/A')}` | CWE: `{f.get('cwe', 'N/A')}`",
             "",
             "**Descrição Técnica & Impacto:**",
@@ -130,9 +140,18 @@ def generate_markdown_report(findings: List[Dict[str, Any]], title: str = "Relat
 def generate_issue_template(finding: Dict[str, Any]) -> str:
     sev = finding.get("severity", "MEDIUM").upper()
     emoji = SEVERITY_EMOJIS.get(sev, "⚪")
+    extra_meta = []
+    if finding.get("risk_score") is not None:
+        extra_meta.append(f"**Calibrated Score:** `{finding.get('risk_score')}/10.0`")
+    if finding.get("viability"):
+        extra_meta.append(f"**Viability:** `{finding.get('viability')}`")
+    if finding.get("poc_tier") or finding.get("poc_type"):
+        extra_meta.append(f"**PoC Tier:** `{finding.get('poc_tier') or finding.get('poc_type')}`")
+    extra_str = ("  \n" + " | ".join(extra_meta)) if extra_meta else ""
+
     return f"""### Title: [SEC] {finding.get('title')} ({sev})
 
-**Severity:** {emoji} {sev}  
+**Severity:** {emoji} {sev}{extra_str}  
 **Location:** `{finding.get('file_path')}:{finding.get('start_line')}`  
 **Standard:** OWASP {finding.get('owasp', 'N/A')} | ASVS {finding.get('asvs', 'N/A')} | CWE-{finding.get('cwe', 'N/A')}
 
@@ -147,6 +166,7 @@ def generate_issue_template(finding: Dict[str, Any]) -> str:
 - [ ] Automated regression / abuse test added and passing.
 - [ ] No regression introduced in existing test suite.
 """
+
 
 
 def main() -> int:

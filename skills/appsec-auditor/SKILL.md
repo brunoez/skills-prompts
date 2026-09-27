@@ -29,13 +29,14 @@ Use this skill whenever:
 
 ---
 
-## 4-Phase Audit Workflow
+## 5-Phase Audit Workflow (Mantis-Enhanced)
 
 ```mermaid
 flowchart LR
     P1["Phase 1:<br/>Surface Discovery"] --> P2["Phase 2:<br/>Deep Code Audit"]
-    P2 --> P3["Phase 3:<br/>OWASP Risk Rating"]
-    P3 --> P4["Phase 4:<br/>SARIF & Report Gen"]
+    P2 --> P3["Phase 3:<br/>Viability Critique"]
+    P3 --> P4["Phase 4:<br/>Calibrated Rating"]
+    P4 --> P5["Phase 5:<br/>PoC & Artifact Gen"]
 ```
 
 ### Phase 1: Attack Surface Discovery & Contract Mapping
@@ -50,24 +51,27 @@ Audit each file line by line against the core vulnerability vectors. Consult the
 * [Access Control & BOLA Deep Dive](references/access-control-bola.md)
 * [SSRF Prevention & Safe Egress](references/ssrf-prevention.md)
 
-> [!IMPORTANT]
-> **Anti-Fatigue Directive:** Report ONLY findings verified by inspected source code. Filter out purely cosmetic formatting or styling suggestions (`[NIT]`). Focus on actual **Blast Radius**.
+### Phase 3: Viability Critique & Anti-Hallucination (Google Mantis Inspired)
+Eliminate false positives and verify release-build viability using [Viability Critique](references/viability-critique.md):
+1. **Reachability Check:** Confirm the vulnerable path is actively routed and reachable from external inputs (eliminate dead code).
+2. **Release Viability:** Discard `assert`-only issues that disappear in release/production builds (`python -O`, bundled production).
+3. **Upstream Neutralization:** Verify if reverse proxies, WAFs, or global DTO validation pipes already strip or sanitize the input.
 
-### Phase 3: Deterministic OWASP Risk Rating
-Calculate the practical risk using the [Risk Rating Methodology](references/risk-rating-methodology.md):
+### Phase 4: Deterministic OWASP Risk Rating & Calibrated Scoring
+Calculate the practical risk using the [Risk Rating & Mantis Calibration](references/risk-rating-methodology.md):
 
-$$\text{Risco} = \text{Probabilidade (Likelihood)} \times \text{Impacto (Impact)}$$
+$$\text{Calibrated Score (1-10)} = \text{Base Severity} \times M_{\text{evidence}} \times M_{\text{viability}}$$
 
-* **Alta $\times$ Alto** = 🔴 **CRÍTICA** (Remote Code Execution, public unauthenticated BOLA, leaked master keys).
-* **Alta $\times$ Médio** ou **Média $\times$ Alto** = 🟠 **ALTA** (Cross-tenant IDOR, missing tenancy filter in update).
-* **Média $\times$ Médio** ou **Baixa $\times$ Alto** = 🟡 **MÉDIA** (Stored XSS requiring admin view, missing rate limit).
-* **Baixa $\times$ Baixo** = 🔵 **BAIXA** (Verbose technical banner, missing non-critical header).
+* **9.0 a 10.0** = 🔴 **CRÍTICA** (RCE, public unauthenticated BOLA, proved by PoC or visible without sanitizer).
+* **7.0 a 8.9** = 🟠 **ALTA** (Cross-tenant IDOR, missing tenancy filter in update).
+* **4.0 a 6.9** = 🟡 **MÉDIA** (Stored XSS requiring admin view, missing rate limit).
+* **1.0 a 3.9** = 🔵 **BAIXA / INFO** (Verbose technical banner, missing non-critical header).
 
-### Phase 4: Artifact Generation & Remediation
-1. **Terminal Prioritization Table:** Present a quick-wins summary table.
-2. **Defensive Code Fixes:** Provide drop-in patches implementing defense-in-depth.
-3. **Automated Verification:** Provide a reproducible test or curl command to verify the fix.
-4. **SARIF 2.1.0 Export:** Execute the built-in `sarif_builder.py` script.
+### Phase 5: PoC Reproduction, Remediation & Artifact Generation
+1. **PoC Micro-Harness:** Structure reproducible test cases following [PoC Reproduction Harness](references/poc-reproduction-harness.md) (Tier 1 unit test, Tier 2 functional mock, or Tier 3 sandbox).
+2. **Terminal Prioritization Table:** Present a quick-wins summary table.
+3. **Defensive Code Fixes:** Provide drop-in patches implementing defense-in-depth.
+4. **SARIF 2.1.0 & Markdown Export:** Execute `sarif_builder.py` and `report_generator.py`.
 
 ---
 
@@ -108,6 +112,9 @@ python3 skills/appsec-auditor/scripts/report_generator.py \
     "cwe": "CWE-639",
     "likelihood": "Alta",
     "impact": "Alto",
+    "risk_score": 9.5,
+    "viability": "RELEASE_EXPLOITABLE",
+    "poc_tier": "TIER_1_UNIT",
     "effort": "Baixo",
     "quick_win": true,
     "remediation": "Enforce req.user.organizationId in prisma query.",
@@ -119,5 +126,8 @@ python3 skills/appsec-auditor/scripts/report_generator.py \
 ---
 
 ## Verified Code References & Examples
+* [Viability Critique & Anti-Hallucination](references/viability-critique.md): Filter rules for release builds and dead code.
+* [PoC Reproduction Harness](references/poc-reproduction-harness.md): 3-tier reproduction strategy and templates.
 * [Automated BOLA Abuse Test Example](examples/bola_idor_test.py): Real pytest test case testing cross-tenant isolation.
 * [SSRF-Safe Fetch Client](examples/ssrf_safe_fetch.ts): TypeScript client with pre-flight DNS check and IP pinning.
+

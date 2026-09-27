@@ -65,18 +65,23 @@ seu-projeto/
 │   │   └── technical_documentation.md # Docs-as-Code & C4
 │   ├── security/                 # Auditorias de AppSec (OWASP ASTF / WSTG / Proactive Controls)
 │   │   ├── access_control.md          # Proactive C1 – Autorização & IDOR/BOLA
+│   │   ├── adversarial_patching.md    # Protocolo Red/Blue com Re-Attack Loop (Mantis Pattern)
 │   │   ├── ai_appsec.md               # OWASP LLM Top 10
 │   │   ├── api.md                     # OWASP API Top 10 (ASTF)
 │   │   ├── authn_identity.md          # Proactive C7 – Autenticação, Sessão, MFA & OIDC
 │   │   ├── business.md                # Fraudes & Idempotência
 │   │   ├── db.md                      # OWASP DB & Concorrência
+│   │   ├── exploit_chaining.md        # Composição de Kill Chains Multi-Stage
 │   │   ├── frontend.md                # Trusted Types, CSP & SPAs
 │   │   ├── input_validation.md        # Proactive C3 – Validação de Entrada & Exceções
+│   │   ├── sec_advisor.md             # Developer Security Advisor (Shift-Left)
 │   │   ├── secrets.md                 # TruffleHog3 & Argon2id
 │   │   ├── secure_config.md           # Proactive C5 – Config Segura, Headers & CORS
 │   │   ├── ssrf.md                    # Proactive C10 – Server-Side Request Forgery
 │   │   ├── supply_chain.md            # SCVS, SBOM & Anti-Slopsquatting
-│   │   └── threat_modeling.md         # Modelagem STRIDE-per-Element
+│   │   ├── threat_modeling.md         # Modelagem STRIDE-per-Element
+│   │   └── vcs_security_history.md    # Mineração de Segurança no Git (VCS History)
+
 │   ├── devops/                   # Infraestrutura & SRE
 │   │   ├── cicd_pipeline.md           # Hardening de CI/CD & OIDC
 │   │   ├── iac_docker_k8s.md          # Docker Rootless & K8s
@@ -120,7 +125,8 @@ Além dos prompts estruturados invocados manualmente via `@`, este repositório 
 
 | Skill | Especialidade | Entregáveis & Ferramentas Integradas |
 | :--- | :--- | :--- |
-| [`skills/appsec-auditor`](skills/appsec-auditor/SKILL.md) | **Auditoria de Segurança AppSec (OWASP ASTF / ASVS L2)** | - Fluxo de auditoria em 4 fases com filtro anti-fadiga e cálculo OWASP Risk Rating<br/>- `scripts/sarif_builder.py`: Gerador de relatórios SARIF 2.1.0 para GitHub Security<br/>- `scripts/report_generator.py`: Gerador de relatórios executivos em Markdown e Issues GitHub<br/>- `references/`: Guias modulares (ASTF API, ASVS L2, BOLA/IDOR, SSRF & Egress)<br/>- `examples/`: Teste de abuso BOLA em pytest e cliente fetch seguro em TypeScript |
+| [`skills/appsec-auditor`](skills/appsec-auditor/SKILL.md) | **Auditoria de Segurança AppSec (OWASP ASTF, ASVS L2 & Mantis-Enhanced)** | - Fluxo em 5 fases com **Crítica de Viabilidade de Release** e **Calibração de Risco Anti-Inflação (Score 1-10)**<br/>- `scripts/sarif_builder.py`: Gerador de relatórios SARIF 2.1.0 com metadados de calibração para GitHub Security<br/>- `scripts/report_generator.py`: Gerador de relatórios executivos em Markdown e Issues GitHub<br/>- `references/`: Guias modulares (ASTF, ASVS L2, BOLA, SSRF, Viability Critique, PoC Reproduction Harness)<br/>- `examples/`: Teste de abuso BOLA em pytest e cliente fetch seguro em TypeScript |
+
 | [`skills/driven-development`](skills/driven-development/SKILL.md) | **Engenharia de Software Orientada por Testes (SDD, TDD, BDD, CDD, SecDD)** | - Ciclo em 4 fases: Schemas/Contratos → Critérios/Abuso → Red-Green-Refactor → Pirâmide de Testes<br/>- `scripts/test_runner.py`: Executor universal com detecção automática de stack (Node, Python, Go, Rust)<br/>- `references/`: Guias modulares de SDD, TDD, BDD (Gherkin), CDD (Pact), SecDD (Abuse Cases) e Pirâmide<br/>- `examples/`: Schemas Zod estritos, fixtures de ciclo TDD com AAA e cenários Gherkin |
 | [`skills/jev-system-one`](skills/jev-system-one/SKILL.md) | **Decisões Estruturadas & Guardrails System One (TypeSafe AI)** | - Padrão de Two-Model Cascade (System 1 para decisões <100ms + System 2 para raciocínio)<br/>- Primitivas `Choice`, `Score` e `Noul` com calibração de probabilidade<br/>- `references/`: HTTP API Reference, Primitivas e Jaggedness / Anti-Patterns<br/>- `examples/`: Guardrails LangChain, cascade em TypeScript, scanner híbrido de segredos, auditor de MCP e cálculo de CVSS |
 
@@ -426,6 +432,11 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 | [`ssrf.md`](prompts/security/ssrf.md) | **SSRF (OWASP Proactive C10 / A10)** | Mapa de sinks de saída (webhooks, HTML→PDF, proxies de imagem, `$ref` remoto, XXE), allow-list de destino, validação pós-DNS + pinning (anti DNS rebinding), bloqueio de metadata cloud (`169.254.169.254`), egress filtering e IMDSv2. |
 | [`secure_config.md`](prompts/security/secure_config.md) | **Configuração Segura por Padrão (OWASP Proactive C5 / A05)** | Secure-by-default, debug/stack traces off, credenciais default, headers (`HSTS`, `CSP`, `nosniff`, `frame-ancestors`), CORS com allow-list estrita, atributos de cookie + CSRF, TLS 1.2+/1.3 e hardening de container. |
 | [`input_validation.md`](prompts/security/input_validation.md) | **Validação de Entrada & Exceções (OWASP Proactive C3)** | Validação positiva (allow-list) em toda fronteira de confiança, canonicalização Unicode, schema estrito anti Mass Assignment, deserialização segura (XXE, zip slip), parametrização de sinks e tratamento centralizado de erros sem vazamento de stack trace. |
+| [`adversarial_patching.md`](prompts/security/adversarial_patching.md) | **Correção Adversarial (Red/Blue Loop)** | Protocolo de remediação com separação estrita de deveres (Patcher vs. Re-Attacker), caça a bypasses de encoding/path e teste de regressão automatizado (Mantis Pattern). |
+| [`exploit_chaining.md`](prompts/security/exploit_chaining.md) | **Exploit Chaining & Kill Chains** | Composição de múltiplos achados baixos/médios em cadeias de ataque multi-stage (Super Findings), diagramas de sequência e choke points defensivos. |
+| [`vcs_security_history.md`](prompts/security/vcs_security_history.md) | **Mineração de Histórico Git (VCS Mining)** | Rastreamento de patches anteriores, detecção de regressões acidentais em merges/refatorações e mapeamento de invariantes históricos de segurança. |
+| [`sec_advisor.md`](prompts/security/sec_advisor.md) | **Developer Security Advisor (Shift-Left)** | Pair programming de segurança em tempo real durante a escrita de código, consultando modelos de ameaça, invariantes e propondo alternativas defensivas idiomáticas. |
+
 
 ---
 

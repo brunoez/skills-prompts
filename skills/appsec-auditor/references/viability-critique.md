@@ -1,0 +1,69 @@
+# Viability Critique & Anti-Hallucination Protocol
+
+Inspired by the **Google Mantis** critic architecture (`mantis-critic` & `mantis-review`), this reference provides the normative verification protocol to eliminate false positives and verify **real-world production viability** before reporting vulnerabilities.
+
+---
+
+## 1. The Anti-Hallucination Imperative
+
+LLMs analyzing source code frequently report theoretical vulnerabilities based on isolated pattern matching without checking contextual defenses, configuration defaults, or runtime execution modes.
+
+> [!CAUTION]
+> **Zero Unverified Assertions Directive:**
+> A finding MUST NOT be reported as CRITICAL or HIGH if its exploitability depends on debug-only artifacts, uncalled dead code, or mechanisms completely neutralized by the runtime environment.
+
+---
+
+## 2. The 4 Viability Filters
+
+```mermaid
+flowchart TD
+    Raw["Achado Candidato da Análise"] --> F1{"Filtro 1:<br/>Código Vivo & Alcançável?"}
+    F1 -- Não --> Drop1["DESCARTAR: Código Morto / Inalcançável"]
+    F1 -- Sim --> F2{"Filtro 2:<br/>Viável em Release / Produção?"}
+    F2 -- "Não (Apenas Debug/Assert)" --> Down2["REBAIXAR: Informational / Hardening [NIT]"]
+    F2 -- Sim --> F3{"Filtro 3:<br/>Neutralizado Upstream (Gateway/ORM)?"}
+    F3 -- Sim --> Down3["REBAIXAR: Risco Mitigado em Camadas"]
+    F3 -- Não --> F4{"Filtro 4:<br/>Impacto e Blast Radius Real?"}
+    F4 -- Sim --> Pass["CONFIRMADO: Achado Calibrado Produção"]
+```
+
+### Filter 1: Reachability & Dead Code Elimination
+* **Active Routing Check:** Is the function, controller, or handler mapped to an active route in the router/mux?
+* **Call Graph Reachability:** Trace the call chain from an external entry point (HTTP, WebSocket, RPC, message queue) down to the vulnerable sink.
+* **Dead Code Heuristic:** If a function has a vulnerability but has zero references across the entire repository and is not an exported library API, discard or mark as dead code.
+
+### Filter 2: Release Build vs. Debug Mode
+* **Python `assert` Flaw:** `assert condition, "error"` is completely stripped out of bytecode when running in optimized mode (`python -O` or `PYTHONOPTIMIZE=1`). Never treat `assert` as a valid security boundary, and never report a DoS based on `assert` failing if it only halts debug runs.
+* **Development Middleware:** Check if dangerous or permissive configurations are wrapped in environment guards:
+  ```typescript
+  if (process.env.NODE_ENV !== 'production') {
+    app.use(cors({ origin: '*' })); // NÃO vulnerável em produção
+  }
+  ```
+* **Debug Endpoints:** Confirm whether routes like `/debug/pprof`, `/api/dev/reset-db` or Swagger UI are conditional or excluded from production bundles.
+
+### Filter 3: Upstream & Framework-Level Neutralization
+* **Global Validation Pipes:** In frameworks like NestJS, Fastify, or Express com Zod:
+  - If a DTO strips unknown fields (`whitelist: true` / `stripUnknown: true`), Mass Assignment / Parameter Tampering is **neutralized**.
+* **Reverse Proxy / Ingress Stripping:**
+  - Standard clouds and ingress controllers (AWS ALB, Nginx, Cloudflare) strip hop-by-hop headers (`Transfer-Encoding`, `Connection`) and normalize URI paths (`/../../`). Do not report path traversal if reverse proxy path canonicalization renders it unreachable unless proven.
+* **ORM Scoping:**
+  - Even if a raw string interpolation is visible, check if the variable is cast to an enum, parsed as an integer, or sanitized upstream.
+
+### Filter 4: Actual Blast Radius vs. Theoretical Concern
+* Ask: *What can an external or authenticated attacker actually achieve?*
+* If an attacker triggers an unhandled exception that simply returns HTTP 500 without leaking memory, secrets, or hanging the event loop, classify as **LOW / NIT** (Bad Practice), not a High-severity DoS.
+
+---
+
+## 3. Viability Verdict Categories in `findings.json`
+
+Every verified finding must be stamped with a `viability` property:
+
+| Viability Tag | Meaning | Effect on Severity |
+| :--- | :--- | :--- |
+| `RELEASE_EXPLOITABLE` | Directly exploitable in production release builds. | Mantis Score Multiplier: **1.0x** |
+| `UPSTREAM_MITIGATED` | Vulnerability exists in handler but is filtered by reverse proxy or gateway. | Mantis Score Multiplier: **0.6x** (Downgrade to Medium/Low) |
+| `DEBUG_ONLY` | Exploitable only in local dev or with debug flags enabled. | Mantis Score Multiplier: **0.3x** (Downgrade to Low/NIT) |
+| `DEAD_CODE` | Code is unreachable from public or private interfaces. | **Descartado / Not reported in SARIF** |

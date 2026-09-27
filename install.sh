@@ -53,6 +53,11 @@ PROMPT_FILES=(
   "security/ssrf.md"
   "security/secure_config.md"
   "security/input_validation.md"
+  "security/adversarial_patching.md"
+  "security/exploit_chaining.md"
+  "security/vcs_security_history.md"
+  "security/sec_advisor.md"
+
   "devops/cicd_pipeline.md"
   "devops/iac_docker_k8s.md"
   "devops/resilience_observability.md"

@@ -148,6 +148,41 @@ class TestReportGenerator(unittest.TestCase):
         self.assertIn("src/b.ts:10", tpl)
         self.assertIn("Acceptance Criteria", tpl)
 
+    def test_calibrated_properties_in_sarif_and_reports(self):
+        calibrated_item = {
+            "id": "SEC-CAL-001",
+            "title": "BOLA with Verified Micro-Harness",
+            "description": "Multi-tenant boundary violation.",
+            "severity": "CRITICAL",
+            "file_path": "src/controllers/doc.ts",
+            "start_line": 12,
+            "risk_score": 9.5,
+            "viability": "RELEASE_EXPLOITABLE",
+            "poc_tier": "TIER_1_UNIT",
+        }
+        findings = load_findings_from_dict([calibrated_item])
+        self.assertEqual(len(findings), 1)
+        self.assertEqual(findings[0].risk_score, 9.5)
+        self.assertEqual(findings[0].viability, "RELEASE_EXPLOITABLE")
+        self.assertEqual(findings[0].poc_tier, "TIER_1_UNIT")
+
+        sarif = build_sarif(findings)
+        res_props = sarif["runs"][0]["results"][0]["properties"]
+        self.assertEqual(res_props["risk_score"], 9.5)
+        self.assertEqual(res_props["viability"], "RELEASE_EXPLOITABLE")
+        self.assertEqual(res_props["poc_tier"], "TIER_1_UNIT")
+
+        md_report = generate_markdown_report([calibrated_item])
+        self.assertIn("Mantis Calibrated Score:** `9.5/10.0`", md_report)
+        self.assertIn("Viabilidade em Release:** `RELEASE_EXPLOITABLE`", md_report)
+        self.assertIn("PoC Reproduction Tier:** `TIER_1_UNIT`", md_report)
+
+        issue_tpl = generate_issue_template(calibrated_item)
+        self.assertIn("Calibrated Score:** `9.5/10.0`", issue_tpl)
+        self.assertIn("Viability:** `RELEASE_EXPLOITABLE`", issue_tpl)
+        self.assertIn("PoC Tier:** `TIER_1_UNIT`", issue_tpl)
+
 
 if __name__ == "__main__":
     unittest.main()
+

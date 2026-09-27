@@ -32,7 +32,11 @@ class Finding:
     likelihood: Optional[str] = None
     impact: Optional[str] = None
     remediation: Optional[str] = None
+    risk_score: Optional[float] = None
+    viability: Optional[str] = None
+    poc_tier: Optional[str] = None
     properties: Dict[str, Any] = field(default_factory=dict)
+
 
 
 SEVERITY_TO_SARIF_LEVEL = {
@@ -128,6 +132,14 @@ def build_sarif(
             },
         }
 
+        if f.risk_score is not None:
+            result["properties"]["risk_score"] = f.risk_score
+        if f.viability is not None:
+            result["properties"]["viability"] = f.viability
+        if f.poc_tier is not None:
+            result["properties"]["poc_tier"] = f.poc_tier
+
+
         if f.remediation:
             result["fixes"] = [
                 {
@@ -183,9 +195,13 @@ def load_findings_from_dict(data: List[Dict[str, Any]]) -> List[Finding]:
             likelihood=item.get("likelihood"),
             impact=item.get("impact"),
             remediation=item.get("remediation"),
+            risk_score=float(item["risk_score"]) if item.get("risk_score") is not None else None,
+            viability=item.get("viability"),
+            poc_tier=item.get("poc_tier") or item.get("poc_type"),
             properties=item.get("properties", {}),
         )
         findings.append(finding)
+
     return findings
 
 
