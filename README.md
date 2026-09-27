@@ -57,7 +57,9 @@ seu-projeto/
 │   ├── driven-development/       # Metodologias & Testes
 │   │   ├── bdd_behavior_driven.md     # BDD & Gherkin
 │   │   ├── cdd_contract_driven.md     # Contratos & OpenAPI
+│   │   ├── full_app_validator.md      # Validação Holística 360° (Zero Overkill & Overlap)
 │   │   ├── project_context.md         # Dicionário & Regras IA
+
 │   │   ├── sdd_spec_driven.md         # SDD & Schemas Zod
 │   │   ├── secdd_abuse_cases.md       # Casos de Abuso & SecDD
 │   │   ├── tdd_test_driven.md         # TDD Red-Green-Refactor
@@ -106,7 +108,12 @@ seu-projeto/
 │   │   ├── references/           # Guias modulares (SDD, TDD, BDD, CDD, SecDD, Pirâmide de Testes)
 │   │   ├── scripts/              # test_runner.py (executor universal e detector de stack)
 │   │   └── examples/             # Schemas Zod, fixtures TDD e arquivos .feature Gherkin
+│   ├── full-app-validator/       # Validação Holística 360° (Zero Overkill & Zero Overlap)
+│   │   ├── SKILL.md              # Workflow em 3 fases (Triagem, Fronteiras & Health Card)
+│   │   ├── references/           # Matriz de fronteiras herméticas e triagem em cascata
+│   │   └── scripts/              # health_card.py (gerador determinístico de Health Card)
 │   └── jev-system-one/           # Decisões e Guardrails de Alta Velocidade (<100ms)
+
 │       ├── SKILL.md              # Primitivas Choice, Score, Noul e cascades
 │       ├── references/           # API Reference, Primitivas e Anti-Patterns
 │       └── examples/             # Guardrails LangChain, TS Cascade, CVSS e PII
@@ -128,7 +135,9 @@ Além dos prompts estruturados invocados manualmente via `@`, este repositório 
 | [`skills/appsec-auditor`](skills/appsec-auditor/SKILL.md) | **Auditoria de Segurança AppSec (OWASP ASTF, ASVS L2 & Mantis-Enhanced)** | - Fluxo em 5 fases com **Crítica de Viabilidade de Release** e **Calibração de Risco Anti-Inflação (Score 1-10)**<br/>- `scripts/sarif_builder.py`: Gerador de relatórios SARIF 2.1.0 com metadados de calibração para GitHub Security<br/>- `scripts/report_generator.py`: Gerador de relatórios executivos em Markdown e Issues GitHub<br/>- `references/`: Guias modulares (ASTF, ASVS L2, BOLA, SSRF, Viability Critique, PoC Reproduction Harness)<br/>- `examples/`: Teste de abuso BOLA em pytest e cliente fetch seguro em TypeScript |
 
 | [`skills/driven-development`](skills/driven-development/SKILL.md) | **Engenharia de Software Orientada por Testes (SDD, TDD, BDD, CDD, SecDD)** | - Ciclo em 4 fases: Schemas/Contratos → Critérios/Abuso → Red-Green-Refactor → Pirâmide de Testes<br/>- `scripts/test_runner.py`: Executor universal com detecção automática de stack (Node, Python, Go, Rust)<br/>- `references/`: Guias modulares de SDD, TDD, BDD (Gherkin), CDD (Pact), SecDD (Abuse Cases) e Pirâmide<br/>- `examples/`: Schemas Zod estritos, fixtures de ciclo TDD com AAA e cenários Gherkin |
+| [`skills/full-app-validator`](skills/full-app-validator/SKILL.md) | **Validação Holística 360° (Zero Overkill & Zero Overlap)** | - Avaliação 360° cobrindo Arquitetura, Segurança, Testes e SRE em 3 fases<br/>- `scripts/health_card.py`: Gerador determinístico de Health Card e métricas de maturidade (0-100)<br/>- `references/`: Matriz de 5 fronteiras herméticas e protocolo de triagem em cascata<br/>- Top 3 a 5 ações prioritárias sem sobreposição de escopo |
 | [`skills/jev-system-one`](skills/jev-system-one/SKILL.md) | **Decisões Estruturadas & Guardrails System One (TypeSafe AI)** | - Padrão de Two-Model Cascade (System 1 para decisões <100ms + System 2 para raciocínio)<br/>- Primitivas `Choice`, `Score` e `Noul` com calibração de probabilidade<br/>- `references/`: HTTP API Reference, Primitivas e Jaggedness / Anti-Patterns<br/>- `examples/`: Guardrails LangChain, cascade em TypeScript, scanner híbrido de segredos, auditor de MCP e cálculo de CVSS |
+
 
 ### 💡 Como Usar as Agent Skills no seu Ambiente
 
@@ -236,7 +245,16 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 
 ### 🎯 2. Arquitetura, Contexto & Testes (Driven Developments)
 
+* **Para fazer uma validação completa 360° da aplicação sem overkill e sem sobreposição de escopo:**
+  * **Use:** [`prompts/driven-development/full_app_validator.md`](prompts/driven-development/full_app_validator.md)
+  * **Comando:**
+    ```markdown
+    @[.claude/prompts/driven-development/full_app_validator.md]
+    Faça a validação holística 360° desta aplicação e gere o Health Card executivo.
+    ```
+
 * **Para ensinar o vocabulário do seu negócio à IA e gerar `CLAUDE.md`, `.github/copilot-instructions.md`, `.cursorrules` e `CONTEXT.md`:**
+
   * **Use:** [`prompts/driven-development/project_context.md`](prompts/driven-development/project_context.md)
   * **Comando:**
     ```markdown
@@ -412,6 +430,8 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 | [`bdd_behavior_driven.md`](prompts/driven-development/bdd_behavior_driven.md) | **Behavior-Driven (BDD)** | Documentação viva em linguagem Gherkin (`.feature`), validação de transições ilegais em máquinas de estado e critérios de aceite executáveis. |
 | [`tdd_test_driven.md`](prompts/driven-development/tdd_test_driven.md) | **Test-Driven (TDD)** | Ciclo Red-Green-Refactor, cobertura rigorosa de *Edge Cases*, eliminação de over-mocking e testes determinísticos ultrarrápidos. |
 | [`cdd_contract_driven.md`](prompts/driven-development/cdd_contract_driven.md) | **Contract-Driven (CDD)** | OpenAPI, AsyncAPI, validação com Pact (Consumer-Driven Contracts), prevenção de *Breaking Changes* e schema registry de eventos. |
+| [`full_app_validator.md`](prompts/driven-development/full_app_validator.md) | **Validação Holística 360° (Zero Overkill & Overlap)** | Avaliação integrada de maturidade em 5 fronteiras herméticas (API, Domínio, Banco, Testes e SRE) sem redundâncias analíticas e com Health Card consolidado. |
+
 
 ---
 

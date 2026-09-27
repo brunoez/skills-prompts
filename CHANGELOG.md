@@ -5,6 +5,22 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico (SemVer)](https://semver.org/lang/pt-BR/).
 
+## [2.2.0] - 2026-09-27
+
+### Adicionado (Full App Validator 360° – Zero Overkill & Zero Overlap)
+
+- **Nova Agent Skill `skills/full-app-validator`:**
+  - Avaliação holística da aplicação sem sobreposição (*zero overlap*) e sem desperdício analítico (*zero overkill*).
+  - `SKILL.md`: Frontmatter YAML com acionamento semântico para diagnósticos completos de ponta a ponta em conformidade com o padrão aberto [Agent Skills](https://agentskills.io/specification).
+  - `scripts/health_card.py`: Ferramenta CLI determinística que inspeciona a estrutura física da aplicação e gera o **Health Card 360°** com pontuações por fronteira (Borda, Domínio, Persistência, Qualidade e DevOps).
+  - `references/domain-boundaries-matrix.md`: Matriz de demarcação estrita das 5 fronteiras herméticas, garantindo que nenhum conceito seja auditado duas vezes.
+  - `references/anti-overkill-cascade.md`: Protocolo de triagem progressiva em 3 camadas (System 1 determinístico $\rightarrow$ System 2 focado).
+- **Novo Prompt Orquestrador de Validação Holística:**
+  - [`prompts/driven-development/full_app_validator.md`](prompts/driven-development/full_app_validator.md): Prompt orquestrador mestre para invocação direta via `@` no Claude Code, Cursor, VSCode e Windsurf.
+- **Qualidade, Integridade & Testes:**
+  - Sincronização automática em `install.sh`, `tests/test_integrity.py` e `README.md`.
+  - Novos testes unitários dedicados em `tests/test_full_app_validator.py`.
+
 ## [2.1.0] - 2026-09-27
 
 ### Adicionado & Aprimorado (Integração das Inovações do Google Mantis)
@@ -25,7 +41,8 @@ Evolução metodológica e tática inspirada no projeto [Google Mantis](https://
 
 - **Qualidade, Integridade & Testes:**
   - Atualização do catálogo em `install.sh`, `tests/test_integrity.py` e `README.md`.
-  - Novos testes unitários em `tests/test_appsec_auditor.py` validando os metadados de calibração e viabilidade.
+  - Novos testes unitários em `tests/test_appsec_auditor.py`.
+
 
 ## [2.0.0] - 2026-09-22
 

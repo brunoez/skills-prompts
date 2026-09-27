@@ -40,6 +40,8 @@ PROMPT_FILES=(
   "driven-development/test_suite_generator.md"
   "driven-development/technical_documentation.md"
   "driven-development/project_context.md"
+  "driven-development/full_app_validator.md"
+
   "security/api.md"
   "security/business.md"
   "security/db.md"

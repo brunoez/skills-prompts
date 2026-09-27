@@ -24,7 +24,9 @@ EXPECTED_PROMPTS = [
     "driven-development/test_suite_generator.md",
     "driven-development/technical_documentation.md",
     "driven-development/project_context.md",
+    "driven-development/full_app_validator.md",
     "security/api.md",
+
     "security/business.md",
     "security/db.md",
     "security/frontend.md",
@@ -214,8 +216,9 @@ def test_skills_integrity():
             return False
 
     # Executa testes unitários dos scripts das skills
-    for test_file_name in ["test_appsec_auditor.py", "test_driven_development.py"]:
+    for test_file_name in ["test_appsec_auditor.py", "test_driven_development.py", "test_full_app_validator.py"]:
         test_file = ROOT_DIR / "tests" / test_file_name
+
         if test_file.is_file():
             res = subprocess.run([sys.executable, "-m", "unittest", str(test_file)], capture_output=True, text=True)
             if res.returncode != 0:
