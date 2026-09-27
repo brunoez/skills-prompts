@@ -65,6 +65,7 @@ PROMPT_FILES=(
   "security/exploit_chaining.md"
   "security/vcs_security_history.md"
   "security/sec_advisor.md"
+  "security/appsec_auditor.md"
 
   "devops/cicd_pipeline.md"
   "devops/iac_docker_k8s.md"

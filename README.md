@@ -24,33 +24,34 @@ O objetivo é transformar a velocidade do **Vibe Coding** em software de **níve
 
 ---
 
-## 🌟 Destaque: Validação Completa da Aplicação (Zero Overkill & Zero Overlap)
+## 🌟 Destaques: Validação Holística & Auditoria 360° da Aplicação
 
 > [!TIP]
-> ### 🎯 Precisa validar ou auditar uma aplicação inteira sem relatórios infinitos ou análises redundantes?
-> Conheça o ecossistema **Full App Validator 360°**, disponível tanto como **Agent Skill executável** quanto como **prompt orquestrador**:
+> ### 🎯 Escolha o tipo de avaliação 360° para o momento do seu projeto:
 > 
-> * **Zero Overkill (Sem Desperdício de Tokens ou Falsos Alarmes):** Protocolo de triagem progressiva em 3 camadas ([`anti-overkill-cascade.md`](skills/full-app-validator/references/anti-overkill-cascade.md)) que inicia com inspeção estática determinística (<1s) e só aprofunda onde há anomalias reais detectadas.
-> * **Zero Overlap (Sem Redundância / Fronteiras Herméticas):** Matriz de 5 fronteiras estritas ([`domain-boundaries-matrix.md`](skills/full-app-validator/references/domain-boundaries-matrix.md)) separando Borda/API, Domínio/Core, Persistência/DB, Qualidade/Testes e DevOps/SRE — cada aspecto é auditado em seu escopo exclusivo.
-> * **Health Card 360° Executivo:** Gera notas de maturidade de 0 a 100 para cada fronteira e elenca o **Top 3 a 5 Ações Críticas** com plano acionável de remediação imediata.
+> 1. **🏥 Full App Validator 360° (Saúde Geral, Arquitetura & SRE):**
+>    - **Propósito:** Diagnóstico holístico da aplicação cobrindo as 5 fronteiras herméticas ([`domain-boundaries-matrix.md`](skills/full-app-validator/references/domain-boundaries-matrix.md)) sem redundâncias (*Zero Overlap*) e sem fadiga de tokens (*Zero Overkill* via [`anti-overkill-cascade.md`](skills/full-app-validator/references/anti-overkill-cascade.md)).
+>    - **Entregável:** Health Card 360° com pontuação de maturidade (0-100) e Top 3 a 5 ações de maior impacto.
+>    - **Prompt:** [`prompts/driven-development/full_app_validator.md`](prompts/driven-development/full_app_validator.md) | **Skill:** [`skills/full-app-validator`](skills/full-app-validator/SKILL.md) | **CLI:** `python3 skills/full-app-validator/scripts/health_card.py .`
+>    ```markdown
+>    @[.claude/prompts/driven-development/full_app_validator.md]
+>    Faça a validação holística 360° desta aplicação e apresente o Health Card executivo.
+>    ```
 > 
-> ```bash
-> # Opção 1: CLI Determinístico ultrarrápido (gera Health Card no terminal):
-> python3 skills/full-app-validator/scripts/health_card.py . --format markdown
-> 
-> # Opção 2: Via Prompt Orquestrador no Claude Code, Cursor, Windsurf ou VSCode:
-> @[.claude/prompts/driven-development/full_app_validator.md]
-> Faça a validação holística 360° desta aplicação e apresente o Health Card executivo.
-> 
-> # Opção 3: Via Agent Skill Autônoma (padrão agentskills.io):
-> "Ative a skill full-app-validator para diagnosticar este repositório de ponta a ponta."
-> ```
+> 2. **🛡️ AppSec Auditor 360° (Segurança em Profundidade & Pentest de Código):**
+>    - **Propósito:** Auditoria minuciosa de vulnerabilidades e superfícies de ataque (**OWASP ASTF**, **ASVS v4.0.3 L2**), eliminando falsos positivos com Crítica de Viabilidade de Release (*Google Mantis Pattern*), cálculo determinístico de risco (*OWASP Risk Rating*) e PoCs de reprodução.
+>    - **Entregável:** Matriz consolidada de vulnerabilidades, patches defensivos (*drop-in*) e relatórios **SARIF 2.1.0** para GitHub Code Scanning / GitLab SAST.
+>    - **Prompt:** [`prompts/security/appsec_auditor.md`](prompts/security/appsec_auditor.md) | **Skill:** [`skills/appsec-auditor`](skills/appsec-auditor/SKILL.md) | **Scripts:** `sarif_builder.py` e `report_generator.py`
+>    ```markdown
+>    @[.claude/prompts/security/appsec_auditor.md]
+>    Execute a auditoria de segurança em profundidade nesta aplicação e gere a matriz calibrada com SARIF.
+>    ```
 
 ---
 
 ## ⚡ Instalação Rápida
 
-Instale a suíte completa de prompts (40 arquivos) e Agent Skills (4 skills) no seu projeto com um único comando:
+Instale a suíte completa de prompts (41 arquivos) e Agent Skills (4 skills) no seu projeto com um único comando:
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash
@@ -100,6 +101,7 @@ seu-projeto/
 │   │   ├── adversarial_patching.md    # Protocolo Red/Blue com Re-Attack Loop (Mantis Pattern)
 │   │   ├── ai_appsec.md               # OWASP LLM Top 10
 │   │   ├── api.md                     # OWASP API Top 10 (ASTF)
+│   │   ├── appsec_auditor.md          # Auditoria de Segurança 360° em Profundidade (OWASP ASTF/ASVS L2)
 │   │   ├── authn_identity.md          # Proactive C7 – Autenticação, Sessão, MFA & OIDC
 │   │   ├── business.md                # Fraudes & Idempotência
 │   │   ├── db.md                      # OWASP DB & Concorrência
@@ -210,6 +212,14 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 <details>
 <summary><b>Clique para expandir os comandos e prompts de Segurança & AppSec</b></summary>
 <br/>
+
+* **Para conduzir uma Auditoria de Segurança 360° em profundidade (OWASP ASTF, ASVS L2, Mantis Viability & SARIF):**
+  * **Use:** [`prompts/security/appsec_auditor.md`](prompts/security/appsec_auditor.md)
+  * **Comando:**
+    ```markdown
+    @[.claude/prompts/security/appsec_auditor.md]
+    Execute a auditoria de segurança em profundidade nesta aplicação e gere a matriz calibrada com SARIF.
+    ```
 
 * **Para auditar a segurança de APIs (OWASP API Top 10 2023, ASTF, GraphQL e gRPC):**
   * **Use:** [`prompts/security/api.md`](prompts/security/api.md)
@@ -496,7 +506,7 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 ## 📚 Catálogo Completo de Prompts
 
 <details>
-<summary><b>Clique para expandir as tabelas de referência técnica de todos os 40 prompts</b></summary>
+<summary><b>Clique para expandir as tabelas de referência técnica de todos os 41 prompts</b></summary>
 <br/>
 
 ### 🎯 1. Driven Developments, Contexto & Testes (Guardrails contra Alucinação)
@@ -522,6 +532,7 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 
 | Prompt | Especialidade | Descrição & Escopo |
 | :--- | :--- | :--- |
+| [`appsec_auditor.md`](prompts/security/appsec_auditor.md) | **Auditoria AppSec 360° (OWASP ASTF/ASVS L2)** | Auditoria profunda em 5 fases (Superfície, Código, Viabilidade Mantis, Risco Calibrado 1-10 e PoCs) com eliminação de falsos positivos e SARIF. |
 | [`threat_modeling.md`](prompts/security/threat_modeling.md) | **Modelagem de Ameaças (STRIDE/PASTA)** | Mapeamento formal de fronteiras de confiança (*Trust Boundaries*), decomposição STRIDE-per-Element e matriz de contramedidas arquiteturais. |
 | [`supply_chain.md`](prompts/security/supply_chain.md) | **Supply Chain & SCA (OWASP SCVS)** | Prevenção contra **alucinação de pacotes (*Slopsquatting*)**, geração de SBOM (CycloneDX/SPDX), scripts de `postinstall` maliciosos e CVEs. |
 | [`api.md`](prompts/security/api.md) | **OWASP API Top 10 (ASTF Suite)** | 16 módulos de teste ASTF, autorização cruzada multi-tenant, GraphQL, gRPC, AI APIs, SSRF, BOLA, BOPLA e exportação SARIF. |

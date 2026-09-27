@@ -5,6 +5,23 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico (SemVer)](https://semver.org/lang/pt-BR/).
 
+## [2.4.0] - 2026-09-27
+
+### Adicionado (Novo Prompt Orquestrador Mestre: AppSec Auditor 360°)
+
+- **Novo Prompt Oficial [`prompts/security/appsec_auditor.md`](prompts/security/appsec_auditor.md):**
+  - Orquestrador de pentest e auditoria de segurança em profundidade de ponta a ponta, espelhando integralmente as 5 fases da Agent Skill `appsec-auditor` (Descoberta de Superfície, Inspeção de Código, Crítica de Viabilidade Mantis, Risco Calibrado 1-10 e PoCs com SARIF).
+  - Permite invocar a auditoria completa de segurança via `@` no Claude Code, Cursor, VSCode e Windsurf (`@[.claude/prompts/security/appsec_auditor.md]`).
+  - Alinhamento rigoroso com **OWASP ASTF 2023**, **OWASP ASVS v4.0.3 Nível 2** e **OWASP Risk Rating Methodology**.
+  - Detecção de Shadow/Zombie APIs (ASVS V13.2.2), BOLA/IDOR (API1:2023), SSRF (API7:2023), Mass Assignment (API3:2023) e Injeções.
+  - Eliminação de falsos positivos teóricos via *Mantis Viability Critique* (Reachability, Release Build Viability e Upstream Neutralization).
+- **Documentação & Destaques (`README.md`):**
+  - Seção de Destaques principais atualizada para apresentar as duas ferramentas 360° em conjunto: **Full App Validator 360°** (saúde geral, arquitetura e SRE) e **AppSec Auditor 360°** (segurança em profundidade, pentest e SARIF).
+  - Guia de Ação Rápida e Catálogo Geral de Prompts atualizados para 41 prompts.
+- **Automação & Qualidade (`install.sh` & `tests/test_integrity.py`):**
+  - Catálogo expandido para 41 prompts no `install.sh` e `tests/test_integrity.py`.
+  - 100% dos testes de integridade e regressão passando.
+
 ## [2.3.1] - 2026-09-27
 
 ### Aprimorado (Instalação Unificada de Prompts & Agent Skills no `install.sh`)
