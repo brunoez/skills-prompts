@@ -203,6 +203,10 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 
 ### 🛡️ 1. Segurança & AppSec
 
+<details>
+<summary><b>Clique para expandir os comandos e prompts de Segurança & AppSec</b></summary>
+<br/>
+
 * **Para auditar a segurança de APIs (OWASP API Top 10 2023, ASTF, GraphQL e gRPC):**
   * **Use:** [`prompts/security/api.md`](prompts/security/api.md)
   * **Comando:**
@@ -267,9 +271,15 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
     Audite as integrações de IA contra Prompt Injection e Insecure Output.
     ```
 
+</details>
+
 ---
 
 ### 🎯 2. Arquitetura, Contexto & Testes (Driven Developments)
+
+<details>
+<summary><b>Clique para expandir os comandos e prompts de Driven Developments & Testes</b></summary>
+<br/>
 
 * **Para fazer uma validação completa 360° da aplicação sem overkill e sem sobreposição de escopo:**
   * **Use:** [`prompts/driven-development/full_app_validator.md`](prompts/driven-development/full_app_validator.md)
@@ -280,7 +290,6 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
     ```
 
 * **Para ensinar o vocabulário do seu negócio à IA e gerar `CLAUDE.md`, `.github/copilot-instructions.md`, `.cursorrules` e `CONTEXT.md`:**
-
   * **Use:** [`prompts/driven-development/project_context.md`](prompts/driven-development/project_context.md)
   * **Comando:**
     ```markdown
@@ -344,9 +353,15 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
     Valide as rotas com a spec OpenAPI e configure testes de contrato Pact.
     ```
 
+</details>
+
 ---
 
 ### ⚙️ 3. DevOps, Infraestrutura & Resiliência
+
+<details>
+<summary><b>Clique para expandir os comandos e prompts de DevOps, Infraestrutura & SRE</b></summary>
+<br/>
 
 * **Para auditar e proteger a esteira de CI/CD (GitHub Actions / GitLab CI):**
   * **Use:** [`prompts/devops/cicd_pipeline.md`](prompts/devops/cicd_pipeline.md)
@@ -372,9 +387,15 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
     Audite os workers de fila, configure retry com DLQ e graceful shutdown.
     ```
 
+</details>
+
 ---
 
 ### ⚡ 4. Jev & System One (TypeSafe AI) – Decisões Estruturadas & Anti-Overkill
+
+<details>
+<summary><b>Clique para expandir os comandos e prompts de Jev System One</b></summary>
+<br/>
 
 * **Para eliminar overkill de LLMs e refatorar fluxos para arquitetura em cascata (System 1 + System 2):**
   * **Use:** [`prompts/jev/system_one_architecture.md`](prompts/jev/system_one_architecture.md)
@@ -439,6 +460,8 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
     @[.claude/prompts/jev/vulnerability_triage_cvss.md]
     Construa uma esteira de triagem de segurança extraindo métricas qualitativas com Jev e calculando a pontuação CVSS determinística em código.
     ```
+
+</details>
 
 ---
 
