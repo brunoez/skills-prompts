@@ -75,6 +75,10 @@ curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.
 
 ### 📁 Estrutura de Diretórios Gerada no Projeto
 
+<details>
+<summary><b>Clique para expandir a árvore completa de diretórios e arquivos gerados (70+ itens)</b></summary>
+<br/>
+
 ```plaintext
 seu-projeto/
 ├── .claude/prompts/              # Prompts oficiais para Claude Code (ou .agent/prompts/)
@@ -83,7 +87,6 @@ seu-projeto/
 │   │   ├── cdd_contract_driven.md     # Contratos & OpenAPI
 │   │   ├── full_app_validator.md      # Validação Holística 360° (Zero Overkill & Overlap)
 │   │   ├── project_context.md         # Dicionário & Regras IA
-
 │   │   ├── sdd_spec_driven.md         # SDD & Schemas Zod
 │   │   ├── secdd_abuse_cases.md       # Casos de Abuso & SecDD
 │   │   ├── tdd_test_driven.md         # TDD Red-Green-Refactor
@@ -107,7 +110,6 @@ seu-projeto/
 │   │   ├── supply_chain.md            # SCVS, SBOM & Anti-Slopsquatting
 │   │   ├── threat_modeling.md         # Modelagem STRIDE-per-Element
 │   │   └── vcs_security_history.md    # Mineração de Segurança no Git (VCS History)
-
 │   ├── devops/                   # Infraestrutura & SRE
 │   │   ├── cicd_pipeline.md           # Hardening de CI/CD & OIDC
 │   │   ├── iac_docker_k8s.md          # Docker Rootless & K8s
@@ -137,7 +139,6 @@ seu-projeto/
 │   │   ├── references/           # Matriz de fronteiras herméticas e triagem em cascata
 │   │   └── scripts/              # health_card.py (gerador determinístico de Health Card)
 │   └── jev-system-one/           # Decisões e Guardrails de Alta Velocidade (<100ms)
-
 │       ├── SKILL.md              # Primitivas Choice, Score, Noul e cascades
 │       ├── references/           # API Reference, Primitivas e Anti-Patterns
 │       └── examples/             # Guardrails LangChain, TS Cascade, CVSS e PII
@@ -147,6 +148,8 @@ seu-projeto/
 ├── CONTEXT.md                    # Dicionário do negócio
 └── CLAUDE.md / .github/copilot-instructions.md / .cursorrules # Regras de IA do projeto
 ```
+
+</details>
 
 ---
 
@@ -441,6 +444,10 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 
 ## 📚 Catálogo Completo de Prompts
 
+<details>
+<summary><b>Clique para expandir as tabelas de referência técnica de todos os 37 prompts</b></summary>
+<br/>
+
 ### 🎯 1. Driven Developments, Contexto & Testes (Guardrails contra Alucinação)
 
 | Prompt | Especialidade | Descrição & Escopo |
@@ -454,7 +461,6 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 | [`tdd_test_driven.md`](prompts/driven-development/tdd_test_driven.md) | **Test-Driven (TDD)** | Ciclo Red-Green-Refactor, cobertura rigorosa de *Edge Cases*, eliminação de over-mocking e testes determinísticos ultrarrápidos. |
 | [`cdd_contract_driven.md`](prompts/driven-development/cdd_contract_driven.md) | **Contract-Driven (CDD)** | OpenAPI, AsyncAPI, validação com Pact (Consumer-Driven Contracts), prevenção de *Breaking Changes* e schema registry de eventos. |
 | [`full_app_validator.md`](prompts/driven-development/full_app_validator.md) | **Validação Holística 360° (Zero Overkill & Overlap)** | Avaliação integrada de maturidade em 5 fronteiras herméticas (API, Domínio, Banco, Testes e SRE) sem redundâncias analíticas e com Health Card consolidado. |
-
 
 ---
 
@@ -479,7 +485,6 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 | [`exploit_chaining.md`](prompts/security/exploit_chaining.md) | **Exploit Chaining & Kill Chains** | Composição de múltiplos achados baixos/médios em cadeias de ataque multi-stage (Super Findings), diagramas de sequência e choke points defensivos. |
 | [`vcs_security_history.md`](prompts/security/vcs_security_history.md) | **Mineração de Histórico Git (VCS Mining)** | Rastreamento de patches anteriores, detecção de regressões acidentais em merges/refatorações e mapeamento de invariantes históricos de segurança. |
 | [`sec_advisor.md`](prompts/security/sec_advisor.md) | **Developer Security Advisor (Shift-Left)** | Pair programming de segurança em tempo real durante a escrita de código, consultando modelos de ameaça, invariantes e propondo alternativas defensivas idiomáticas. |
-
 
 ---
 
@@ -506,9 +511,15 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 | [`pii_sanitization_guardrail.md`](prompts/jev/pii_sanitization_guardrail.md) | **Sanitização & Mascaramento de PII (ASVS V8)** | Portão multicategórico de 13 PIIs, score de sensibilidade IBM, desambiguação de dígitos e mascaramento determinístico. |
 | [`vulnerability_triage_cvss.md`](prompts/jev/vulnerability_triage_cvss.md) | **Triagem de Falhas & Cálculo CVSS (ASVS V1.14)** | Elicitação paralela de métricas Base com Jev Choice, Top-2 Probability Spread ($\Delta P$) e cálculo oficial FIRST. |
 
+</details>
+
 ---
 
 ## 🧭 Cobertura vs OWASP Top 10 Proactive Controls (2024)
+
+<details>
+<summary><b>Clique para expandir a matriz de cobertura dos Controles Proativos da OWASP</b></summary>
+<br/>
 
 Mapa de qual prompt exerce cada [Proactive Control](https://top10proactive.owasp.org/) e quais [Cheat Sheets](https://cheatsheetseries.owasp.org/) ele aplica.
 
@@ -524,6 +535,8 @@ Mapa de qual prompt exerce cada [Proactive Control](https://top10proactive.owasp
 | **C8** – Leverage Browser Security Features | [`frontend.md`](prompts/security/frontend.md) | XSS Prevention, DOM XSS, Content Security Policy, Clickjacking Defense |
 | **C9** – Security Logging & Monitoring | [`resilience_observability.md`](prompts/devops/resilience_observability.md), `business.md` | Logging, Application Logging Vocabulary |
 | **C10** – Stop Server-Side Request Forgery | [`ssrf.md`](prompts/security/ssrf.md), `api.md` | SSRF Prevention, XXE Prevention |
+
+</details>
 
 ---
 
