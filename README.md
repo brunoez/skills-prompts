@@ -10,7 +10,7 @@
 
 **A biblioteca definitiva de prompts estruturados e Agent Skills executáveis de auditoria profunda, arquitetura defensiva e metodologias *Driven Development* para desenvolvedores, arquitetos e agentes de Inteligência Artificial.**
 
-[Instalação Rápida](#-instalação-rápida) • [Agent Skills](#-agent-skills-antigravity-claude-code-cursor--windsurf) • [Uso em CI/CD Privado](#-como-executar-os-prompts-em-cicd-no-seu-projeto-privado) • [Qual Prompt Usar?](#-qual-prompt-usar-guia-de-ação-rápida-com-exemplos) • [Catálogo Completo](#-catálogo-completo-de-prompts) • [Contribuição](CONTRIBUTING.md)
+[Instalação Rápida](#-instalação-rápida) • [Validação 360° (Destaque)](#-destaque-validação-completa-da-aplicação-zero-overkill--zero-overlap) • [Agent Skills](#-agent-skills-antigravity-claude-code-cursor--windsurf) • [Uso em CI/CD Privado](#-como-executar-os-prompts-em-cicd-no-seu-projeto-privado) • [Qual Prompt Usar?](#-qual-prompt-usar-guia-de-ação-rápida-com-exemplos) • [Catálogo Completo](#-catálogo-completo-de-prompts) • [Contribuição](CONTRIBUTING.md)
 
 </div>
 
@@ -21,6 +21,30 @@
 Criado com foco na comunidade brasileira de desenvolvimento e AppSec, este repositório aberto reúne **prompts técnicos e Agent Skills de alto nível** projetados para serem executados por Engenheiros Principais ou Agentes de IA (**Claude Code**, **Google Antigravity**, **VSCode** / GitHub Copilot, **Cursor** e outros editores como Windsurf).
 
 O objetivo é transformar a velocidade do **Vibe Coding** em software de **nível corporativo**: seguro contra vulnerabilidades (**OWASP ASTF 2023**, **WSTG v4.2**, **OWASP Top 10 Proactive Controls 2024**, **OWASP ASVS v4.0.3**, **OWASP Risk Rating Methodology** e **OWASP Cheat Sheet Series**), arquiteturalmente consistente (DDD/SDD), resiliente em produção (SRE) e 100% testado (TDD, BDD, SecDD).
+
+---
+
+## 🌟 Destaque: Validação Completa da Aplicação (Zero Overkill & Zero Overlap)
+
+> [!TIP]
+> ### 🎯 Precisa validar ou auditar uma aplicação inteira sem relatórios infinitos ou análises redundantes?
+> Conheça o ecossistema **Full App Validator 360°**, disponível tanto como **Agent Skill executável** quanto como **prompt orquestrador**:
+> 
+> * **Zero Overkill (Sem Desperdício de Tokens ou Falsos Alarmes):** Protocolo de triagem progressiva em 3 camadas ([`anti-overkill-cascade.md`](skills/full-app-validator/references/anti-overkill-cascade.md)) que inicia com inspeção estática determinística (<1s) e só aprofunda onde há anomalias reais detectadas.
+> * **Zero Overlap (Sem Redundância / Fronteiras Herméticas):** Matriz de 5 fronteiras estritas ([`domain-boundaries-matrix.md`](skills/full-app-validator/references/domain-boundaries-matrix.md)) separando Borda/API, Domínio/Core, Persistência/DB, Qualidade/Testes e DevOps/SRE — cada aspecto é auditado em seu escopo exclusivo.
+> * **Health Card 360° Executivo:** Gera notas de maturidade de 0 a 100 para cada fronteira e elenca o **Top 3 a 5 Ações Críticas** com plano acionável de remediação imediata.
+> 
+> ```bash
+> # Opção 1: CLI Determinístico ultrarrápido (gera Health Card no terminal):
+> python3 skills/full-app-validator/scripts/health_card.py . --format markdown
+> 
+> # Opção 2: Via Prompt Orquestrador no Claude Code, Cursor, Windsurf ou VSCode:
+> @[.claude/prompts/driven-development/full_app_validator.md]
+> Faça a validação holística 360° desta aplicação e apresente o Health Card executivo.
+> 
+> # Opção 3: Via Agent Skill Autônoma (padrão agentskills.io):
+> "Ative a skill full-app-validator para diagnosticar este repositório de ponta a ponta."
+> ```
 
 ---
 
