@@ -5,6 +5,25 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico (SemVer)](https://semver.org/lang/pt-BR/).
 
+## [2.3.1] - 2026-09-27
+
+### Aprimorado (Instalação Unificada de Prompts & Agent Skills no `install.sh`)
+
+- **Instalação Automatizada Completa de Agent Skills:**
+  - O script de instalação `install.sh` agora instala tanto os **40 prompts** quanto as **4 Agent Skills** (`appsec-auditor`, `driven-development`, `full-app-validator` e `jev-system-one`) em um único comando unificado.
+  - Mapeamento nativo por IDE / ferramenta:
+    - **Claude Code:** `.claude/prompts/` e `.claude/skills/`
+    - **VSCode / Copilot:** `.agent/prompts/` e `.agent/skills/`
+    - **Cursor:** `.cursor/rules/`, `.cursor/skills/` e `.agent/skills/`
+    - **Windsurf:** `.windsurf/rules/`, `.windsurf/skills/` e `.agent/skills/`
+    - **Universal (`all`):** instala em todas as pastas correspondentes.
+  - Suporte ao argumento seletivo opcional de componente (`all`, `prompts` ou `skills`): `bash install.sh <target> <ide> <component>`.
+  - Download rápido e atômico via tarball (`main.tar.gz`) com fallback resiliente para clone raso (`git clone --depth 1`) e limpeza automática via `trap`.
+  - Preservação 100% não-destrutiva de diretórios pré-existentes e exclusão preventiva de artefatos de compilação Python (`__pycache__` e `*.pyc`).
+- **Testes & Qualidade (`tests/test_integrity.py`):**
+  - Adicionado `EXPECTED_SKILLS` e validação funcional de instalação em `test_installer_execution`.
+  - `test_install_script_sync` atualizado para verificar a sincronia estrita de prompts e skills no `install.sh`.
+
 ## [2.3.0] - 2026-09-27
 
 ### Adicionado & Aprimorado (Expansão da Suíte Driven Design: DDD, TypeDD & DataDD)

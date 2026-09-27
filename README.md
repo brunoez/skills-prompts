@@ -50,21 +50,21 @@ O objetivo é transformar a velocidade do **Vibe Coding** em software de **níve
 
 ## ⚡ Instalação Rápida
 
-Instale a suíte de prompts no seu projeto com um único comando:
+Instale a suíte completa de prompts (40 arquivos) e Agent Skills (4 skills) no seu projeto com um único comando:
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash
 ```
 
-> **Dica de Ferramenta & IDE:** Por padrão, os prompts são instalados no diretório oficial do **Claude Code** (`.claude/prompts/`). Se você usa **VSCode**, **Cursor** ou outros editores:
+> **Dica de Ferramenta & IDE:** Por padrão, os prompts e as skills são instalados no diretório oficial do **Claude Code** (`.claude/prompts/` e `.claude/skills/`). Se você usa **VSCode**, **Cursor** ou outros editores:
 > ```bash
-> # Para Claude Code (padrão oficial em .claude/prompts/):
+> # Para Claude Code (padrão oficial em .claude/prompts/ e .claude/skills/):
 > curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash
 > 
-> # Para VSCode (.agent/prompts/):
+> # Para VSCode (.agent/prompts/ e .agent/skills/):
 > curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- . vscode
 > 
-> # Para Cursor (.cursor/rules/):
+> # Para Cursor (.cursor/rules/, .cursor/skills/ e .agent/skills/):
 > curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- . cursor
 > 
 > # Para todas as ferramentas simultaneamente (.claude, .agent, .cursor, .windsurf):
@@ -173,8 +173,9 @@ Além dos prompts estruturados invocados manualmente via `@`, este repositório 
 As skills seguem o padrão aberto da indústria ([agentskills.io](https://agentskills.io/specification)) e funcionam de forma autônoma ou guiada:
 
 * **Ativação Autônoma (Semântica):** O agente inspeciona o frontmatter YAML das skills e carrega o workflow automaticamente quando seu pedido corresponder aos gatilhos (ex: *"audite as APIs contra IDOR"* ou *"vamos criar essa funcionalidade aplicando TDD"*).
-* **No Claude Code:** Copie a pasta da skill desejada para `.claude/skills/` (no repositório) ou `~/.claude/skills/` (global para todos os projetos).
-* **No Antigravity / VSCode / Cursor:** Copie para `.agent/skills/` ou `~/.gemini/antigravity-cli/skills/`.
+* **Instalação Automática (Recomendado):** O script `install.sh` instala automaticamente todas as Agent Skills e prompts no local oficial da sua IDE (`.claude/skills/`, `.agent/skills/` ou `.cursor/skills/`).
+* **No Claude Code:** As skills instaladas em `.claude/skills/` são carregadas nativamente pelo Claude Code em cada sessão (ou globalmente em `~/.claude/skills/`).
+* **No Antigravity / VSCode / Cursor:** Integradas automaticamente em `.agent/skills/` e `.cursor/skills/` (ou globalmente em `~/.gemini/antigravity-cli/skills/`).
 * **Invocação Direta no Chat:**
   ```markdown
   Use a skill @[skills/appsec-auditor] para auditar este repositório e gerar os artefatos SARIF e Markdown.

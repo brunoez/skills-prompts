@@ -80,6 +80,13 @@ SECURITY_PROMPTS = [
     "driven-development/secdd_abuse_cases.md",
 ]
 
+EXPECTED_SKILLS = [
+    "appsec-auditor",
+    "driven-development",
+    "full-app-validator",
+    "jev-system-one",
+]
+
 
 REQUIRED_SECTIONS = [
     "## OBJETIVO",
@@ -141,7 +148,17 @@ def test_install_script_sync():
     if missing_in_installer:
         print(f"❌ ERRO: install.sh não inclui os prompts: {missing_in_installer}")
         return False
-    print("✅ install.sh está 100% sincronizado com o catálogo de prompts.")
+
+    missing_skills_in_installer = []
+    for skill in EXPECTED_SKILLS:
+        if f'"{skill}"' not in content:
+            missing_skills_in_installer.append(skill)
+
+    if missing_skills_in_installer:
+        print(f"❌ ERRO: install.sh não inclui as skills: {missing_skills_in_installer}")
+        return False
+
+    print("✅ install.sh está 100% sincronizado com os catálogos de prompts e skills.")
     return True
 
 
@@ -176,7 +193,15 @@ def test_installer_execution():
                 if not (target_path / prompt).is_file():
                     print(f"❌ ERRO: Arquivo {prompt} não foi instalado em {folder}")
                     return False
-    print("✅ install.sh executado e testado com sucesso em todos os modos.")
+
+        for folder in [".claude/skills", ".agent/skills", ".cursor/skills", ".windsurf/skills"]:
+            target_path = Path(tmpdir) / folder
+            for skill in EXPECTED_SKILLS:
+                skill_md = target_path / skill / "SKILL.md"
+                if not skill_md.is_file():
+                    print(f"❌ ERRO: Skill {skill}/SKILL.md não foi instalada em {folder}")
+                    return False
+    print("✅ install.sh executado e testado com sucesso em todos os modos (prompts + skills).")
     return True
 
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# Script de Instalação Automática da Suíte de Prompts de AppSec & Engenharia
+# Script de Instalação Automática da Suíte de Prompts & Agent Skills
 # Repositório: https://github.com/brunoez/skills-prompts
 # ==============================================================================
 
@@ -8,6 +8,7 @@ set -e
 
 REPO_URL="https://github.com/brunoez/skills-prompts.git"
 RAW_BASE="https://raw.githubusercontent.com/brunoez/skills-prompts/main"
+ARCHIVE_URL="https://github.com/brunoez/skills-prompts/archive/refs/heads/main.tar.gz"
 
 # Cores para saída no terminal
 C_RESET='\033[0m'
@@ -20,17 +21,19 @@ C_RED='\033[31m'
 
 echo -e "${C_CYAN}${C_BOLD}"
 echo "================================================================="
-echo "  🛡️  Instalador da Suíte de Prompts AppSec & Yellow Team"
+echo "  🛡️  Instalador da Suíte de Prompts & Agent Skills"
 echo "  📦 Repositório: https://github.com/brunoez/skills-prompts"
 echo "================================================================="
 echo -e "${C_RESET}"
 
 TARGET_DIR="${1:-.}"
-INSTALL_MODE="${2:-claude}" # opcoes: claude (padrao), vscode, cursor, all, submodule (ou windsurf)
+INSTALL_MODE="${2:-claude}" # opcoes: claude (padrao), vscode, cursor, windsurf, all, submodule
+COMPONENT="${3:-all}"       # opcoes: all (padrao: prompts + skills), prompts, skills
 
 echo -e "${C_BLUE}ℹ️  Diretório alvo: ${C_BOLD}${TARGET_DIR}${C_RESET}"
+echo -e "${C_BLUE}ℹ️  Modo de instalação: ${C_BOLD}${INSTALL_MODE}${C_RESET} (Componentes: ${COMPONENT})"
 
-# Lista de categorias e arquivos
+# Lista de categorias e arquivos de prompts
 PROMPT_FILES=(
   "driven-development/sdd_spec_driven.md"
   "driven-development/secdd_abuse_cases.md"
@@ -76,6 +79,59 @@ PROMPT_FILES=(
   "jev/vulnerability_triage_cvss.md"
 )
 
+# Lista de Agent Skills
+SKILL_NAMES=(
+  "appsec-auditor"
+  "driven-development"
+  "full-app-validator"
+  "jev-system-one"
+)
+
+# Identifica se está rodando localmente ou precisa baixar
+SCRIPT_DIR=""
+if [ -n "${BASH_SOURCE[0]}" ] && [ -f "${BASH_SOURCE[0]}" ]; then
+  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+fi
+
+LOCAL_PROMPTS_DIR=""
+LOCAL_SKILLS_DIR=""
+
+if [ -n "$SCRIPT_DIR" ] && [ -d "${SCRIPT_DIR}/prompts" ] && [ -d "${SCRIPT_DIR}/skills" ]; then
+  LOCAL_PROMPTS_DIR="${SCRIPT_DIR}/prompts"
+  LOCAL_SKILLS_DIR="${SCRIPT_DIR}/skills"
+elif [ -n "$SCRIPT_DIR" ] && [ -d "${SCRIPT_DIR}/../prompts" ] && [ -d "${SCRIPT_DIR}/../skills" ]; then
+  LOCAL_PROMPTS_DIR="${SCRIPT_DIR}/../prompts"
+  LOCAL_SKILLS_DIR="${SCRIPT_DIR}/../skills"
+fi
+
+TMP_DOWNLOAD_DIR=""
+cleanup() {
+  if [ -n "$TMP_DOWNLOAD_DIR" ] && [ -d "$TMP_DOWNLOAD_DIR" ]; then
+    rm -rf "$TMP_DOWNLOAD_DIR"
+  fi
+}
+trap cleanup EXIT INT TERM
+
+# Se não estiver em clone local, faz download sob demanda
+prepare_sources() {
+  if [ -z "$LOCAL_PROMPTS_DIR" ] || [ -z "$LOCAL_SKILLS_DIR" ]; then
+    echo -e "${C_YELLOW}📥 Baixando pacote do repositório (prompts + skills)...${C_RESET}"
+    TMP_DOWNLOAD_DIR=$(mktemp -d)
+    if curl -sSL "$ARCHIVE_URL" | tar -xz -C "$TMP_DOWNLOAD_DIR" --strip-components=1 2>/dev/null; then
+      LOCAL_PROMPTS_DIR="${TMP_DOWNLOAD_DIR}/prompts"
+      LOCAL_SKILLS_DIR="${TMP_DOWNLOAD_DIR}/skills"
+    else
+      echo -e "${C_YELLOW}⚠️  Falha ao baixar tarball. Clonando repositório...${C_RESET}"
+      git clone --depth 1 "$REPO_URL" "$TMP_DOWNLOAD_DIR" 2>/dev/null || {
+        echo -e "${C_RED}❌ Erro ao baixar arquivos do GitHub. Verifique sua conexão.${C_RESET}"
+        exit 1
+      }
+      LOCAL_PROMPTS_DIR="${TMP_DOWNLOAD_DIR}/prompts"
+      LOCAL_SKILLS_DIR="${TMP_DOWNLOAD_DIR}/skills"
+    fi
+  fi
+}
+
 install_submodule() {
   echo -e "${C_YELLOW}📦 Instalando como Git Submodule em ${TARGET_DIR}/.agent/prompts...${C_RESET}"
   cd "$TARGET_DIR"
@@ -88,32 +144,67 @@ install_submodule() {
   fi
 }
 
-install_files() {
+install_prompts() {
   local DEST_BASE="$1"
-  echo -e "${C_YELLOW}📥 Baixando/Copiando prompts para ${DEST_BASE}...${C_RESET}"
+  prepare_sources
+  echo -e "${C_YELLOW}📥 Instalando prompts em ${DEST_BASE}...${C_RESET}"
   
   mkdir -p "${DEST_BASE}/driven-development" "${DEST_BASE}/security" "${DEST_BASE}/devops" "${DEST_BASE}/jev"
   
-  # Se o script estiver rodando dentro do próprio clone local dos prompts:
-  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  LOCAL_PROMPTS_DIR=""
-  if [ -d "${SCRIPT_DIR}/prompts" ]; then
-    LOCAL_PROMPTS_DIR="${SCRIPT_DIR}/prompts"
-  elif [ -d "${SCRIPT_DIR}/../prompts" ]; then
-    LOCAL_PROMPTS_DIR="${SCRIPT_DIR}/../prompts"
-  fi
-
   for file in "${PROMPT_FILES[@]}"; do
     dest_path="${DEST_BASE}/${file}"
     if [ -n "$LOCAL_PROMPTS_DIR" ] && [ -f "${LOCAL_PROMPTS_DIR}/${file}" ]; then
       cp "${LOCAL_PROMPTS_DIR}/${file}" "$dest_path"
     else
-      # Baixa diretamente do GitHub
       curl -sSL "${RAW_BASE}/prompts/${file}" -o "$dest_path"
     fi
   done
   
-  echo -e "${C_GREEN}✅ Prompts instalados em: ${DEST_BASE}${C_RESET}"
+  echo -e "${C_GREEN}✅ Prompts instalados em: ${DEST_BASE} (${#PROMPT_FILES[@]} prompts)${C_RESET}"
+}
+
+install_skills() {
+  local DEST_BASE="$1"
+  prepare_sources
+  echo -e "${C_YELLOW}📥 Instalando Agent Skills em ${DEST_BASE}...${C_RESET}"
+  
+  mkdir -p "${DEST_BASE}"
+  local count=0
+  for skill in "${SKILL_NAMES[@]}"; do
+    local src_skill="${LOCAL_SKILLS_DIR}/${skill}"
+    if [ -d "$src_skill" ]; then
+      mkdir -p "${DEST_BASE}/${skill}"
+      cp -R "${src_skill}/." "${DEST_BASE}/${skill}/"
+      find "${DEST_BASE}/${skill}" -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+      find "${DEST_BASE}/${skill}" -type f -name "*.pyc" -delete 2>/dev/null || true
+      count=$((count + 1))
+    fi
+  done
+  
+  echo -e "${C_GREEN}✅ Agent Skills instaladas em: ${DEST_BASE} (${count} skills)${C_RESET}"
+}
+
+# Aliases de compatibilidade
+install_files() {
+  install_prompts "$1"
+}
+
+# Dispatcher principal de instalação
+do_install() {
+  local prompt_target="$1"
+  local skill_target="$2"
+
+  if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
+    if [ -n "$prompt_target" ]; then
+      install_prompts "$prompt_target"
+    fi
+  fi
+
+  if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
+    if [ -n "$skill_target" ]; then
+      install_skills "$skill_target"
+    fi
+  fi
 }
 
 case "$INSTALL_MODE" in
@@ -121,33 +212,53 @@ case "$INSTALL_MODE" in
     install_submodule
     ;;
   claude|claude-code)
-    install_files "${TARGET_DIR}/.claude/prompts"
+    do_install "${TARGET_DIR}/.claude/prompts" "${TARGET_DIR}/.claude/skills"
     ;;
   vscode)
-    install_files "${TARGET_DIR}/.agent/prompts"
+    do_install "${TARGET_DIR}/.agent/prompts" "${TARGET_DIR}/.agent/skills"
     ;;
   cursor)
-    install_files "${TARGET_DIR}/.cursor/rules"
+    do_install "${TARGET_DIR}/.cursor/rules" "${TARGET_DIR}/.cursor/skills"
+    if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
+      install_skills "${TARGET_DIR}/.agent/skills"
+    fi
     ;;
   windsurf)
-    install_files "${TARGET_DIR}/.windsurf/rules"
+    do_install "${TARGET_DIR}/.windsurf/rules" "${TARGET_DIR}/.windsurf/skills"
+    if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
+      install_skills "${TARGET_DIR}/.agent/skills"
+    fi
     ;;
   all)
-    install_files "${TARGET_DIR}/.claude/prompts"
-    install_files "${TARGET_DIR}/.agent/prompts"
-    install_files "${TARGET_DIR}/.cursor/rules"
-    install_files "${TARGET_DIR}/.windsurf/rules"
+    if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
+      install_prompts "${TARGET_DIR}/.claude/prompts"
+      install_prompts "${TARGET_DIR}/.agent/prompts"
+      install_prompts "${TARGET_DIR}/.cursor/rules"
+      install_prompts "${TARGET_DIR}/.windsurf/rules"
+    fi
+    if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
+      install_skills "${TARGET_DIR}/.claude/skills"
+      install_skills "${TARGET_DIR}/.agent/skills"
+      install_skills "${TARGET_DIR}/.cursor/skills"
+      install_skills "${TARGET_DIR}/.windsurf/skills"
+    fi
     ;;
   agent|*)
-    install_files "${TARGET_DIR}/.agent/prompts"
+    do_install "${TARGET_DIR}/.agent/prompts" "${TARGET_DIR}/.agent/skills"
     ;;
 esac
 
 echo ""
 echo -e "${C_GREEN}${C_BOLD}🎉 Instalação concluída com sucesso!${C_RESET}"
 echo -e "${C_CYAN}👉 Como usar no seu ambiente:${C_RESET}"
-echo -e "   1. No Claude Code: use no terminal ou chat (ex: @[.claude/prompts/security/api.md])"
-echo -e "   2. No VSCode: use no Copilot Chat (ex: @workspace @[.agent/prompts/driven-development/sdd_spec_driven.md])"
-echo -e "   3. No Cursor: use as regras em @[.cursor/rules/...]"
+echo -e "   1. No Claude Code:"
+echo -e "      - Prompts: use no terminal ou chat (ex: @[.claude/prompts/security/api.md])"
+echo -e "      - Skills: carregadas nativamente pelo Claude Code em .claude/skills/"
+echo -e "   2. No VSCode / Copilot Chat:"
+echo -e "      - Prompts: @workspace @[.agent/prompts/driven-development/sdd_spec_driven.md]"
+echo -e "      - Skills: agentes integrados em .agent/skills/"
+echo -e "   3. No Cursor & Windsurf:"
+echo -e "      - Prompts/Regras: @[.cursor/rules/...] ou @[.windsurf/rules/...]"
+echo -e "      - Skills: em .cursor/skills/ e .windsurf/skills/"
 echo -e "   4. Documentação completa em: ${C_BOLD}https://github.com/brunoez/skills-prompts${C_RESET}"
 echo ""
