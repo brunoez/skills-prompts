@@ -41,6 +41,9 @@ PROMPT_FILES=(
   "driven-development/technical_documentation.md"
   "driven-development/project_context.md"
   "driven-development/full_app_validator.md"
+  "driven-development/ddd_domain_driven.md"
+  "driven-development/typedd_type_driven.md"
+  "driven-development/datadd_data_driven.md"
 
   "security/api.md"
   "security/business.md"

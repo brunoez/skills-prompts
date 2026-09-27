@@ -5,6 +5,26 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico (SemVer)](https://semver.org/lang/pt-BR/).
 
+## [2.3.0] - 2026-09-27
+
+### Adicionado & Aprimorado (Expansão da Suíte Driven Design: DDD, TypeDD & DataDD)
+
+Evolução arquitetural inspirada no artigo *"The Definitive Guide to ‘Driven’ Design: 8 Methodologies Every Engineer and Architect Must Master"*, cobrindo 100% das metodologias "Driven" da indústria de software corporativo:
+
+- **Novos Prompts Oficiais (`prompts/driven-development/`):**
+  - [`ddd_domain_driven.md`](prompts/driven-development/ddd_domain_driven.md): Domain-Driven Design completo cobrindo design estratégico (Bounded Contexts, Context Map, ACL) e tático (Aggregates com regra de 1 aggregate por transação, Entities, Value Objects imutáveis e Domain Events).
+  - [`typedd_type_driven.md`](prompts/driven-development/typedd_type_driven.md): Type-Driven Design aplicando as regras de ouro de Yaron Minsky (*"Make illegal states unrepresentable"*) e Alexis King (*"Parse, don't validate"*), tipagem nominal com Branded Types e máquinas de estado por Discriminated Unions com checagem exaustiva (`assertNever`).
+  - [`datadd_data_driven.md`](prompts/driven-development/datadd_data_driven.md): Data-Driven Design modelando esquemas a partir da Matriz de Padrões de Acesso (Access Patterns Matrix Q1/Q2/Q3), regra ESR (Equality, Sort, Range) para índices compostos, covering indexes (`INCLUDE`) e controle de concorrência com Optimistic Locking.
+
+- **Evolução da Agent Skill `skills/driven-development`:**
+  - `SKILL.md` atualizado para orquestrar o ciclo de vida completo em 6 fases (Domínio → Storage → Tipos → Contratos → Aceite/Abuso → TDD).
+  - Novos guias modulares sob demanda em `references/`: `ddd-domain-driven.md`, `typedd-type-driven.md`, `datadd-data-driven.md` e `driven-pipeline-matrix.md` (composição de 3 a 5 metodologias por arquétipo de arquitetura: Fintech, B2B SaaS, Streaming e E-commerce).
+  - Novos exemplos práticos em `examples/`: `typedd-state-machine.ts` e `datadd-access-patterns.sql`.
+
+- **Testes & Integridade:**
+  - Catálogo expandido para 40 prompts em `tests/test_integrity.py`, `install.sh` e `README.md`.
+  - Novos testes unitários em `tests/test_driven_development.py` cobrindo TypeDD, DataDD e completude das referências da skill.
+
 ## [2.2.0] - 2026-09-27
 
 ### Adicionado (Full App Validator 360° – Zero Overkill & Zero Overlap)

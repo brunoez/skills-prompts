@@ -85,13 +85,16 @@ seu-projeto/
 │   ├── driven-development/       # Metodologias & Testes
 │   │   ├── bdd_behavior_driven.md     # BDD & Gherkin
 │   │   ├── cdd_contract_driven.md     # Contratos & OpenAPI
+│   │   ├── datadd_data_driven.md      # Data-Driven Design & Access Patterns
+│   │   ├── ddd_domain_driven.md       # Domain-Driven Design & Aggregates
 │   │   ├── full_app_validator.md      # Validação Holística 360° (Zero Overkill & Overlap)
 │   │   ├── project_context.md         # Dicionário & Regras IA
 │   │   ├── sdd_spec_driven.md         # SDD & Schemas Zod
 │   │   ├── secdd_abuse_cases.md       # Casos de Abuso & SecDD
 │   │   ├── tdd_test_driven.md         # TDD Red-Green-Refactor
 │   │   ├── test_suite_generator.md    # Gerador de Testes QA
-│   │   └── technical_documentation.md # Docs-as-Code & C4
+│   │   ├── technical_documentation.md # Docs-as-Code & C4
+│   │   └── typedd_type_driven.md      # Type-Driven Design & Invariantes
 │   ├── security/                 # Auditorias de AppSec (OWASP ASTF / WSTG / Proactive Controls)
 │   │   ├── access_control.md          # Proactive C1 – Autorização & IDOR/BOLA
 │   │   ├── adversarial_patching.md    # Protocolo Red/Blue com Re-Attack Loop (Mantis Pattern)
@@ -129,11 +132,11 @@ seu-projeto/
 │   │   ├── references/           # Guias técnicos sob demanda (ASTF, ASVS, BOLA, SSRF)
 │   │   ├── scripts/              # sarif_builder.py & report_generator.py
 │   │   └── examples/             # Teste BOLA pytest & fetch seguro TypeScript
-│   ├── driven-development/       # Metodologias & Engenharia de Testes (SDD, TDD, BDD, CDD, SecDD)
-│   │   ├── SKILL.md              # Ciclo em 4 fases (SDD -> BDD/SecDD -> TDD -> Pirâmide)
-│   │   ├── references/           # Guias modulares (SDD, TDD, BDD, CDD, SecDD, Pirâmide de Testes)
+│   ├── driven-development/       # Suíte Driven Design (DDD, DataDD, TypeDD, SDD, CDD, BDD, SecDD, TDD)
+│   │   ├── SKILL.md              # Ciclo em 6 fases (Domínio -> Storage -> Tipos -> Contratos -> Aceite -> TDD)
+│   │   ├── references/           # Guias modulares (DDD, DataDD, TypeDD, Pipeline Matrix, SDD, CDD, BDD, SecDD, TDD)
 │   │   ├── scripts/              # test_runner.py (executor universal e detector de stack)
-│   │   └── examples/             # Schemas Zod, fixtures TDD e arquivos .feature Gherkin
+│   │   └── examples/             # Máquinas de estado TypeDD, DDL DataDD, Zod SDD, TDD e Gherkin
 │   ├── full-app-validator/       # Validação Holística 360° (Zero Overkill & Zero Overlap)
 │   │   ├── SKILL.md              # Workflow em 3 fases (Triagem, Fronteiras & Health Card)
 │   │   ├── references/           # Matriz de fronteiras herméticas e triagem em cascata
@@ -160,7 +163,7 @@ Além dos prompts estruturados invocados manualmente via `@`, este repositório 
 | Skill | Especialidade | Entregáveis & Ferramentas Integradas |
 | :--- | :--- | :--- |
 | [`skills/appsec-auditor`](skills/appsec-auditor/SKILL.md) | **Auditoria de Segurança AppSec (OWASP ASTF, ASVS L2 & Mantis-Enhanced)** | - Fluxo em 5 fases com **Crítica de Viabilidade de Release** e **Calibração de Risco Anti-Inflação (Score 1-10)**<br/>- `scripts/sarif_builder.py`: Gerador de relatórios SARIF 2.1.0 com metadados de calibração para GitHub Security<br/>- `scripts/report_generator.py`: Gerador de relatórios executivos em Markdown e Issues GitHub<br/>- `references/`: Guias modulares (ASTF, ASVS L2, BOLA, SSRF, Viability Critique, PoC Reproduction Harness)<br/>- `examples/`: Teste de abuso BOLA em pytest e cliente fetch seguro em TypeScript |
-| [`skills/driven-development`](skills/driven-development/SKILL.md) | **Engenharia de Software Orientada por Testes (SDD, TDD, BDD, CDD, SecDD)** | - Ciclo em 4 fases: Schemas/Contratos → Critérios/Abuso → Red-Green-Refactor → Pirâmide de Testes<br/>- `scripts/test_runner.py`: Executor universal com detecção automática de stack (Node, Python, Go, Rust)<br/>- `references/`: Guias modulares de SDD, TDD, BDD (Gherkin), CDD (Pact), SecDD (Abuse Cases) e Pirâmide<br/>- `examples/`: Schemas Zod estritos, fixtures de ciclo TDD com AAA e cenários Gherkin |
+| [`skills/driven-development`](skills/driven-development/SKILL.md) | **Engenharia de Software & Suíte Driven Design (DDD, DataDD, TypeDD, SDD, CDD, BDD, SecDD, TDD)** | - Ciclo em 6 fases: Domínio (DDD) → Storage (DataDD) → Tipos (TypeDD) → Schemas/Contratos (SDD/CDD) → Aceite/Abuso (BDD/SecDD) → TDD<br/>- `scripts/test_runner.py`: Executor universal com detecção automática de stack (Node, Python, Go, Rust)<br/>- `references/`: Guias modulares de DDD, DataDD, TypeDD, Matriz de Pipeline, SDD, TDD, BDD, CDD, SecDD e Pirâmide<br/>- `examples/`: Máquinas de estado TypeDD, DDL DataDD com regra ESR, schemas Zod, fixtures TDD e Gherkin |
 | [`skills/full-app-validator`](skills/full-app-validator/SKILL.md) | **Validação Holística 360° (Zero Overkill & Zero Overlap)** | - Avaliação 360° cobrindo Arquitetura, Segurança, Testes e SRE em 3 fases<br/>- `scripts/health_card.py`: Gerador determinístico de Health Card e métricas de maturidade (0-100)<br/>- `references/`: Matriz de 5 fronteiras herméticas e protocolo de triagem em cascata<br/>- Top 3 a 5 ações prioritárias sem sobreposição de escopo |
 | [`skills/jev-system-one`](skills/jev-system-one/SKILL.md) | **Decisões Estruturadas & Guardrails System One (TypeSafe AI)** | - Padrão de Two-Model Cascade (System 1 para decisões <100ms + System 2 para raciocínio)<br/>- Primitivas `Choice`, `Score` e `Noul` com calibração de probabilidade<br/>- `references/`: HTTP API Reference, Primitivas e Jaggedness / Anti-Patterns<br/>- `examples/`: Guardrails LangChain, cascade em TypeScript, scanner híbrido de segredos, auditor de MCP e cálculo de CVSS |
 
@@ -353,6 +356,30 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
     Valide as rotas com a spec OpenAPI e configure testes de contrato Pact.
     ```
 
+* **Para modelar a arquitetura com Domain-Driven Design (Bounded Contexts, Aggregates e ACL):**
+  * **Use:** [`prompts/driven-development/ddd_domain_driven.md`](prompts/driven-development/ddd_domain_driven.md)
+  * **Comando:**
+    ```markdown
+    @[.claude/prompts/driven-development/ddd_domain_driven.md]
+    Modele o domínio desta feature delimitando Aggregates, Value Objects e o Context Map.
+    ```
+
+* **Para eliminar estados ilegais em compilação e aplicar "Parse, Don't Validate" (TypeDD):**
+  * **Use:** [`prompts/driven-development/typedd_type_driven.md`](prompts/driven-development/typedd_type_driven.md)
+  * **Comando:**
+    ```markdown
+    @[.claude/prompts/driven-development/typedd_type_driven.md]
+    Modele os tipos nominais (Branded Types) e a máquina de estados hermética com Discriminated Unions.
+    ```
+
+* **Para projetar esquemas de banco e índices orientados por Padrões de Acesso (DataDD):**
+  * **Use:** [`prompts/driven-development/datadd_data_driven.md`](prompts/driven-development/datadd_data_driven.md)
+  * **Comando:**
+    ```markdown
+    @[.claude/prompts/driven-development/datadd_data_driven.md]
+    Mapeie a matriz de Access Patterns (Q1, Q2) e crie o DDL com índices seguindo a regra ESR.
+    ```
+
 </details>
 
 ---
@@ -468,7 +495,7 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 ## 📚 Catálogo Completo de Prompts
 
 <details>
-<summary><b>Clique para expandir as tabelas de referência técnica de todos os 37 prompts</b></summary>
+<summary><b>Clique para expandir as tabelas de referência técnica de todos os 40 prompts</b></summary>
 <br/>
 
 ### 🎯 1. Driven Developments, Contexto & Testes (Guardrails contra Alucinação)
@@ -484,6 +511,9 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 | [`tdd_test_driven.md`](prompts/driven-development/tdd_test_driven.md) | **Test-Driven (TDD)** | Ciclo Red-Green-Refactor, cobertura rigorosa de *Edge Cases*, eliminação de over-mocking e testes determinísticos ultrarrápidos. |
 | [`cdd_contract_driven.md`](prompts/driven-development/cdd_contract_driven.md) | **Contract-Driven (CDD)** | OpenAPI, AsyncAPI, validação com Pact (Consumer-Driven Contracts), prevenção de *Breaking Changes* e schema registry de eventos. |
 | [`full_app_validator.md`](prompts/driven-development/full_app_validator.md) | **Validação Holística 360° (Zero Overkill & Overlap)** | Avaliação integrada de maturidade em 5 fronteiras herméticas (API, Domínio, Banco, Testes e SRE) sem redundâncias analíticas e com Health Card consolidado. |
+| [`ddd_domain_driven.md`](prompts/driven-development/ddd_domain_driven.md) | **Domain-Driven Design (DDD)** | Modelagem estratégica (Bounded Contexts, Context Map, ACL) e tática (Aggregates, Entities, Value Objects, Domain Events e Repositories). |
+| [`typedd_type_driven.md`](prompts/driven-development/typedd_type_driven.md) | **Type-Driven Design (TypeDD)** | *"Make illegal states unrepresentable"* e *"Parse, Don't Validate"*, tipagem nominal com Branded Types e máquinas de estado por Discriminated Unions. |
+| [`datadd_data_driven.md`](prompts/driven-development/datadd_data_driven.md) | **Data-Driven Design (DataDD)** | Modelagem de banco orientada por matriz de Padrões de Acesso (Access Patterns), regra ESR para índices compostos, covering indexes e Optimistic Locking. |
 
 ---
 
