@@ -10,7 +10,7 @@
 
 **A biblioteca definitiva de prompts estruturados e Agent Skills executáveis de auditoria profunda, arquitetura defensiva e metodologias *Driven Development* para desenvolvedores, arquitetos e agentes de Inteligência Artificial.**
 
-[Instalação Rápida](#-instalação-rápida) • [Validação 360° (Destaque)](#-destaque-validação-completa-da-aplicação-zero-overkill--zero-overlap) • [Agent Skills](#-agent-skills-antigravity-claude-code-cursor--windsurf) • [Uso em CI/CD Privado](#-como-executar-os-prompts-em-cicd-no-seu-projeto-privado) • [Qual Prompt Usar?](#-qual-prompt-usar-guia-de-ação-rápida-com-exemplos) • [Catálogo Completo](#-catálogo-completo-de-prompts) • [Contribuição](CONTRIBUTING.md)
+[Instalação Rápida](#-instalação-rápida) • [Uso Global](#-opção-1-instalação-global-recomendada-para-usar-em-qualquer-projeto) • [ChatGPT & Web Chats](chatgpt/README.md) • [Validação 360° (Destaque)](#-destaque-validação-completa-da-aplicação-zero-overkill--zero-overlap) • [Agent Skills](#-agent-skills-claude-code--antigravity) • [Uso em CI/CD Privado](#-como-executar-os-prompts-em-cicd-no-seu-projeto-privado) • [Qual Prompt Usar?](#-qual-prompt-usar-guia-de-ação-rápida-com-exemplos) • [Catálogo Completo](#-catálogo-completo-de-prompts) • [Contribuição](CONTRIBUTING.md)
 
 </div>
 
@@ -18,7 +18,7 @@
 
 ## 🇧🇷 Sobre o Projeto
 
-Criado com foco na comunidade brasileira de desenvolvimento e AppSec, este repositório aberto reúne **prompts técnicos e Agent Skills de alto nível** projetados para serem executados por Engenheiros Principais ou Agentes de IA (**Claude Code**, **Google Antigravity**, **VSCode** / GitHub Copilot, **Cursor** e outros editores como Windsurf).
+Criado com foco na comunidade brasileira de desenvolvimento e AppSec, este repositório aberto reúne **prompts técnicos e Agent Skills de alto nível** projetados para serem executados por Engenheiros Principais ou Agentes de IA (**Claude Code**, **Google Antigravity** e **ChatGPT**).
 
 O objetivo é transformar a velocidade do **Vibe Coding** em software de **nível corporativo**: seguro contra vulnerabilidades (**OWASP ASTF 2023**, **WSTG v4.2**, **OWASP Top 10 Proactive Controls 2024**, **OWASP ASVS v4.0.3**, **OWASP DSOMM (DevSecOps Maturity Model)**, **OWASP Risk Rating Methodology** e **OWASP Cheat Sheet Series**), arquiteturalmente consistente (DDD/SDD), resiliente em produção (SRE) e 100% testado (TDD, BDD, SecDD).
 
@@ -51,26 +51,49 @@ O objetivo é transformar a velocidade do **Vibe Coding** em software de **níve
 
 ## ⚡ Instalação Rápida
 
-Instale a suíte completa de prompts (41 arquivos) e Agent Skills (4 skills) no seu projeto com um único comando:
+### 🌍 Opção 1: Instalação Global (Recomendada para usar em qualquer projeto)
+
+Instale os prompts e skills no seu sistema para usá-los **em qualquer projeto ou diretório** sem precisar reinstalar:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash
+# Instalação Global Completa (Slash Commands + Skills no Claude Code e Antigravity):
+curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- --global
 ```
 
-> **Dica de Ferramenta & IDE:** Por padrão, os prompts e as skills são instalados no diretório oficial do **Claude Code** (`.claude/prompts/` e `.claude/skills/`). Se você usa **VSCode**, **Cursor** ou outros editores:
-> ```bash
-> # Para Claude Code (padrão oficial em .claude/prompts/ e .claude/skills/):
-> curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash
-> 
-> # Para VSCode (.agent/prompts/ e .agent/skills/):
-> curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- . vscode
-> 
-> # Para Cursor (.cursor/rules/, .cursor/skills/ e .agent/skills/):
-> curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- . cursor
-> 
-> # Para todas as ferramentas simultaneamente (.claude, .agent, .cursor, .windsurf):
-> curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- . all
-> ```
+* **No Claude Code:** Em qualquer pasta ou terminal, execute diretamente comandos como `/appsec-auditor`, `/full-app-validator`, `/tdd`, `/bdd`, `/sec-api` e skills automáticas em `~/.claude/skills/`.
+* **No Google Antigravity:** Agent Skills ativadas globalmente em `~/.gemini/skills/` para qualquer workspace.
+
+---
+
+### 📦 Opção 2: Instalação Local (por projeto)
+
+Se você preferir instalar os prompts e skills diretamente dentro do repositório da sua aplicação:
+
+```bash
+# Para Claude Code local (.claude/prompts/ e .claude/skills/):
+curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash
+
+# Para VSCode (.agent/prompts/ e .agent/skills/):
+curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- . vscode
+
+# Para Cursor (.cursor/rules/, .cursor/skills/ e .agent/skills/):
+curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- . cursor
+
+# Para todas as ferramentas locais simultaneamente (.claude, .agent, .cursor):
+curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- . all
+```
+
+---
+
+### 🌐 Opção 3: Suíte Universal para ChatGPT, Web Chats e Modelos Locais
+
+Se você utiliza **ChatGPT (Web ou Desktop)**, **Claude Web**, **Gemini**, ou modelos locais open-weight (**Ollama / Open WebUI / LM Studio**), acesse a suíte agnóstica:
+
+👉 **[Acesse a Suíte Universal ChatGPT & Web Chats (`chatgpt/`)](chatgpt/README.md)**
+
+* [`chatgpt/SYSTEM_INSTRUCTIONS.md`](chatgpt/SYSTEM_INSTRUCTIONS.md): Instruções Mestras Universais para colar nas *Custom Instructions* ou System Prompt.
+* [`chatgpt/custom-gpts/`](chatgpt/custom-gpts/): Templates prontos para criar Custom GPTs, Gemini Gems ou Claude Projects ([AppSec Auditor](chatgpt/custom-gpts/1-appsec-auditor.md), [Driven Development](chatgpt/custom-gpts/2-driven-development.md), [Full App Validator](chatgpt/custom-gpts/3-full-app-validator.md)).
+* [`chatgpt/prompts-condensed/`](chatgpt/prompts-condensed/): Prompts autocontidos prontos para copiar e colar diretamente no chat acompanhados do código.
 
 ---
 
@@ -147,6 +170,11 @@ seu-projeto/
 │       ├── SKILL.md              # Primitivas Choice, Score, Noul e cascades
 │       ├── references/           # API Reference, Primitivas e Anti-Patterns
 │       └── examples/             # Guardrails LangChain, TS Cascade, CVSS e PII
+├── chatgpt/                      # Suíte Universal para ChatGPT, Web Chats & Modelos Locais
+│   ├── README.md                 # Guia agnóstico de uso em interfaces de chat
+│   ├── SYSTEM_INSTRUCTIONS.md    # System Prompt Mestre (Custom Instructions / Projects)
+│   ├── custom-gpts/              # Templates para Custom GPTs, Gemini Gems & Claude Projects
+│   └── prompts-condensed/        # Prompts autocontidos para copiar & colar no chat
 ├── src/                          # Código da sua aplicação
 ├── tests/                        # Testes automatizados
 ├── docs/                         # Relatórios em PDF e SARIF
@@ -158,7 +186,7 @@ seu-projeto/
 
 ---
 
-## 🧠 Agent Skills (Antigravity, Claude Code, Cursor & Windsurf)
+## 🧠 Agent Skills (Claude Code & Antigravity)
 
 Além dos prompts estruturados invocados manualmente via `@`, este repositório disponibiliza **Agent Skills** nativas em conformidade com o padrão aberto [Agent Skills](https://agentskills.io/specification). As skills habilitam **ativação semântica autônoma** (`Use when...`), **Progressive Disclosure** (carregamento sob demanda para não estourar o contexto) e **scripts executáveis determinísticos**.
 
@@ -176,8 +204,9 @@ As skills seguem o padrão aberto da indústria ([agentskills.io](https://agents
 
 * **Ativação Autônoma (Semântica):** O agente inspeciona o frontmatter YAML das skills e carrega o workflow automaticamente quando seu pedido corresponder aos gatilhos (ex: *"audite as APIs contra IDOR"* ou *"vamos criar essa funcionalidade aplicando TDD"*).
 * **Instalação Automática (Recomendado):** O script `install.sh` instala automaticamente todas as Agent Skills e prompts no local oficial da sua IDE (`.claude/skills/`, `.agent/skills/` ou `.cursor/skills/`).
-* **No Claude Code:** As skills instaladas em `.claude/skills/` são carregadas nativamente pelo Claude Code em cada sessão (ou globalmente em `~/.claude/skills/`).
-* **No Antigravity / VSCode / Cursor:** Integradas automaticamente em `.agent/skills/` e `.cursor/skills/` (ou globalmente em `~/.gemini/antigravity-cli/skills/`).
+* **No Claude Code:** Slash commands disponíveis globalmente em qualquer terminal via `~/.claude/commands/` (ex: `/appsec-auditor`, `/full-app-validator`, `/tdd`) e Agent Skills ativadas em `.claude/skills/` (ou globalmente em `~/.claude/skills/`).
+* **No Google Antigravity:** Agent Skills carregadas nativamente em `.agent/skills/` ou globalmente em `~/.gemini/skills/` e `~/.gemini/antigravity-cli/skills/`.
+* **No Cursor / VSCode:** Integradas nativamente em `.cursor/skills/` e `.agent/skills/`.
 * **Invocação Direta no Chat:**
   ```markdown
   Use a skill @[skills/appsec-auditor] para auditar este repositório e gerar os artefatos SARIF e Markdown.

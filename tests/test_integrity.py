@@ -189,14 +189,14 @@ def test_installer_execution():
             print(f"❌ ERRO na execução do install.sh: {res.stderr}")
             return False
         
-        for folder in [".claude/prompts", ".agent/prompts", ".cursor/rules", ".windsurf/rules"]:
+        for folder in [".claude/prompts", ".agent/prompts", ".cursor/rules"]:
             target_path = Path(tmpdir) / folder
             for prompt in EXPECTED_PROMPTS:
                 if not (target_path / prompt).is_file():
                     print(f"❌ ERRO: Arquivo {prompt} não foi instalado em {folder}")
                     return False
 
-        for folder in [".claude/skills", ".agent/skills", ".cursor/skills", ".windsurf/skills"]:
+        for folder in [".claude/skills", ".agent/skills", ".cursor/skills"]:
             target_path = Path(tmpdir) / folder
             for skill in EXPECTED_SKILLS:
                 skill_md = target_path / skill / "SKILL.md"
@@ -205,6 +205,74 @@ def test_installer_execution():
                     return False
     print("✅ install.sh executado e testado com sucesso em todos os modos (prompts + skills).")
     return True
+
+
+def test_global_installer_execution():
+    print("🔍 [5.1/8] Testando execução funcional do instalador install.sh em modo --global...")
+    with tempfile.TemporaryDirectory() as tmpdir:
+        env = os.environ.copy()
+        env["HOME"] = tmpdir
+        cmd = ["bash", str(ROOT_DIR / "install.sh"), "--global", "all"]
+        res = subprocess.run(cmd, capture_output=True, text=True, env=env)
+        if res.returncode != 0:
+            print(f"❌ ERRO na execução do install.sh --global: {res.stderr}")
+            return False
+
+        # Verifica commands do Claude Code
+        claude_commands = Path(tmpdir) / ".claude" / "commands"
+        if not claude_commands.is_dir():
+            print("❌ ERRO: Diretório .claude/commands não foi criado no modo global.")
+            return False
+
+        for cmd_name in ["appsec-auditor.md", "full-app-validator.md", "tdd.md", "bdd.md", "sdd.md"]:
+            if not (claude_commands / cmd_name).is_file():
+                print(f"❌ ERRO: Slash command {cmd_name} não encontrado em .claude/commands")
+                return False
+
+        # Verifica skills do Claude Code e Antigravity
+        for folder in [".claude/skills", ".gemini/skills"]:
+            target_path = Path(tmpdir) / folder
+            for skill in EXPECTED_SKILLS:
+                skill_md = target_path / skill / "SKILL.md"
+                if not skill_md.is_file():
+                    print(f"❌ ERRO: Skill {skill}/SKILL.md não foi instalada em {folder}")
+                    return False
+    print("✅ install.sh --global executado e testado com sucesso (Claude commands/skills + Antigravity skills).")
+    return True
+
+
+def test_chatgpt_suite_integrity():
+    print("🔍 [8.1/8] Validando integridade da Suíte Universal ChatGPT / Web Chats...")
+    chatgpt_dir = ROOT_DIR / "chatgpt"
+    if not chatgpt_dir.is_dir():
+        print("❌ ERRO: Diretório 'chatgpt' não encontrado.")
+        return False
+
+    required_files = [
+        "README.md",
+        "SYSTEM_INSTRUCTIONS.md",
+        "custom-gpts/1-appsec-auditor.md",
+        "custom-gpts/2-driven-development.md",
+        "custom-gpts/3-full-app-validator.md",
+        "prompts-condensed/appsec_auditor.md",
+        "prompts-condensed/api_security.md",
+        "prompts-condensed/tdd_workflow.md",
+        "prompts-condensed/full_app_validator.md",
+        "prompts-condensed/threat_modeling.md",
+    ]
+
+    for req_file in required_files:
+        p = chatgpt_dir / req_file
+        if not p.is_file():
+            print(f"❌ ERRO: Arquivo obrigatório da suíte ChatGPT não encontrado: {req_file}")
+            return False
+        if len(p.read_text(encoding="utf-8").strip()) < 50:
+            print(f"❌ ERRO: Arquivo {req_file} parece vazio ou incompleto.")
+            return False
+
+    print("✅ Suíte universal ChatGPT / Web Chats validada com sucesso.")
+    return True
+
 
 
 def test_sync_scripts_unit():
@@ -290,9 +358,11 @@ def main():
         test_install_script_sync,
         test_readme_links,
         test_installer_execution,
+        test_global_installer_execution,
         test_sync_scripts_unit,
         test_security_standards_coexistence,
         test_skills_integrity,
+        test_chatgpt_suite_integrity,
     ]
     
     failed = False

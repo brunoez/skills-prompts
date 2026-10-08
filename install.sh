@@ -26,12 +26,25 @@ echo "  📦 Repositório: https://github.com/brunoez/skills-prompts"
 echo "================================================================="
 echo -e "${C_RESET}"
 
-TARGET_DIR="${1:-.}"
-INSTALL_MODE="${2:-claude}" # opcoes: claude (padrao), vscode, cursor, windsurf, all, submodule
-COMPONENT="${3:-all}"       # opcoes: all (padrao: prompts + skills), prompts, skills
+IS_GLOBAL=false
+if [ "$1" = "--global" ] || [ "$1" = "-g" ]; then
+  IS_GLOBAL=true
+  TARGET_DIR="${GLOBAL_TARGET_DIR:-${HOME:-~}}"
+  INSTALL_MODE="${2:-all}" # opcoes globais: all (padrao: claude + antigravity), claude, antigravity
+  COMPONENT="${3:-all}"    # opcoes: all (padrao: prompts + skills), prompts, skills
+else
+  TARGET_DIR="${1:-.}"
+  INSTALL_MODE="${2:-claude}" # opcoes locais: claude (padrao), vscode, cursor, all, submodule
+  COMPONENT="${3:-all}"       # opcoes: all (padrao: prompts + skills), prompts, skills
+fi
 
-echo -e "${C_BLUE}ℹ️  Diretório alvo: ${C_BOLD}${TARGET_DIR}${C_RESET}"
-echo -e "${C_BLUE}ℹ️  Modo de instalação: ${C_BOLD}${INSTALL_MODE}${C_RESET} (Componentes: ${COMPONENT})"
+if [ "$IS_GLOBAL" = true ]; then
+  echo -e "${C_BLUE}ℹ️  Instalação GLOBAL para o usuário: ${C_BOLD}${TARGET_DIR}${C_RESET}"
+  echo -e "${C_BLUE}ℹ️  Ambientes globais: ${C_BOLD}${INSTALL_MODE}${C_RESET} (Componentes: ${COMPONENT})"
+else
+  echo -e "${C_BLUE}ℹ️  Diretório alvo: ${C_BOLD}${TARGET_DIR}${C_RESET}"
+  echo -e "${C_BLUE}ℹ️  Modo de instalação local: ${C_BOLD}${INSTALL_MODE}${C_RESET} (Componentes: ${COMPONENT})"
+fi
 
 # Lista de categorias e arquivos de prompts
 PROMPT_FILES=(
@@ -185,12 +198,72 @@ install_skills() {
   echo -e "${C_GREEN}✅ Agent Skills instaladas em: ${DEST_BASE} (${count} skills)${C_RESET}"
 }
 
+# Instalação de prompts como Slash Commands no Claude Code (~/.claude/commands/)
+install_claude_commands() {
+  local DEST_BASE="$1"
+  prepare_sources
+  echo -e "${C_YELLOW}📥 Instalando Slash Commands do Claude Code em ${DEST_BASE}...${C_RESET}"
+  
+  mkdir -p "${DEST_BASE}"
+  local count=0
+  for file in "${PROMPT_FILES[@]}"; do
+    local src_file=""
+    if [ -n "$LOCAL_PROMPTS_DIR" ] && [ -f "${LOCAL_PROMPTS_DIR}/${file}" ]; then
+      src_file="${LOCAL_PROMPTS_DIR}/${file}"
+    fi
+
+    local base_name="$(basename "$file")"
+    local clean_name="${base_name%.md}"
+    local cmd_name="$clean_name"
+
+    case "$file" in
+      driven-development/sdd_*) cmd_name="sdd" ;;
+      driven-development/secdd_*) cmd_name="secdd" ;;
+      driven-development/bdd_*) cmd_name="bdd" ;;
+      driven-development/tdd_*) cmd_name="tdd" ;;
+      driven-development/cdd_*) cmd_name="cdd" ;;
+      driven-development/ddd_*) cmd_name="ddd" ;;
+      driven-development/typedd_*) cmd_name="typedd" ;;
+      driven-development/datadd_*) cmd_name="datadd" ;;
+      driven-development/full_app_validator.md) cmd_name="full-app-validator" ;;
+      driven-development/test_suite_generator.md) cmd_name="test-suite-generator" ;;
+      driven-development/technical_documentation.md) cmd_name="technical-documentation" ;;
+      driven-development/project_context.md) cmd_name="project-context" ;;
+      
+      security/appsec_auditor.md) cmd_name="appsec-auditor" ;;
+      security/sec_advisor.md) cmd_name="sec-advisor" ;;
+      security/threat_modeling.md) cmd_name="threat-modeling" ;;
+      security/*) cmd_name="sec-${clean_name//_/-}" ;;
+      
+      devops/*) cmd_name="devops-${clean_name//_/-}" ;;
+      jev/*) cmd_name="jev-${clean_name//_/-}" ;;
+    esac
+
+    local target_cmd="${DEST_BASE}/${cmd_name}.md"
+    if [ -n "$src_file" ]; then
+      cp "$src_file" "$target_cmd"
+    else
+      curl -sSL "${RAW_BASE}/prompts/${file}" -o "$target_cmd"
+    fi
+
+    # Alias com o nome original do arquivo para compatibilidade direta
+    local alias_cmd="${DEST_BASE}/${clean_name}.md"
+    if [ "$alias_cmd" != "$target_cmd" ]; then
+      cp "$target_cmd" "$alias_cmd"
+    fi
+
+    count=$((count + 1))
+  done
+
+  echo -e "${C_GREEN}✅ Slash Commands instalados em: ${DEST_BASE} (${count} comandos disponíveis com /)${C_RESET}"
+}
+
 # Aliases de compatibilidade
 install_files() {
   install_prompts "$1"
 }
 
-# Dispatcher principal de instalação
+# Dispatcher de instalação local por repositório
 do_install() {
   local prompt_target="$1"
   local skill_target="$2"
@@ -208,58 +281,103 @@ do_install() {
   fi
 }
 
-case "$INSTALL_MODE" in
-  submodule)
-    install_submodule
-    ;;
-  claude|claude-code)
-    do_install "${TARGET_DIR}/.claude/prompts" "${TARGET_DIR}/.claude/skills"
-    ;;
-  vscode)
-    do_install "${TARGET_DIR}/.agent/prompts" "${TARGET_DIR}/.agent/skills"
-    ;;
-  cursor)
-    do_install "${TARGET_DIR}/.cursor/rules" "${TARGET_DIR}/.cursor/skills"
-    if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
-      install_skills "${TARGET_DIR}/.agent/skills"
-    fi
-    ;;
-  windsurf)
-    do_install "${TARGET_DIR}/.windsurf/rules" "${TARGET_DIR}/.windsurf/skills"
-    if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
-      install_skills "${TARGET_DIR}/.agent/skills"
-    fi
-    ;;
-  all)
-    if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
-      install_prompts "${TARGET_DIR}/.claude/prompts"
-      install_prompts "${TARGET_DIR}/.agent/prompts"
-      install_prompts "${TARGET_DIR}/.cursor/rules"
-      install_prompts "${TARGET_DIR}/.windsurf/rules"
-    fi
-    if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
-      install_skills "${TARGET_DIR}/.claude/skills"
-      install_skills "${TARGET_DIR}/.agent/skills"
-      install_skills "${TARGET_DIR}/.cursor/skills"
-      install_skills "${TARGET_DIR}/.windsurf/skills"
-    fi
-    ;;
-  agent|*)
-    do_install "${TARGET_DIR}/.agent/prompts" "${TARGET_DIR}/.agent/skills"
-    ;;
-esac
+# Dispatcher de instalação global no sistema do usuário
+do_global_install() {
+  local mode="$1"
+  case "$mode" in
+    claude|claude-code)
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
+        install_claude_commands "${TARGET_DIR}/.claude/commands"
+      fi
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
+        install_skills "${TARGET_DIR}/.claude/skills"
+      fi
+      ;;
+    antigravity|gemini)
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
+        install_skills "${TARGET_DIR}/.gemini/skills"
+        if [ -d "${TARGET_DIR}/.gemini/antigravity-cli" ]; then
+          install_skills "${TARGET_DIR}/.gemini/antigravity-cli/skills"
+        fi
+      fi
+      ;;
+    all|*)
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
+        install_claude_commands "${TARGET_DIR}/.claude/commands"
+      fi
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
+        install_skills "${TARGET_DIR}/.claude/skills"
+        install_skills "${TARGET_DIR}/.gemini/skills"
+        if [ -d "${TARGET_DIR}/.gemini/antigravity-cli" ]; then
+          install_skills "${TARGET_DIR}/.gemini/antigravity-cli/skills"
+        fi
+      fi
+      ;;
+  esac
+}
+
+# Execução do fluxo de instalação
+if [ "$IS_GLOBAL" = true ]; then
+  do_global_install "$INSTALL_MODE"
+else
+  case "$INSTALL_MODE" in
+    submodule)
+      install_submodule
+      ;;
+    claude|claude-code)
+      do_install "${TARGET_DIR}/.claude/prompts" "${TARGET_DIR}/.claude/skills"
+      ;;
+    vscode)
+      do_install "${TARGET_DIR}/.agent/prompts" "${TARGET_DIR}/.agent/skills"
+      ;;
+    cursor)
+      do_install "${TARGET_DIR}/.cursor/rules" "${TARGET_DIR}/.cursor/skills"
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
+        install_skills "${TARGET_DIR}/.agent/skills"
+      fi
+      ;;
+    all)
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
+        install_prompts "${TARGET_DIR}/.claude/prompts"
+        install_prompts "${TARGET_DIR}/.agent/prompts"
+        install_prompts "${TARGET_DIR}/.cursor/rules"
+      fi
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
+        install_skills "${TARGET_DIR}/.claude/skills"
+        install_skills "${TARGET_DIR}/.agent/skills"
+        install_skills "${TARGET_DIR}/.cursor/skills"
+      fi
+      ;;
+    agent|*)
+      do_install "${TARGET_DIR}/.agent/prompts" "${TARGET_DIR}/.agent/skills"
+      ;;
+  esac
+fi
 
 echo ""
 echo -e "${C_GREEN}${C_BOLD}🎉 Instalação concluída com sucesso!${C_RESET}"
-echo -e "${C_CYAN}👉 Como usar no seu ambiente:${C_RESET}"
-echo -e "   1. No Claude Code:"
-echo -e "      - Prompts: use no terminal ou chat (ex: @[.claude/prompts/security/api.md])"
-echo -e "      - Skills: carregadas nativamente pelo Claude Code em .claude/skills/"
-echo -e "   2. No VSCode / Copilot Chat:"
-echo -e "      - Prompts: @workspace @[.agent/prompts/driven-development/sdd_spec_driven.md]"
-echo -e "      - Skills: agentes integrados em .agent/skills/"
-echo -e "   3. No Cursor & Windsurf:"
-echo -e "      - Prompts/Regras: @[.cursor/rules/...] ou @[.windsurf/rules/...]"
-echo -e "      - Skills: em .cursor/skills/ e .windsurf/skills/"
-echo -e "   4. Documentação completa em: ${C_BOLD}https://github.com/brunoez/skills-prompts${C_RESET}"
+if [ "$IS_GLOBAL" = true ]; then
+  echo -e "${C_CYAN}👉 Como usar globalmente no seu sistema:${C_RESET}"
+  echo -e "   1. No Claude Code (em qualquer pasta/projeto):"
+  echo -e "      - Slash Commands: digite /appsec-auditor, /full-app-validator, /tdd, /bdd, etc."
+  echo -e "      - Agent Skills: ativadas automaticamente em ~/.claude/skills/"
+  echo -e "   2. No Google Antigravity (em qualquer workspace):"
+  echo -e "      - Agent Skills: ativadas automaticamente em ~/.gemini/skills/"
+  echo -e "   3. Para ChatGPT, Claude Web e outros assistentes de chat:"
+  echo -e "      - Veja os templates e prompts autocontidos em: chatgpt/README.md"
+  echo -e "   4. Documentação completa em: ${C_BOLD}https://github.com/brunoez/skills-prompts${C_RESET}"
+else
+  echo -e "${C_CYAN}👉 Como usar no seu projeto:${C_RESET}"
+  echo -e "   1. No Claude Code:"
+  echo -e "      - Prompts locais: use no chat (ex: @[.claude/prompts/security/api.md])"
+  echo -e "      - Skills locais: carregadas em .claude/skills/"
+  echo -e "   2. No VSCode / Copilot Chat / Antigravity:"
+  echo -e "      - Prompts: @workspace @[.agent/prompts/driven-development/sdd_spec_driven.md]"
+  echo -e "      - Skills: agentes integrados em .agent/skills/"
+  echo -e "   3. No Cursor:"
+  echo -e "      - Prompts/Regras: @[.cursor/rules/...]"
+  echo -e "      - Skills: em .cursor/skills/ e .agent/skills/"
+  echo -e "   💡 Dica: Para usar em TODOS os projetos sem reinstalar, use: ./install.sh --global"
+  echo -e "   4. Documentação completa em: ${C_BOLD}https://github.com/brunoez/skills-prompts${C_RESET}"
+fi
 echo ""

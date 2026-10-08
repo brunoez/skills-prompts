@@ -5,6 +5,26 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico (SemVer)](https://semver.org/lang/pt-BR/).
 
+## [2.6.0] - 2026-10-08
+
+### Adicionado (Instalação Global, Suporte Universal ChatGPT & Modelos Agnósticos)
+
+- **Instalação Global (`install.sh --global`):**
+  - Adicionado suporte nativo à flag `--global` (ou `-g`) para instalação centralizada no sistema operacional do usuário (`$HOME`).
+  - **Claude Code:** Mapeamento automático dos prompts como *Slash Commands* em `~/.claude/commands/`, permitindo invocar `/appsec-auditor`, `/full-app-validator`, `/tdd`, `/bdd`, `/sec-api`, `/threat-modeling`, etc., em qualquer pasta/repositório diretamente no terminal. Instalação global de Agent Skills em `~/.claude/skills/`.
+  - **Google Antigravity:** Instalação global de Agent Skills em `~/.gemini/skills/` e `~/.gemini/antigravity-cli/skills/`, ativando o carregamento autônomo e semântico em qualquer workspace.
+- **Suíte Universal para ChatGPT, Web Chats & Modelos Locais (`chatgpt/`):**
+  - Criação da pasta oficial `chatgpt/` projetada para interfaces de chat web/desktop e 100% agnóstica de fornecedor (compatível com OpenAI, Claude Web, Gemini Web, DeepSeek e modelos locais via Ollama/Open WebUI).
+  - `chatgpt/SYSTEM_INSTRUCTIONS.md`: Instrução de sistema mestra universal para colar em *Custom Instructions* ou System Prompts.
+  - `chatgpt/custom-gpts/`: Templates pré-configurados para criação de assistentes personalizados no GPT Builder, Gemini Gems ou Claude Projects (`1-appsec-auditor.md`, `2-driven-development.md` e `3-full-app-validator.md`).
+  - `chatgpt/prompts-condensed/`: Prompts autocontidos (sem dependência de imports `@` locais) prontos para copiar e colar com código.
+  - `chatgpt/README.md`: Guia completo ilustrado de utilização e critérios agnósticos para escolha de perfis de modelos (Fronteira, Raciocínio, Produção e Local Open-Weight).
+- **Foco Arquitetural e Descontinuação do Windsurf:**
+  - Remoção de referências ao editor Windsurf em documentação, instaladores e testes, consolidando o foco do projeto na tríade: **Claude Code**, **AntiGravity** e **ChatGPT**.
+- **Qualidade & Testes Automatizados:**
+  - Inclusão dos testes `test_global_installer_execution` e `test_chatgpt_suite_integrity` em `tests/test_integrity.py`.
+  - 100% dos 41 testes unitários e de integridade passando com sucesso.
+
 ## [2.5.0] - 2026-09-27
 
 ### Aprimorado (Integração do OWASP DSOMM na Suíte DevOps, CI/CD & SRE)

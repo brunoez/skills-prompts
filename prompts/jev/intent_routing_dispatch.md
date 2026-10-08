@@ -9,7 +9,7 @@ Você deve substituir roteadores baseados em LLMs convencionais ou cadeias frág
 
 ## ESCOPO E OBRIGATORIEDADE DE LEITURA
 1. Mapeie todas as portas de entrada de tráfego que requerem classificação semântica para decisão de roteamento (ex: filas de atendimento ao cliente, triagem de leads, classificação de e-mails, processamento de webhooks e multiplexadores de agentes).
-2. Avalie onde modelos generativos (como GPT-4 ou Claude) estão sendo usados unicamente para responder "para onde devo enviar esta mensagem?", gerando custos excessivos e latências de segundos.
+2. Avalie onde modelos generativos de fronteira pesados estão sendo usados unicamente para responder "para onde devo enviar esta mensagem?", gerando custos excessivos e latências de segundos.
 3. Identifique onde árvores de regex e regras estáticas falham em lidar com a ambiguidade da linguagem natural, gerando roteamentos errôneos e fricção no produto.
 4. Você DEVE ler e analisar cada ponto de entrada de requisições, controllers e filas de eventos linha por linha.
 
