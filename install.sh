@@ -109,13 +109,16 @@ fi
 
 LOCAL_PROMPTS_DIR=""
 LOCAL_SKILLS_DIR=""
+LOCAL_CHATGPT_DIR=""
 
 if [ -n "$SCRIPT_DIR" ] && [ -d "${SCRIPT_DIR}/prompts" ] && [ -d "${SCRIPT_DIR}/skills" ]; then
   LOCAL_PROMPTS_DIR="${SCRIPT_DIR}/prompts"
   LOCAL_SKILLS_DIR="${SCRIPT_DIR}/skills"
+  LOCAL_CHATGPT_DIR="${SCRIPT_DIR}/chatgpt"
 elif [ -n "$SCRIPT_DIR" ] && [ -d "${SCRIPT_DIR}/../prompts" ] && [ -d "${SCRIPT_DIR}/../skills" ]; then
   LOCAL_PROMPTS_DIR="${SCRIPT_DIR}/../prompts"
   LOCAL_SKILLS_DIR="${SCRIPT_DIR}/../skills"
+  LOCAL_CHATGPT_DIR="${SCRIPT_DIR}/../chatgpt"
 fi
 
 TMP_DOWNLOAD_DIR=""
@@ -128,12 +131,13 @@ trap cleanup EXIT INT TERM
 
 # Se não estiver em clone local, faz download sob demanda
 prepare_sources() {
-  if [ -z "$LOCAL_PROMPTS_DIR" ] || [ -z "$LOCAL_SKILLS_DIR" ]; then
-    echo -e "${C_YELLOW}📥 Baixando pacote do repositório (prompts + skills)...${C_RESET}"
+  if [ -z "$LOCAL_PROMPTS_DIR" ] || [ -z "$LOCAL_SKILLS_DIR" ] || [ -z "$LOCAL_CHATGPT_DIR" ]; then
+    echo -e "${C_YELLOW}📥 Baixando pacote do repositório (prompts + skills + chatgpt)...${C_RESET}"
     TMP_DOWNLOAD_DIR=$(mktemp -d)
     if curl -sSL "$ARCHIVE_URL" | tar -xz -C "$TMP_DOWNLOAD_DIR" --strip-components=1 2>/dev/null; then
       LOCAL_PROMPTS_DIR="${TMP_DOWNLOAD_DIR}/prompts"
       LOCAL_SKILLS_DIR="${TMP_DOWNLOAD_DIR}/skills"
+      LOCAL_CHATGPT_DIR="${TMP_DOWNLOAD_DIR}/chatgpt"
     else
       echo -e "${C_YELLOW}⚠️  Falha ao baixar tarball. Clonando repositório...${C_RESET}"
       git clone --depth 1 "$REPO_URL" "$TMP_DOWNLOAD_DIR" 2>/dev/null || {
@@ -142,6 +146,7 @@ prepare_sources() {
       }
       LOCAL_PROMPTS_DIR="${TMP_DOWNLOAD_DIR}/prompts"
       LOCAL_SKILLS_DIR="${TMP_DOWNLOAD_DIR}/skills"
+      LOCAL_CHATGPT_DIR="${TMP_DOWNLOAD_DIR}/chatgpt"
     fi
   fi
 }
@@ -258,6 +263,20 @@ install_claude_commands() {
   echo -e "${C_GREEN}✅ Slash Commands instalados em: ${DEST_BASE} (${count} comandos disponíveis com /)${C_RESET}"
 }
 
+install_chatgpt() {
+  local DEST_BASE="$1"
+  prepare_sources
+  echo -e "${C_YELLOW}📥 Instalando suíte ChatGPT / OpenAI em ${DEST_BASE}...${C_RESET}"
+  
+  mkdir -p "${DEST_BASE}"
+  if [ -n "$LOCAL_CHATGPT_DIR" ] && [ -d "$LOCAL_CHATGPT_DIR" ]; then
+    cp -R "${LOCAL_CHATGPT_DIR}/." "${DEST_BASE}/"
+    echo -e "${C_GREEN}✅ Suíte ChatGPT instalada em: ${DEST_BASE}${C_RESET}"
+  else
+    echo -e "${C_YELLOW}⚠️  Pasta chatgpt não encontrada para cópia.${C_RESET}"
+  fi
+}
+
 # Aliases de compatibilidade
 install_files() {
   install_prompts "$1"
@@ -301,6 +320,9 @@ do_global_install() {
         fi
       fi
       ;;
+    chatgpt|openai)
+      install_chatgpt "${TARGET_DIR}/.chatgpt"
+      ;;
     all|*)
       if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
         install_claude_commands "${TARGET_DIR}/.claude/commands"
@@ -312,6 +334,7 @@ do_global_install() {
           install_skills "${TARGET_DIR}/.gemini/antigravity-cli/skills"
         fi
       fi
+      install_chatgpt "${TARGET_DIR}/.chatgpt"
       ;;
   esac
 }
@@ -363,8 +386,9 @@ if [ "$IS_GLOBAL" = true ]; then
   echo -e "      - Agent Skills: ativadas automaticamente em ~/.claude/skills/"
   echo -e "   2. No Google Antigravity (em qualquer workspace):"
   echo -e "      - Agent Skills: ativadas automaticamente em ~/.gemini/skills/"
-  echo -e "   3. Para ChatGPT, Claude Web e outros assistentes de chat:"
-  echo -e "      - Veja os templates e prompts autocontidos em: chatgpt/README.md"
+  echo -e "   3. No ChatGPT (OpenAI) e Web Chats:"
+  echo -e "      - Instruções Mestras: copie ~/.chatgpt/SYSTEM_INSTRUCTIONS.md para as Custom Instructions"
+  echo -e "      - Custom GPTs e Prompts Condensados prontos em: ~/.chatgpt/"
   echo -e "   4. Documentação completa em: ${C_BOLD}https://github.com/brunoez/skills-prompts${C_RESET}"
 else
   echo -e "${C_CYAN}👉 Como usar no seu projeto:${C_RESET}"

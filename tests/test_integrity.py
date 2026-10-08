@@ -237,7 +237,13 @@ def test_global_installer_execution():
                 if not skill_md.is_file():
                     print(f"❌ ERRO: Skill {skill}/SKILL.md não foi instalada em {folder}")
                     return False
-    print("✅ install.sh --global executado e testado com sucesso (Claude commands/skills + Antigravity skills).")
+
+        # Verifica suíte ChatGPT instalada em ~/.chatgpt
+        chatgpt_sys = Path(tmpdir) / ".chatgpt" / "SYSTEM_INSTRUCTIONS.md"
+        if not chatgpt_sys.is_file():
+            print("❌ ERRO: Arquivo .chatgpt/SYSTEM_INSTRUCTIONS.md não foi instalado no modo global.")
+            return False
+    print("✅ install.sh --global executado e testado com sucesso (Claude commands/skills + Antigravity skills + ChatGPT suite).")
     return True
 
 

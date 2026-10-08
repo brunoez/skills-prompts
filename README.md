@@ -56,12 +56,13 @@ O objetivo é transformar a velocidade do **Vibe Coding** em software de **níve
 Instale os prompts e skills no seu sistema para usá-los **em qualquer projeto ou diretório** sem precisar reinstalar:
 
 ```bash
-# Instalação Global Completa (Slash Commands + Skills no Claude Code e Antigravity):
+# Instalação Global Completa (Claude Code, Antigravity e OpenAI / ChatGPT):
 curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- --global
 ```
 
 * **No Claude Code:** Em qualquer pasta ou terminal, execute diretamente comandos como `/appsec-auditor`, `/full-app-validator`, `/tdd`, `/bdd`, `/sec-api` e skills automáticas em `~/.claude/skills/`.
 * **No Google Antigravity:** Agent Skills ativadas globalmente em `~/.gemini/skills/` para qualquer workspace.
+* **No ChatGPT (OpenAI):** Suíte instalada em `~/.chatgpt/` — copie as [Instruções Mestras Universais](chatgpt/SYSTEM_INSTRUCTIONS.md) para as *Custom Instructions* da sua conta para ter a suíte ativa em todos os chats, ou use os [Custom GPTs prontos](chatgpt/custom-gpts/).
 
 ---
 
