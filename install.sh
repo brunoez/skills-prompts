@@ -276,9 +276,10 @@ install_claude_commands() {
       src_file="${LOCAL_PROMPTS_DIR}/${file}"
     fi
 
-    local base_name="$(basename "$file")"
-    local clean_name="${base_name%.md}"
-    local cmd_name="$clean_name"
+    local base_name clean_name cmd_name
+    base_name="${file##*/}"
+    clean_name="${base_name%.md}"
+    cmd_name="$clean_name"
 
     case "$file" in
       driven-development/sdd_*) cmd_name="sdd" ;;
