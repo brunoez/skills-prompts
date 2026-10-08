@@ -10,7 +10,7 @@
 
 **A biblioteca definitiva de prompts estruturados e Agent Skills executáveis de auditoria profunda, arquitetura defensiva e metodologias *Driven Development* para desenvolvedores, arquitetos e agentes de Inteligência Artificial.**
 
-[Instalação Rápida](#-instalação-rápida) • [Uso Global](#-opção-1-instalação-global-recomendada-para-usar-em-qualquer-projeto) • [ChatGPT & Web Chats](chatgpt/README.md) • [Validação 360° (Destaque)](#-destaque-validação-completa-da-aplicação-zero-overkill--zero-overlap) • [Agent Skills](#-agent-skills-claude-code--antigravity) • [Uso em CI/CD Privado](#-como-executar-os-prompts-em-cicd-no-seu-projeto-privado) • [Qual Prompt Usar?](#-qual-prompt-usar-guia-de-ação-rápida-com-exemplos) • [Catálogo Completo](#-catálogo-completo-de-prompts) • [Contribuição](CONTRIBUTING.md)
+[Instalação Rápida](#-instalação-rápida) • [Instalação Global](#3-instalação-global-para-cada-llm--assistente) • [Comparação Local vs Global](#4-entendendo-os-diretórios-e-padrões-por-ferramenta) • [ChatGPT & Web Chats](chatgpt/README.md) • [Validação 360° (Destaque)](#-destaques-validação-holística--auditoria-360-da-aplicação) • [Agent Skills](#-agent-skills-claude-code-gemini--antigravity--codex--chatgpt) • [Uso em CI/CD Privado](#-como-executar-os-prompts-em-cicd-no-seu-projeto-privado) • [Qual Prompt Usar?](#-qual-prompt-usar-guia-de-ação-rápida-com-exemplos) • [Catálogo Completo](#-catálogo-completo-de-prompts) • [Contribuição](CONTRIBUTING.md)
 
 </div>
 
@@ -51,42 +51,106 @@ O objetivo é transformar a velocidade do **Vibe Coding** em software de **níve
 
 ## ⚡ Instalação Rápida
 
-### 🌍 Opção 1: Instalação Global (Recomendada para usar em qualquer projeto)
+Os três assistentes de programação — **Claude Code**, **Gemini CLI** e **OpenAI Codex (ChatGPT)** — possuem diretórios próprios para configurações, instruções e skills. Você pode instalar localmente no seu repositório ou globalmente na sua máquina de forma rápida e automatizada.
 
-Instale os prompts e skills no seu sistema para usá-los **em qualquer projeto ou diretório** sem precisar reinstalar:
+### 1. Instalação rápida para o projeto local
+
+Instalação padrão com um único comando na raiz do projeto, configurando prompts e skills compatíveis com todos os assistentes:
 
 ```bash
-# Instalação Global Completa (Claude Code, Antigravity e OpenAI / ChatGPT):
-curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- --global
+curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash
 ```
 
-* **No Claude Code:** Em qualquer pasta ou terminal, execute diretamente comandos como `/appsec-auditor`, `/full-app-validator`, `/tdd`, `/bdd`, `/sec-api` e skills automáticas em `~/.claude/skills/`.
-* **No Google Antigravity:** Agent Skills ativadas globalmente em `~/.gemini/skills/` para qualquer workspace.
-* **No ChatGPT (OpenAI):** Suíte instalada em `~/.chatgpt/` — copie as [Instruções Mestras Universais](chatgpt/SYSTEM_INSTRUCTIONS.md) para as *Custom Instructions* da sua conta para ter a suíte ativa em todos os chats, ou use os [Custom GPTs prontos](chatgpt/custom-gpts/).
+> **Dica:** Se você já clonou este repositório, basta executar diretamente:
+> ```bash
+> ./install.sh
+> ```
 
 ---
 
-### 📦 Opção 2: Instalação Local (por projeto)
+### 2. Instalação rápida para o projeto local por LLM / Assistente
 
-Se você preferir instalar os prompts e skills diretamente dentro do repositório da sua aplicação:
+Se você deseja configurar o projeto especificamente para uma ferramenta ou LLM, utilize a opção correspondente:
 
 ```bash
 # Para Claude Code local (.claude/prompts/ e .claude/skills/):
-curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- --claude
 
-# Para VSCode (.agent/prompts/ e .agent/skills/):
-curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- . vscode
+# Para Gemini CLI / AntiGravity local (.gemini/prompts/, .gemini/skills/ e .agents/skills/):
+curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- --gemini
 
-# Para Cursor (.cursor/rules/, .cursor/skills/ e .agent/skills/):
-curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- . cursor
+# Para OpenAI Codex / ChatGPT local (.codex/prompts/, .agents/skills/ e chatgpt/):
+curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- --chatgpt
+# (também aceita os aliases: --codex ou --openai)
 
-# Para todas as ferramentas locais simultaneamente (.claude, .agent, .cursor):
-curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- . all
+# Para todas as ferramentas simultaneamente no projeto local:
+curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- --all
 ```
 
 ---
 
-### 🌐 Opção 3: Suíte Universal para ChatGPT, Web Chats e Modelos Locais
+### 3. Instalação global para cada uma das LLMs / Assistentes
+
+Para usar os prompts e skills **em qualquer projeto ou diretório** sem precisar reinstalar a cada novo repositório, faça a instalação global no diretório pessoal do usuário (`~`). Como cada assistente possui diretórios próprios, escolha a opção desejada:
+
+```bash
+# Global para Claude Code (~/.claude/commands/ e ~/.claude/skills/):
+curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- --global --claude
+
+# Global para Gemini CLI / AntiGravity (~/.gemini/skills/ e ~/.agents/skills/):
+curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- --global --gemini
+
+# Global para OpenAI Codex / ChatGPT (~/.codex/prompts/, ~/.agents/skills/ e ~/.chatgpt/):
+curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- --global --chatgpt
+
+# Instalação Global Completa (todas as LLMs e ferramentas simultaneamente):
+curl -sSL https://raw.githubusercontent.com/brunoez/skills-prompts/main/install.sh | bash -s -- --global --all
+```
+
+* **No Claude Code:** Em qualquer pasta ou terminal, execute diretamente comandos como `/appsec-auditor`, `/full-app-validator`, `/tdd`, `/bdd`, `/sec-api` e skills automáticas em `~/.claude/skills/`.
+* **No Gemini CLI / AntiGravity:** Agent Skills ativadas globalmente em `~/.gemini/skills/` e `~/.agents/skills/` para qualquer workspace.
+* **No OpenAI Codex / ChatGPT:** Skills globais em `~/.agents/skills/`, prompts em `~/.codex/prompts/` e suíte em `~/.chatgpt/` — copie as [Instruções Mestras Universais](chatgpt/SYSTEM_INSTRUCTIONS.md) para as *Custom Instructions* da sua conta para ter a suíte ativa no ChatGPT Web.
+
+---
+
+### 4. Entendendo os Diretórios: Local vs. Global & Padrões por Ferramenta
+
+Os três assistentes de programação — Claude Code, Gemini CLI e OpenAI Codex (ChatGPT) — possuem diretórios próprios para configurações, instruções e skills.
+
+#### Comparação: local vs. global
+
+| Ferramenta   | Local (projeto)        | Global (usuário)           |
+| ------------ | ---------------------- | -------------------------- |
+| Claude Code  | `.claude/`             | `~/.claude/`               |
+| Gemini CLI   | `.gemini/`             | `~/.gemini/`               |
+| OpenAI Codex | `.codex/` e `.agents/` | `~/.codex/` e `~/.agents/` |
+
+Local significa dentro da raiz do repositório. Global significa dentro da pasta pessoal do usuário (`~`).
+
+Um detalhe importante: os arquivos de instruções principais geralmente ficam na raiz do projeto, fora dessas pastas.
+
+#### Arquivos padrão por ferramenta
+
+| Tipo                | Claude Code               | Gemini CLI                | OpenAI Codex           |
+| ------------------- | ------------------------- | ------------------------- | ---------------------- |
+| Instruções locais   | `./CLAUDE.md`             | `./GEMINI.md`             | `./AGENTS.md`          |
+| Instruções globais  | `~/.claude/CLAUDE.md`     | `~/.gemini/GEMINI.md`     | `~/.codex/AGENTS.md`   |
+| Skills locais       | `.claude/skills/`         | `.gemini/skills/`         | `.agents/skills/`      |
+| Skills globais      | `~/.claude/skills/`       | `~/.gemini/skills/`       | `~/.agents/skills/`    |
+| Configuração local  | `.claude/settings.json`   | `.gemini/settings.json`   | `.codex/config.toml`\* |
+| Configuração global | `~/.claude/settings.json` | `~/.gemini/settings.json` | `~/.codex/config.toml` |
+
+\*No Codex, o `config.toml` global é o padrão principal; a configuração local tem suporte e escopo específicos, não necessariamente idênticos ao global.
+
+O Gemini CLI também aceita `.agents/skills/` e `~/.agents/skills/` como alternativas oficiais.
+
+Para compartilhar skills entre Gemini e Codex, a opção mais interessante é `.agents/skills/`, porque ambos reconhecem essa convenção. O Claude Code pode utilizar links simbólicos para compartilhar as mesmas skills.
+
+Documentação: [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview) · [Gemini CLI](https://github.com/google-gemini/gemini-cli) · [OpenAI Codex](https://platform.openai.com/docs/guides/code)
+
+---
+
+### 🌐 Suíte Universal para ChatGPT, Web Chats e Modelos Locais
 
 Se você utiliza **ChatGPT (Web ou Desktop)**, **Claude Web**, **Gemini**, ou modelos locais open-weight (**Ollama / Open WebUI / LM Studio**), acesse a suíte agnóstica:
 
@@ -187,7 +251,7 @@ seu-projeto/
 
 ---
 
-## 🧠 Agent Skills (Claude Code & Antigravity)
+## 🧠 Agent Skills (Claude Code, Gemini / AntiGravity & Codex / ChatGPT)
 
 Além dos prompts estruturados invocados manualmente via `@`, este repositório disponibiliza **Agent Skills** nativas em conformidade com o padrão aberto [Agent Skills](https://agentskills.io/specification). As skills habilitam **ativação semântica autônoma** (`Use when...`), **Progressive Disclosure** (carregamento sob demanda para não estourar o contexto) e **scripts executáveis determinísticos**.
 
@@ -204,10 +268,10 @@ Além dos prompts estruturados invocados manualmente via `@`, este repositório 
 As skills seguem o padrão aberto da indústria ([agentskills.io](https://agentskills.io/specification)) e funcionam de forma autônoma ou guiada:
 
 * **Ativação Autônoma (Semântica):** O agente inspeciona o frontmatter YAML das skills e carrega o workflow automaticamente quando seu pedido corresponder aos gatilhos (ex: *"audite as APIs contra IDOR"* ou *"vamos criar essa funcionalidade aplicando TDD"*).
-* **Instalação Automática (Recomendado):** O script `install.sh` instala automaticamente todas as Agent Skills e prompts no local oficial da sua IDE (`.claude/skills/`, `.agent/skills/` ou `.cursor/skills/`).
+* **Instalação Automática (Recomendado):** O script `install.sh` instala automaticamente todas as Agent Skills e prompts no local oficial do assistente (`.claude/skills/`, `.gemini/skills/` ou `.agents/skills/`).
 * **No Claude Code:** Slash commands disponíveis globalmente em qualquer terminal via `~/.claude/commands/` (ex: `/appsec-auditor`, `/full-app-validator`, `/tdd`) e Agent Skills ativadas em `.claude/skills/` (ou globalmente em `~/.claude/skills/`).
-* **No Google Antigravity:** Agent Skills carregadas nativamente em `.agent/skills/` ou globalmente em `~/.gemini/skills/` e `~/.gemini/antigravity-cli/skills/`.
-* **No Cursor / VSCode:** Integradas nativamente em `.cursor/skills/` e `.agent/skills/`.
+* **No Gemini CLI / Google Antigravity:** Agent Skills carregadas nativamente em `.gemini/skills/`, `.agents/skills/` ou globalmente em `~/.gemini/skills/` e `~/.agents/skills/`.
+* **No OpenAI Codex / ChatGPT:** Agent Skills carregadas nativamente em `.agents/skills/` (ou globalmente em `~/.agents/skills/`).
 * **Invocação Direta no Chat:**
   ```markdown
   Use a skill @[skills/appsec-auditor] para auditar este repositório e gerar os artefatos SARIF e Markdown.

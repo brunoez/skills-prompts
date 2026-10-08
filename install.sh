@@ -27,20 +27,79 @@ echo "================================================================="
 echo -e "${C_RESET}"
 
 IS_GLOBAL=false
-if [ "$1" = "--global" ] || [ "$1" = "-g" ]; then
-  IS_GLOBAL=true
+TARGET_DIR=""
+SELECTED_TOOL=""
+COMPONENT="all"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --global|-g)
+      IS_GLOBAL=true
+      shift
+      ;;
+    --claude)
+      SELECTED_TOOL="claude"
+      shift
+      ;;
+    --gemini|--antigravity)
+      SELECTED_TOOL="gemini"
+      shift
+      ;;
+    --codex|--chatgpt|--openai)
+      SELECTED_TOOL="codex"
+      shift
+      ;;
+    --all)
+      SELECTED_TOOL="all"
+      shift
+      ;;
+    --prompts)
+      COMPONENT="prompts"
+      shift
+      ;;
+    --skills)
+      COMPONENT="skills"
+      shift
+      ;;
+    *)
+      if [ -z "$TARGET_DIR" ]; then
+        case "$1" in
+          claude|gemini|antigravity|codex|chatgpt|openai|all|vscode|cursor|submodule)
+            SELECTED_TOOL="$1"
+            ;;
+          *)
+            TARGET_DIR="$1"
+            ;;
+        esac
+      elif [ -z "$SELECTED_TOOL" ]; then
+        SELECTED_TOOL="$1"
+      elif [ -z "$COMPONENT" ]; then
+        COMPONENT="$1"
+      fi
+      shift
+      ;;
+  esac
+done
+
+if [ "$IS_GLOBAL" = true ]; then
   TARGET_DIR="${GLOBAL_TARGET_DIR:-${HOME:-~}}"
-  INSTALL_MODE="${2:-all}" # opcoes globais: all (padrao: claude + antigravity), claude, antigravity
-  COMPONENT="${3:-all}"    # opcoes: all (padrao: prompts + skills), prompts, skills
+  if [ -z "$SELECTED_TOOL" ]; then
+    SELECTED_TOOL="all"
+  fi
 else
-  TARGET_DIR="${1:-.}"
-  INSTALL_MODE="${2:-claude}" # opcoes locais: claude (padrao), vscode, cursor, all, submodule
-  COMPONENT="${3:-all}"       # opcoes: all (padrao: prompts + skills), prompts, skills
+  if [ -z "$TARGET_DIR" ]; then
+    TARGET_DIR="."
+  fi
+  if [ -z "$SELECTED_TOOL" ]; then
+    SELECTED_TOOL="all"
+  fi
 fi
+
+INSTALL_MODE="$SELECTED_TOOL"
 
 if [ "$IS_GLOBAL" = true ]; then
   echo -e "${C_BLUE}ℹ️  Instalação GLOBAL para o usuário: ${C_BOLD}${TARGET_DIR}${C_RESET}"
-  echo -e "${C_BLUE}ℹ️  Ambientes globais: ${C_BOLD}${INSTALL_MODE}${C_RESET} (Componentes: ${COMPONENT})"
+  echo -e "${C_BLUE}ℹ️  Ferramenta / LLM: ${C_BOLD}${INSTALL_MODE}${C_RESET} (Componentes: ${COMPONENT})"
 else
   echo -e "${C_BLUE}ℹ️  Diretório alvo: ${C_BOLD}${TARGET_DIR}${C_RESET}"
   echo -e "${C_BLUE}ℹ️  Modo de instalação local: ${C_BOLD}${INSTALL_MODE}${C_RESET} (Componentes: ${COMPONENT})"
@@ -284,20 +343,74 @@ install_files() {
 
 # Dispatcher de instalação local por repositório
 do_install() {
-  local prompt_target="$1"
-  local skill_target="$2"
-
-  if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
-    if [ -n "$prompt_target" ]; then
-      install_prompts "$prompt_target"
-    fi
-  fi
-
-  if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
-    if [ -n "$skill_target" ]; then
-      install_skills "$skill_target"
-    fi
-  fi
+  local mode="$1"
+  case "$mode" in
+    claude|claude-code)
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
+        install_prompts "${TARGET_DIR}/.claude/prompts"
+      fi
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
+        install_skills "${TARGET_DIR}/.claude/skills"
+      fi
+      ;;
+    gemini|antigravity)
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
+        install_prompts "${TARGET_DIR}/.gemini/prompts"
+        install_prompts "${TARGET_DIR}/.agent/prompts"
+      fi
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
+        install_skills "${TARGET_DIR}/.gemini/skills"
+        install_skills "${TARGET_DIR}/.agents/skills"
+        install_skills "${TARGET_DIR}/.agent/skills"
+      fi
+      ;;
+    codex|chatgpt|openai)
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
+        install_prompts "${TARGET_DIR}/.codex/prompts"
+      fi
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
+        install_skills "${TARGET_DIR}/.agents/skills"
+      fi
+      install_chatgpt "${TARGET_DIR}/chatgpt"
+      ;;
+    cursor)
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
+        install_prompts "${TARGET_DIR}/.cursor/rules"
+      fi
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
+        install_skills "${TARGET_DIR}/.cursor/skills"
+        install_skills "${TARGET_DIR}/.agent/skills"
+      fi
+      ;;
+    vscode)
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
+        install_prompts "${TARGET_DIR}/.agent/prompts"
+      fi
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
+        install_skills "${TARGET_DIR}/.agent/skills"
+      fi
+      ;;
+    submodule)
+      install_submodule
+      ;;
+    all|*)
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
+        install_prompts "${TARGET_DIR}/.claude/prompts"
+        install_prompts "${TARGET_DIR}/.gemini/prompts"
+        install_prompts "${TARGET_DIR}/.codex/prompts"
+        install_prompts "${TARGET_DIR}/.agent/prompts"
+        install_prompts "${TARGET_DIR}/.cursor/rules"
+      fi
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
+        install_skills "${TARGET_DIR}/.claude/skills"
+        install_skills "${TARGET_DIR}/.gemini/skills"
+        install_skills "${TARGET_DIR}/.agents/skills"
+        install_skills "${TARGET_DIR}/.agent/skills"
+        install_skills "${TARGET_DIR}/.cursor/skills"
+      fi
+      install_chatgpt "${TARGET_DIR}/chatgpt"
+      ;;
+  esac
 }
 
 # Dispatcher de instalação global no sistema do usuário
@@ -312,24 +425,37 @@ do_global_install() {
         install_skills "${TARGET_DIR}/.claude/skills"
       fi
       ;;
-    antigravity|gemini)
+    gemini|antigravity)
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
+        install_prompts "${TARGET_DIR}/.gemini/prompts"
+      fi
       if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
         install_skills "${TARGET_DIR}/.gemini/skills"
+        install_skills "${TARGET_DIR}/.agents/skills"
         if [ -d "${TARGET_DIR}/.gemini/antigravity-cli" ]; then
           install_skills "${TARGET_DIR}/.gemini/antigravity-cli/skills"
         fi
       fi
       ;;
-    chatgpt|openai)
+    codex|chatgpt|openai)
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
+        install_prompts "${TARGET_DIR}/.codex/prompts"
+      fi
+      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
+        install_skills "${TARGET_DIR}/.agents/skills"
+      fi
       install_chatgpt "${TARGET_DIR}/.chatgpt"
       ;;
     all|*)
       if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
         install_claude_commands "${TARGET_DIR}/.claude/commands"
+        install_prompts "${TARGET_DIR}/.gemini/prompts"
+        install_prompts "${TARGET_DIR}/.codex/prompts"
       fi
       if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
         install_skills "${TARGET_DIR}/.claude/skills"
         install_skills "${TARGET_DIR}/.gemini/skills"
+        install_skills "${TARGET_DIR}/.agents/skills"
         if [ -d "${TARGET_DIR}/.gemini/antigravity-cli" ]; then
           install_skills "${TARGET_DIR}/.gemini/antigravity-cli/skills"
         fi
@@ -343,38 +469,7 @@ do_global_install() {
 if [ "$IS_GLOBAL" = true ]; then
   do_global_install "$INSTALL_MODE"
 else
-  case "$INSTALL_MODE" in
-    submodule)
-      install_submodule
-      ;;
-    claude|claude-code)
-      do_install "${TARGET_DIR}/.claude/prompts" "${TARGET_DIR}/.claude/skills"
-      ;;
-    vscode)
-      do_install "${TARGET_DIR}/.agent/prompts" "${TARGET_DIR}/.agent/skills"
-      ;;
-    cursor)
-      do_install "${TARGET_DIR}/.cursor/rules" "${TARGET_DIR}/.cursor/skills"
-      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
-        install_skills "${TARGET_DIR}/.agent/skills"
-      fi
-      ;;
-    all)
-      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "prompts" ]; then
-        install_prompts "${TARGET_DIR}/.claude/prompts"
-        install_prompts "${TARGET_DIR}/.agent/prompts"
-        install_prompts "${TARGET_DIR}/.cursor/rules"
-      fi
-      if [ "$COMPONENT" = "all" ] || [ "$COMPONENT" = "skills" ]; then
-        install_skills "${TARGET_DIR}/.claude/skills"
-        install_skills "${TARGET_DIR}/.agent/skills"
-        install_skills "${TARGET_DIR}/.cursor/skills"
-      fi
-      ;;
-    agent|*)
-      do_install "${TARGET_DIR}/.agent/prompts" "${TARGET_DIR}/.agent/skills"
-      ;;
-  esac
+  do_install "$INSTALL_MODE"
 fi
 
 echo ""
@@ -383,25 +478,25 @@ if [ "$IS_GLOBAL" = true ]; then
   echo -e "${C_CYAN}👉 Como usar globalmente no seu sistema:${C_RESET}"
   echo -e "   1. No Claude Code (em qualquer pasta/projeto):"
   echo -e "      - Slash Commands: digite /appsec-auditor, /full-app-validator, /tdd, /bdd, etc."
-  echo -e "      - Agent Skills: ativadas automaticamente em ~/.claude/skills/"
-  echo -e "   2. No Google Antigravity (em qualquer workspace):"
-  echo -e "      - Agent Skills: ativadas automaticamente em ~/.gemini/skills/"
-  echo -e "   3. No ChatGPT (OpenAI) e Web Chats:"
+  echo -e "      - Skills globais em: ~/.claude/skills/"
+  echo -e "   2. No Gemini CLI / AntiGravity (em qualquer workspace):"
+  echo -e "      - Skills globais em: ~/.gemini/skills/ e ~/.agents/skills/"
+  echo -e "   3. No OpenAI Codex / ChatGPT:"
+  echo -e "      - Skills globais em: ~/.agents/skills/"
+  echo -e "      - Prompts & Config em: ~/.codex/prompts/ e ~/.chatgpt/"
   echo -e "      - Instruções Mestras: copie ~/.chatgpt/SYSTEM_INSTRUCTIONS.md para as Custom Instructions"
-  echo -e "      - Custom GPTs e Prompts Condensados prontos em: ~/.chatgpt/"
   echo -e "   4. Documentação completa em: ${C_BOLD}https://github.com/brunoez/skills-prompts${C_RESET}"
 else
-  echo -e "${C_CYAN}👉 Como usar no seu projeto:${C_RESET}"
+  echo -e "${C_CYAN}👉 Como usar no seu projeto local:${C_RESET}"
   echo -e "   1. No Claude Code:"
-  echo -e "      - Prompts locais: use no chat (ex: @[.claude/prompts/security/api.md])"
-  echo -e "      - Skills locais: carregadas em .claude/skills/"
-  echo -e "   2. No VSCode / Copilot Chat / Antigravity:"
-  echo -e "      - Prompts: @workspace @[.agent/prompts/driven-development/sdd_spec_driven.md]"
-  echo -e "      - Skills: agentes integrados em .agent/skills/"
-  echo -e "   3. No Cursor:"
-  echo -e "      - Prompts/Regras: @[.cursor/rules/...]"
-  echo -e "      - Skills: em .cursor/skills/ e .agent/skills/"
-  echo -e "   💡 Dica: Para usar em TODOS os projetos sem reinstalar, use: ./install.sh --global"
+  echo -e "      - Prompts: @[.claude/prompts/security/api.md]"
+  echo -e "      - Skills: carregadas em .claude/skills/"
+  echo -e "   2. No Gemini CLI / AntiGravity:"
+  echo -e "      - Skills compartilhadas: carregadas em .gemini/skills/ e .agents/skills/"
+  echo -e "   3. No OpenAI Codex / ChatGPT:"
+  echo -e "      - Skills compartilhadas: carregadas em .agents/skills/"
+  echo -e "      - Prompts e Custom GPTs: pasta chatgpt/ ou .codex/prompts/"
+  echo -e "   💡 Dica para instalar globalmente no sistema: ./install.sh --global [--claude|--gemini|--codex|--all]"
   echo -e "   4. Documentação completa em: ${C_BOLD}https://github.com/brunoez/skills-prompts${C_RESET}"
 fi
 echo ""

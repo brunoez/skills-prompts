@@ -5,6 +5,19 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico (SemVer)](https://semver.org/lang/pt-BR/).
 
+## [2.6.1] - 2026-10-08
+
+### Aprimorado (Instalação Modular por LLM e Matriz Local vs. Global)
+
+- **Instalador com Flags Específicas por Assistente (`install.sh`):**
+  - Adicionadas flags dedicadas para cada ferramenta/LLM: `--claude`, `--gemini` (alias `--antigravity`), e `--codex` (aliases `--chatgpt`, `--openai`).
+  - Compatibilidade com escopo local (`./install.sh --<llm>`) e escopo global (`./install.sh --global --<llm>`), além de instalação completa (`--all` / `--global --all`).
+  - Respeito à estrutura canônica de cada ferramenta: `.claude/` e `~/.claude/` para Claude Code; `.gemini/` e `~/.gemini/` para Gemini CLI; `.codex/`, `.agents/skills/` e `~/.agents/skills/` para OpenAI Codex / ChatGPT.
+- **Documentação e Guia de Instalação (`README.md`):**
+  - Reorganização didática em 4 partes essenciais: (1) Instalação rápida padrão, (2) Instalação local por LLM, (3) Instalação global por LLM e (4) Arquitetura de diretórios.
+  - Inclusão das tabelas comparativas "Local vs. Global" e "Arquivos padrão por ferramenta" para Claude Code, Gemini CLI e OpenAI Codex.
+  - Esclarecimento sobre o compartilhamento nativo de skills entre Gemini e Codex via `.agents/skills/` e symlinks no Claude Code.
+
 ## [2.6.0] - 2026-10-08
 
 ### Adicionado (Instalação Global, Suporte Universal ChatGPT & Modelos Agnósticos)
