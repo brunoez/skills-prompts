@@ -1,3 +1,12 @@
+# Environment Variables & Secrets
+.env
+.env.*
+*.pem
+*.key
+*.crt
+*.pfx
+*.p12
+
 # Python & Virtual Environments
 .venv/
 .audit-venv/
@@ -9,6 +18,7 @@ __pycache__/
 env/
 venv/
 ENV/
+.pytest_cache/
 
 # OS & IDE
 .DS_Store
@@ -17,6 +27,12 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo
+
+# AI Assistants Local State & Settings
+.claude/
+.gemini/
+.agents/
+.codex/
 
 # Node & Package Managers
 node_modules/
@@ -31,6 +47,8 @@ docs/*/trufflehog-raw.json
 coverage/
 .nyc_output/
 *.log
+results.sarif
+findings.json
 
 # Scratch directory
 scratch/
