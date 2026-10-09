@@ -1,0 +1,13 @@
+title = "Gitleaks Configuration for prompts & agent skills"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Allowlist for synthetic test fixtures, examples, and markdown false positives"
+paths = [
+    '''tests/.*''',
+    '''skills/.*/examples/.*''',
+    '''skills/.*/tests/.*''',
+    '''prompts/jev/secret_detection_triage\.md'''
+]

@@ -29,7 +29,7 @@ index 1234567..89abcdef 100644
 +++ b/src/api/users.ts
 @@ -10,6 +10,12 @@ export class UserController {
 +  async getReport(req: Request, res: Response) {
-+    const token = "api_key_secret_1234567890abcdef";
++    const token = "TESTING_DUMMY_SECRET_KEY_123456789";
 +    const userId = req.query.id;
 +    const data = await db.$queryRawUnsafe(`SELECT * FROM users WHERE id = '${userId}'`);
 +    return res.json(data);

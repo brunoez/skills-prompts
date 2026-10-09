@@ -1,0 +1,5 @@
+# Gitleaks ignore file
+# Formato: commit:file:rule-id:line
+3dbffb0768398e8b9e1024ab3add0d761bc73958:skills/security-diff-scan/examples/vulnerable_pr.patch:generic-api-key:7
+3dbffb0768398e8b9e1024ab3add0d761bc73958:tests/test_security_diff_scan.py:generic-api-key:32
+85d46b01d3ce3e7b0d2dd479ac169d17db24bfd5:prompts/jev/secret_detection_triage.md:generic-api-key:38
