@@ -5,6 +5,22 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico (SemVer)](https://semver.org/lang/pt-BR/).
 
+## [2.8.0] - 2026-10-08
+
+### Adicionado & Aprimorado (Cadeia de Evidência Formal, Gate de Consentimento e Master Intent Router)
+
+- **Cadeia de Evidência Estrita (`Evidence → Finding → Path`):**
+  - Incorporação do contrato formal de evidências na Fase 3 de [`skills/appsec-auditor/SKILL.md`](skills/appsec-auditor/SKILL.md) e na Seção 5 de [`skills/appsec-auditor/references/viability-critique.md`](skills/appsec-auditor/references/viability-critique.md).
+  - Vínculo mandatório entre cada vulnerabilidade confirmada (`F-{nnn}`) e pelo menos um registro imutável de evidência (`E-{nnn}`).
+  - Suporte aos campos `repro_command` (comando determinístico de reprodução) e `content_hash` (SHA-256 do trecho ou arquivo) no gerador SARIF 2.1.0 ([`skills/appsec-auditor/scripts/sarif_builder.py`](skills/appsec-auditor/scripts/sarif_builder.py)) e nos relatórios executivos Markdown e templates de Issue ([`skills/appsec-auditor/scripts/report_generator.py`](skills/appsec-auditor/scripts/report_generator.py)).
+- **Protocolo de Consentimento & Gate de Escopo (*Consent-Gated Execution*):**
+  - Implementação de salvaguarda operacional em [`chatgpt/SYSTEM_INSTRUCTIONS.md`](chatgpt/SYSTEM_INSTRUCTIONS.md) e na Fase 5 de [`skills/appsec-auditor/SKILL.md`](skills/appsec-auditor/SKILL.md).
+  - Proibição estrita de execução de comandos com efeitos colaterais sem consentimento prévio do usuário e isolamento obrigatório de testes de abuso de segurança (PoCs) em ambientes mockados/locais.
+- **Matriz de Roteamento Rápido (*Master Intent Router*):**
+  - Inclusão da tabela de despacho rápido em [`README.md`](README.md) na seção "Qual Prompt Usar?", mapeando instantaneamente o sinal técnico do desenvolvedor (PR diff, alerta SCA, merge gate, auditoria holística, refatoração DDD, guardrails) para a Skill ou Prompt primária recomendada.
+- **Testes & Qualidade:**
+  - Expansão dos testes unitários em [`tests/test_appsec_auditor.py`](tests/test_appsec_auditor.py) cobrindo propriedades de reprodutibilidade e hash de fixity no pipeline de SARIF e Markdown.
+
 ## [2.7.0] - 2026-10-08
 
 ### Adicionado & Aprimorado (Integração do OpenAI Codex Security: Agent Skills, Tupla Estática & Prompts Cirúrgicos)

@@ -65,7 +65,7 @@ Eliminate false positives and verify release-build viability using [Viability Cr
 1. **Reachability Check:** Confirm the vulnerable path is actively routed and reachable from external inputs (eliminate dead code).
 2. **Release Viability:** Discard `assert`-only issues that disappear in release/production builds (`python -O`, bundled production).
 3. **Upstream Neutralization:** Verify if reverse proxies, WAFs, or global DTO validation pipes already strip or sanitize the input.
-4. **Static Assessment Tuple:** Document `Source`, `Control`, `Sink`, `Reachable Path`, `Boundary`, `Counterevidence` and `Proof Gaps` before confirming any finding.
+4. **Static Assessment Tuple & Evidence Contract:** Document `Source`, `Control`, `Sink`, `Reachable Path`, `Boundary`, `Counterevidence` and `Proof Gaps`. Bind every verified finding (`F-{nnn}`) to an immutable Evidence record (`E-{nnn}`) with a deterministic `repro_command` and fixity `content_hash`.
 
 ### Phase 4: Deterministic OWASP Risk Rating & Calibrated Scoring
 Calculate the practical risk using the [Risk Rating & Mantis Calibration](references/risk-rating-methodology.md):
@@ -78,7 +78,7 @@ $$\text{Calibrated Score (1-10)} = \text{Base Severity} \times M_{\text{evidence
 * **1.0 a 3.9** = 🔵 **BAIXA / INFO** (Verbose technical banner, missing non-critical header).
 
 ### Phase 5: PoC Reproduction, Remediation & Artifact Generation
-1. **PoC Micro-Harness:** Structure reproducible test cases following [PoC Reproduction Harness](references/poc-reproduction-harness.md) (Tier 1 unit test, Tier 2 functional mock, or Tier 3 sandbox).
+1. **Consent-Gated PoC Harness:** Structure reproducible test cases following [PoC Reproduction Harness](references/poc-reproduction-harness.md). PoCs MUST execute exclusively in isolated local test harnesses (mocks/pytest/vitest) and never target live production infrastructure. Obtain explicit user consent before executing commands with external network or state side-effects.
 2. **Terminal Prioritization Table:** Present a quick-wins summary table.
 3. **Defensive Code Fixes:** Provide drop-in patches implementing defense-in-depth.
 4. **SARIF 2.1.0 & Markdown Export:** Execute `sarif_builder.py` and `report_generator.py`.

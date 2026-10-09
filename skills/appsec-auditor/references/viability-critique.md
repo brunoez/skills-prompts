@@ -84,3 +84,34 @@ To eliminate false positives deterministically, an auditor or agent must identif
 
 > **Rule:** If Counterevidence proves the sink is unreachable or sanitized, the finding is discarded. If material Proof Gaps exist, confidence and severity must be explicitly downgraded.
 
+---
+
+## 5. The Evidence Chain Contract (Evidence → Finding → Path)
+
+To eliminate unverified claims and speculative vulnerabilities, every verified security finding must follow the strict Evidence Contract:
+
+> [!IMPORTANT]
+> **Normative Finding Rule:**
+> A finding (`F-{nnn}`) CANNOT be confirmed or exported to SARIF / Issue Tracker without at least one immutable evidence record (`E-{nnn}`).
+
+### Structure of an Evidence Record (`E-{nnn}`)
+
+Each piece of static or dynamic evidence must document:
+
+```yaml
+### E-001
+- source_type: code | test | command | config | log
+- source_ref: "src/controllers/invoice.controller.ts#L42-L48"
+- content_hash: "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+- repro_command: "pytest tests/security/test_bola.py -k test_invoice_access" # Ou "offline_static_inspection"
+- raw_excerpt: |
+    // Desensitized code excerpt proving the unsanitized sink or missing boundary
+    const invoice = await prisma.invoice.findUnique({ where: { id: req.params.id } });
+- linked_finding: "F-001"
+```
+
+### Deterministic Requirements for Confirmation:
+1. **Reproducibility (`repro_command`):** The auditor must provide either an automated micro-test command, a static assertion command, or mark as `offline_static_inspection`.
+2. **Fixity Hash (`content_hash`):** The SHA-256 of the affected source file or code snippet must be recorded to guarantee audit immutability across commits.
+3. **Desensitization:** Evidence excerpts must be desensitized — never embed real production secrets, API tokens, or PII.
+

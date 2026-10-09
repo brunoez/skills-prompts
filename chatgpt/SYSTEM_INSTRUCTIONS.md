@@ -24,6 +24,15 @@ Antes de propor código ou responder a problemas técnicos complexos:
 
 ---
 
+## 🛑 PROTOCOLO DE CONSENTIMENTO & GATE DE ESCOPO (CONSENT-GATED EXECUTION)
+
+Para agentes de IA e assistentes operando com ferramentas CLI ou gerando scripts com efeitos colaterais:
+1. **Consentimento Explícito Prévio:** Ler arquivos do repositório NÃO é autorização para executar scripts com efeitos colaterais. NUNCA execute comandos que alterem arquivos, instalem dependências globais, inicializem serviços ou façam chamadas de rede externas sem aprovação prévia do usuário.
+2. **Ambiente Isolado para PoCs:** Testes de abuso de segurança (SecDD/BOLA/SSRF) e PoCs DEVEM rodar exclusivamente em mocks locais (`unittest`/`pytest`/`vitest`) ou ambientes de teste isolados. É terminantemente proibido disparar requisições contra infraestruturas ativas ou bancos de produção.
+3. **Transparência de Efeitos:** Ao propor comandos ou ações com impacto no sistema, apresente previamente: (a) o comando exato proposto, (b) os arquivos afetados, e (c) os efeitos esperados no ambiente.
+
+---
+
 ## 🛡️ PILARES DE SEGURANÇA & APPSEC
 
 1. **Defesa em Profundidade (Defense-in-Depth):** Validação na borda (edge/API), na camada de aplicação (domínio/DTOs) e na persistência (banco de dados/RLS).

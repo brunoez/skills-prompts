@@ -159,28 +159,38 @@ class TestReportGenerator(unittest.TestCase):
             "risk_score": 9.5,
             "viability": "RELEASE_EXPLOITABLE",
             "poc_tier": "TIER_1_UNIT",
+            "repro_command": "pytest tests/security/test_doc.py -k test_tenant_boundary",
+            "content_hash": "sha256:fedcba9876543210abcdef0123456789fedcba9876543210abcdef0123456789",
         }
         findings = load_findings_from_dict([calibrated_item])
         self.assertEqual(len(findings), 1)
         self.assertEqual(findings[0].risk_score, 9.5)
         self.assertEqual(findings[0].viability, "RELEASE_EXPLOITABLE")
         self.assertEqual(findings[0].poc_tier, "TIER_1_UNIT")
+        self.assertEqual(findings[0].repro_command, "pytest tests/security/test_doc.py -k test_tenant_boundary")
+        self.assertEqual(findings[0].content_hash, "sha256:fedcba9876543210abcdef0123456789fedcba9876543210abcdef0123456789")
 
         sarif = build_sarif(findings)
         res_props = sarif["runs"][0]["results"][0]["properties"]
         self.assertEqual(res_props["risk_score"], 9.5)
         self.assertEqual(res_props["viability"], "RELEASE_EXPLOITABLE")
         self.assertEqual(res_props["poc_tier"], "TIER_1_UNIT")
+        self.assertEqual(res_props["repro_command"], "pytest tests/security/test_doc.py -k test_tenant_boundary")
+        self.assertEqual(res_props["content_hash"], "sha256:fedcba9876543210abcdef0123456789fedcba9876543210abcdef0123456789")
 
         md_report = generate_markdown_report([calibrated_item])
         self.assertIn("Mantis Calibrated Score:** `9.5/10.0`", md_report)
         self.assertIn("Viabilidade em Release:** `RELEASE_EXPLOITABLE`", md_report)
         self.assertIn("PoC Reproduction Tier:** `TIER_1_UNIT`", md_report)
+        self.assertIn("Hash da Evidência (SHA-256):** `sha256:fedcba9876543210abcdef0123456789fedcba9876543210abcdef0123456789`", md_report)
+        self.assertIn("pytest tests/security/test_doc.py -k test_tenant_boundary", md_report)
 
         issue_tpl = generate_issue_template(calibrated_item)
         self.assertIn("Calibrated Score:** `9.5/10.0`", issue_tpl)
         self.assertIn("Viability:** `RELEASE_EXPLOITABLE`", issue_tpl)
         self.assertIn("PoC Tier:** `TIER_1_UNIT`", issue_tpl)
+        self.assertIn("Repro:** `pytest tests/security/test_doc.py -k test_tenant_boundary`", issue_tpl)
+        self.assertIn("Hash:** `sha256:fedcba987...`", issue_tpl)
 
 
 if __name__ == "__main__":

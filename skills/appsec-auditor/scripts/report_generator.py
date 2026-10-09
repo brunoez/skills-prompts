@@ -97,6 +97,8 @@ def generate_markdown_report(findings: List[Dict[str, Any]], title: str = "Relat
             lines.append(f"- **Viabilidade em Release:** `{f.get('viability')}`")
         if f.get("poc_tier") or f.get("poc_type"):
             lines.append(f"- **PoC Reproduction Tier:** `{f.get('poc_tier') or f.get('poc_type')}`")
+        if f.get("content_hash"):
+            lines.append(f"- **Hash da Evidência (SHA-256):** `{f.get('content_hash')}`")
 
         lines.extend([
             f"- **Classificação:** OWASP: `{f.get('owasp', 'N/A')}` | ASVS: `{f.get('asvs', 'N/A')}` | CWE: `{f.get('cwe', 'N/A')}`",
@@ -105,6 +107,15 @@ def generate_markdown_report(findings: List[Dict[str, Any]], title: str = "Relat
             f"{f.get('description', 'Sem descrição.')}",
             "",
         ])
+
+        if f.get("repro_command"):
+            lines.extend([
+                "**Comando de Reprodução (Repro Command):**",
+                "```bash",
+                f"{f.get('repro_command').strip()}",
+                "```",
+                "",
+            ])
 
         if f.get("vulnerable_code"):
             lines.extend([
@@ -147,6 +158,10 @@ def generate_issue_template(finding: Dict[str, Any]) -> str:
         extra_meta.append(f"**Viability:** `{finding.get('viability')}`")
     if finding.get("poc_tier") or finding.get("poc_type"):
         extra_meta.append(f"**PoC Tier:** `{finding.get('poc_tier') or finding.get('poc_type')}`")
+    if finding.get("repro_command"):
+        extra_meta.append(f"**Repro:** `{finding.get('repro_command')}`")
+    if finding.get("content_hash"):
+        extra_meta.append(f"**Hash:** `{finding.get('content_hash')[:16]}...`")
     extra_str = ("  \n" + " | ".join(extra_meta)) if extra_meta else ""
 
     return f"""### Title: [SEC] {finding.get('title')} ({sev})

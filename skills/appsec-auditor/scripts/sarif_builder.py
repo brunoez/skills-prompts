@@ -35,6 +35,8 @@ class Finding:
     risk_score: Optional[float] = None
     viability: Optional[str] = None
     poc_tier: Optional[str] = None
+    repro_command: Optional[str] = None
+    content_hash: Optional[str] = None
     properties: Dict[str, Any] = field(default_factory=dict)
 
 
@@ -138,6 +140,10 @@ def build_sarif(
             result["properties"]["viability"] = f.viability
         if f.poc_tier is not None:
             result["properties"]["poc_tier"] = f.poc_tier
+        if f.repro_command is not None:
+            result["properties"]["repro_command"] = f.repro_command
+        if f.content_hash is not None:
+            result["properties"]["content_hash"] = f.content_hash
 
 
         if f.remediation:
@@ -198,6 +204,8 @@ def load_findings_from_dict(data: List[Dict[str, Any]]) -> List[Finding]:
             risk_score=float(item["risk_score"]) if item.get("risk_score") is not None else None,
             viability=item.get("viability"),
             poc_tier=item.get("poc_tier") or item.get("poc_type"),
+            repro_command=item.get("repro_command"),
+            content_hash=item.get("content_hash"),
             properties=item.get("properties", {}),
         )
         findings.append(finding)

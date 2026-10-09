@@ -322,6 +322,25 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 
 ## 💡 Qual Prompt Usar? (Guia de Ação Rápida com Exemplos)
 
+### ⚡ Matriz de Roteamento Rápido (Master Intent Router)
+
+> [!TIP]
+> **Roteamento Cirúrgico (Zero Overkill & Zero Overlap):**  
+> Identifique o gatilho da sua demanda técnica abaixo para ativar imediatamente a Skill ou Prompt com o melhor custo-benefício de contexto e velocidade.
+
+| Sinal / Gatilho Técnico | Objetivo da Tarefa | Solução Primária Recomendada | Tipo |
+| :--- | :--- | :--- | :--- |
+| **Pull Request aberto / Git Diff** | Auditar apenas linhas adicionadas/modificadas e call-sites | [`skills/security-diff-scan`](skills/security-diff-scan/SKILL.md) · [`prompts/security/security_diff_scan.md`](prompts/security/security_diff_scan.md) | Skill / Prompt |
+| **Alerta SAST / SCA / Dependabot** | Triar alcançabilidade de CVE contra código vivo | [`skills/triage-finding`](skills/triage-finding/SKILL.md) · [`prompts/security/triage_findings.md`](prompts/security/triage_findings.md) | Skill / Prompt |
+| **Decisão de Auto-Merge em PR** | Avaliar risco de merge com rubrica de 5 critérios | [`skills/assess-patch-risk`](skills/assess-patch-risk/SKILL.md) · [`prompts/security/patch_risk_assessment.md`](prompts/security/patch_risk_assessment.md) | Skill / Prompt |
+| **Auditoria profunda de API / Código** | OWASP ASTF, ASVS L2, PoCs reprodutíveis & SARIF | [`skills/appsec-auditor`](skills/appsec-auditor/SKILL.md) · [`prompts/security/appsec_auditor.md`](prompts/security/appsec_auditor.md) | Skill / Prompt |
+| **Diagnóstico Geral da Aplicação** | Health Card 360° (Arquitetura, SRE, Testes) sem overkill | [`skills/full-app-validator`](skills/full-app-validator/SKILL.md) · [`prompts/driven-development/full_app_validator.md`](prompts/driven-development/full_app_validator.md) | Skill / Prompt |
+| **Nova Feature / Refatoração Crítica** | Ciclo DDD $\rightarrow$ DataDD $\rightarrow$ TypeDD $\rightarrow$ SDD $\rightarrow$ TDD | [`skills/driven-development`](skills/driven-development/SKILL.md) · [`prompts/driven-development/tdd_test_driven.md`](prompts/driven-development/tdd_test_driven.md) | Skill / Prompt |
+| **Guardrails de IA / Decisão <100ms** | Triagem System One de prompts, PII e ferramentas | [`skills/jev-system-one`](skills/jev-system-one/SKILL.md) · [`prompts/jev/intent_routing_dispatch.md`](prompts/jev/intent_routing_dispatch.md) | Skill / Prompt |
+| **Hardening de CI/CD, Docker & K8s** | Segurança de pipelines, containers rootless e DSOMM | [`prompts/devops/cicd_pipeline.md`](prompts/devops/cicd_pipeline.md) · [`prompts/devops/iac_docker_k8s.md`](prompts/devops/iac_docker_k8s.md) | Prompts |
+
+---
+
 ### 🛡️ 1. Segurança & AppSec
 
 <details>
