@@ -1,0 +1,12 @@
+diff --git a/src/api/users.ts b/src/api/users.ts
+index 1234567..89abcdef 100644
+--- a/src/api/users.ts
++++ b/src/api/users.ts
+@@ -10,6 +10,12 @@ export class UserController {
++  async getReport(req: Request, res: Response) {
++    const token = "api_key_secret_1234567890abcdef";
++    const userId = req.query.id;
++    const data = await db.$queryRawUnsafe(`SELECT * FROM users WHERE id = '${userId}'`);
++    return res.json(data);
++  }
+ }

@@ -23,13 +23,16 @@ Use this skill whenever:
 
 ## When NOT to Use
 
+* For surgical PR diff reviews, commit range audits or branch diffs (use `security-diff-scan` or `prompts/security/security_diff_scan.md`).
+* For evaluating the auto-merge risk of an existing patch without editing it (use `patch-risk-assessment` or `prompts/security/patch_risk_assessment.md`).
+* For fast static triage of third-party SAST/SCA alerts without deep auditing (use `triage-findings` or `prompts/security/triage_findings.md`).
 * For pre-implementation architecture threat modeling before code exists (use `threat-modeler` or `prompts/security/threat_modeling.md`).
 * For pure unit test creation without security abuse testing (use `driven-development`).
 * For fast System 1 runtime guardrails or prompt screening (use `jev-system-one`).
 
 ---
 
-## 5-Phase Audit Workflow (Mantis-Enhanced)
+## 5-Phase Audit Workflow (Mantis & Codex-Enhanced)
 
 ```mermaid
 flowchart LR
@@ -45,17 +48,24 @@ flowchart LR
 3. **Identify Trust Boundaries:** Mark unauthenticated public endpoints vs authenticated multi-tenant routes.
 
 ### Phase 2: Systematic Code Inspection (Zero Speculative Assumptions)
-Audit each file line by line against the core vulnerability vectors. Consult the modular references:
+Audit each file line by line against the core vulnerability vectors applying the **4 Investigator Perspectives**:
+* **Forward:** Trace untrusted user input from entry points toward sensitive sinks.
+* **Backward:** Start at sensitive operations (ORM queries, shell executions, tokens) and trace callers back to public boundaries.
+* **Authorization & Tenancy:** Compare guards and tenant filters across sibling routes and resources.
+* **Open-Ended:** Search for structural and logical anomalies outside rigid checklists.
+
+Consult the modular references:
 * [OWASP ASTF & API Top 10 Guide](references/owasp-api-astf.md)
 * [ASVS v4.0.3 Verification Checklist](references/asvs-v4-checklist.md)
 * [Access Control & BOLA Deep Dive](references/access-control-bola.md)
 * [SSRF Prevention & Safe Egress](references/ssrf-prevention.md)
 
-### Phase 3: Viability Critique & Anti-Hallucination (Google Mantis Inspired)
+### Phase 3: Viability Critique & Anti-Hallucination (Google Mantis & Codex Pattern)
 Eliminate false positives and verify release-build viability using [Viability Critique](references/viability-critique.md):
 1. **Reachability Check:** Confirm the vulnerable path is actively routed and reachable from external inputs (eliminate dead code).
 2. **Release Viability:** Discard `assert`-only issues that disappear in release/production builds (`python -O`, bundled production).
 3. **Upstream Neutralization:** Verify if reverse proxies, WAFs, or global DTO validation pipes already strip or sanitize the input.
+4. **Static Assessment Tuple:** Document `Source`, `Control`, `Sink`, `Reachable Path`, `Boundary`, `Counterevidence` and `Proof Gaps` before confirming any finding.
 
 ### Phase 4: Deterministic OWASP Risk Rating & Calibrated Scoring
 Calculate the practical risk using the [Risk Rating & Mantis Calibration](references/risk-rating-methodology.md):

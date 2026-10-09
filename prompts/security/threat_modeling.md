@@ -11,7 +11,16 @@ A modelagem deve responder sistematicamente às 4 perguntas essenciais da engenh
 3. *O que faremos a respeito?* (Matriz de contramedidas arquiteturais e defesas em profundidade).
 4. *Fizemos um bom trabalho?* (Validação de cobertura, testes de regressão e critérios de mitigação).
 
-Ao final da modelagem de ameaças, você deve listar os riscos no chat/terminal e gerar um relatório completo em formato PDF e templates de Contramedidas/Issues em Markdown para o GitHub.
+Ao final da modelagem de ameaças, você deve listar os riscos no chat/terminal, estruturar os **Pacotes de Investigação (Investigation Packets)** acionáveis para auditoria no código e gerar um relatório completo em formato PDF e templates de Contramedidas/Issues em Markdown para o GitHub.
+
+---
+
+## 🎯 DEMARCAÇÃO DE FRONTEIRAS & QUANDO NÃO USAR (ZERO OVERLAP)
+
+* ✅ **USE ESTE PROMPT QUANDO:** Mapear a arquitetura global, fluxos de dados (DFD), fronteiras de confiança (*Trust Boundaries*) e enumerar ameaças STRIDE/PASTA em nível de design e arquitetura.
+* ⛔ **NÃO USE PARA AUDITORIA ESTÁTICA DETALHADA NO CÓDIGO-FONTE:** Para auditoria de vulnerabilidades de implementação no código real, utilize [`prompts/security/appsec_auditor.md`](appsec_auditor.md).
+* ⛔ **NÃO USE PARA REDIGIR DIRETRIZES DE POLÍTICA DO REPOSITÓRIO:** Para redigir ou auditar o arquivo `SECURITY.md` e regras de escopo para agentes e comunidade, utilize [`prompts/security/security_policy.md`](security_policy.md).
+* ⛔ **NÃO USE PARA REVISÃO CIRÚRGICA DE PRS:** Para auditoria rápida de diffs em Pull Requests, utilize [`prompts/security/security_diff_scan.md`](security_diff_scan.md).
 
 ---
 
@@ -90,6 +99,20 @@ Para CADA ameaça mapeada:
 - **Evidência no Código / Infra:** Trecho de código ou configuração que comprova a brecha.
 - **Contramedida Arquitetural Recomendada:** Código corrigido ou padrão de arquitetura defensiva (ex: Zero Trust, mTLS, Token Exchange, Outbox Pattern, Sanitização).
 - **Estratégia de Validação:** Como testar e garantir que a contramedida neutralizou a ameaça.
+
+### PARTE 3: PACOTES DE INVESTIGAÇÃO DE SEGURANÇA (INVESTIGATION PACKETS)
+Para conectar a modelagem diretamente à auditoria no código (alimentando o `appsec_auditor.md` ou `security_diff_scan.md`), estruture um pacote acionável por ameaça:
+
+```markdown
+#### 📦 Pacote de Investigação: [PKT-ID] - [Nome da Ameaça]
+- **Ator de Ameaça:** [ex: Usuário autenticado sem permissões administrativas / Atacante anônimo externo]
+- **Pré-requisitos:** [ex: Possuir token JWT válido na organização X / Conexão de rede direta à porta 8080]
+- **Ativo Protegido & Invariante:** [ex: Registros financeiros do tenant Y não podem ser lidos por outros tenants]
+- **Pontos de Entrada (Sources):** [ex: `POST /api/v1/invoices/:id/refund`, parâmetro `reason`]
+- **Operações Sensíveis (Sinks):** [ex: `paymentGateway.issueRefund()`, `db.invoices.update()`]
+- **Controles Esperados:** [ex: Verificação de tenant no WHERE + permissão `invoices:manage` + validação idempotente]
+- **Arquivos-Chave no Código:** [ex: `src/controllers/invoice.ts`, `src/services/billing.ts`, `prisma/schema.prisma`]
+```
 
 ---
 

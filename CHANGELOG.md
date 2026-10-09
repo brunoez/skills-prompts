@@ -5,6 +5,40 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico (SemVer)](https://semver.org/lang/pt-BR/).
 
+## [2.7.0] - 2026-10-08
+
+### Adicionado & Aprimorado (Integração do OpenAI Codex Security: Agent Skills, Tupla Estática & Prompts Cirúrgicos)
+
+- **Novas Agent Skills Executáveis (Padrão agentskills.io & Codex Security):**
+  - **`skills/security-diff-scan`:** Auditoria cirúrgica de segurança em Pull Requests e Git Diffs focada estritamente em arquivos adicionados/modificados/deletados e seus chamadores diretos.
+    - CLI determinística `scripts/diff_scanner.py` com suporte a formatos texto, JSON e exportação SARIF 2.1.0 (para GitHub Code Scanning) e parecer Markdown para code review.
+    - Guias em `references/diff-review-methodology.md` e `references/regression-checklist.md`.
+    - Patches de exemplo vulneráveis e seguros para testes de CI em `examples/`.
+  - **`skills/assess-patch-risk`:** Avaliação imutável de risco de regressão de patches de IA e elegibilidade formal para auto-merge.
+    - CLI `scripts/patch_risk_checker.py` com análise em 5 pontos: escopo do diff, detecção de migrações/schemas de banco, arquivos críticos de auth/billing, redução acidental de defesas e presença de testes automatizados.
+    - Decisões padronizadas: `auto_merge_candidate`, `human_review_required`, `revise`, `block` e `hold_for_evidence`.
+    - Rúbrica detalhada em `references/patch-risk-rubric.md` e diffs de exemplo em `examples/`.
+  - **`skills/triage-finding`:** Triagem rápida e determinística de alertas de SAST/SCA e CVEs de scanners externos (Dependabot, Snyk, Trivy, CodeQL) contra o código real.
+    - CLI `scripts/triage_evaluator.py` com análise estática de alcançabilidade (*reachability analysis*) multi-linguagem (Python, TS/JS, Go, Rust, Java).
+    - Vereditos auditáveis: `confirmed` (vulnerabilidade real e invocada), `not_actionable` (código morto ou símbolo não chamado) e `needs_review`.
+    - Critérios de evidência em `references/static-triage-criteria.md` e amostras em `examples/findings_sample.json`.
+- **Novos Prompts de Segurança (`prompts/security/`):**
+  - [`security_diff_scan.md`](prompts/security/security_diff_scan.md): Revisão cirúrgica de Pull Requests e Git Diffs antes do merge.
+  - [`patch_risk_assessment.md`](prompts/security/patch_risk_assessment.md): Avaliação de risco de patches imutáveis e portão de auto-merge.
+  - [`triage_findings.md`](prompts/security/triage_findings.md): Triagem rápida de alertas externos de SAST/SCA sem fadiga de alertas.
+  - [`security_policy.md`](prompts/security/security_policy.md): Definição de governança, fronteiras de confiança e políticas formais em `SECURITY.md`.
+- **Harmonização e Fronteiras Estritas (*Zero Overlap*):**
+  - Refinamento de [`appsec_auditor.md`](prompts/security/appsec_auditor.md), [`adversarial_patching.md`](prompts/security/adversarial_patching.md), [`threat_modeling.md`](prompts/security/threat_modeling.md), [`sec_advisor.md`](prompts/security/sec_advisor.md) e [`vcs_security_history.md`](prompts/security/vcs_security_history.md) com seções explícitas de demarcação de escopo e quando NÃO usar.
+  - Coexistência mandatória de **OWASP ASVS v4.0.3** e **OWASP Risk Rating Methodology** em todos os 23 prompts de segurança do repositório.
+- **Aprimoramento da Skill `appsec-auditor`:**
+  - Atualização de `skills/appsec-auditor/SKILL.md` delineando o papel do auditor 360° frente às novas skills cirúrgicas.
+  - Enriquecimento de `skills/appsec-auditor/references/viability-critique.md` com a **Tupla de Avaliação Estática** (`Source` $\rightarrow$ `Control` $\rightarrow$ `Sink` $\rightarrow$ `Counterevidence` $\rightarrow$ `Proof Gaps`).
+- **Governança, Sincronização & Testes:**
+  - `install.sh`: Atualizado array `SKILL_NAMES` com 7 Agent Skills e catálogo com 45 prompts estruturados.
+  - `tests/test_integrity.py`: Atualizado catálogo `EXPECTED_SKILLS` e incluídos testes unitários das novas skills.
+  - `README.md`: Atualizada árvore de diretórios, tabela comparativa de Agent Skills e contagem para 45 prompts.
+  - Bateria de testes expandida para 58 testes no `pytest` com 100% de sucesso.
+
 ## [2.6.1] - 2026-10-08
 
 ### Aprimorado (Instalação Modular por LLM e Matriz Local vs. Global)

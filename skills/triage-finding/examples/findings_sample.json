@@ -1,0 +1,30 @@
+[
+  {
+    "id": "GHSA-1111-2222-3333",
+    "package": "pyyaml",
+    "vulnerable_symbol": "load",
+    "severity": "HIGH",
+    "description": "Arbitrary code execution when parsing untrusted YAML via yaml.load without Loader."
+  },
+  {
+    "id": "GHSA-4444-5555-6666",
+    "package": "unused-legacy-lib",
+    "vulnerable_symbol": "exec_untrusted",
+    "severity": "CRITICAL",
+    "description": "Remote code execution in legacy library that is no longer imported anywhere in the codebase."
+  },
+  {
+    "id": "CVE-2024-12345",
+    "package": "requests",
+    "vulnerable_symbol": null,
+    "severity": "MEDIUM",
+    "description": "Potential credential leakage in redirects advisory without a specific vulnerable method specified."
+  },
+  {
+    "id": "SNYK-PYTHON-ARGPARSE-0001",
+    "package": "argparse",
+    "vulnerable_symbol": "non_existent_exploit_method",
+    "severity": "LOW",
+    "description": "Hypothetical advisory where library is imported but the affected function is never called."
+  }
+]

@@ -67,3 +67,20 @@ Every verified finding must be stamped with a `viability` property:
 | `UPSTREAM_MITIGATED` | Vulnerability exists in handler but is filtered by reverse proxy or gateway. | Mantis Score Multiplier: **0.6x** (Downgrade to Medium/Low) |
 | `DEBUG_ONLY` | Exploitable only in local dev or with debug flags enabled. | Mantis Score Multiplier: **0.3x** (Downgrade to Low/NIT) |
 | `DEAD_CODE` | Code is unreachable from public or private interfaces. | **Descartado / Not reported in SARIF** |
+
+---
+
+## 4. The Static Assessment Tuple (Codex Security Standard)
+
+To eliminate false positives deterministically, an auditor or agent must identify the smallest useful evidence tuple before confirming any vulnerability:
+
+- **Source:** The untrusted external trigger, user-controlled parameter, header, or body property.
+- **Control:** The specific guard, sanitizer, validator, or missing security control.
+- **Sink:** The dangerous operation (e.g., ORM query, command execution, memory allocation, sensitive data response).
+- **Reachable Path:** The demonstrable call sequence connecting `Source` $\rightarrow$ `Control` $\rightarrow$ `Sink` under concrete preconditions.
+- **Boundary:** The trust boundary violated (e.g., public API vs. internal network, multi-tenant separation).
+- **Counterevidence:** Specific static facts in the repository that weaken, defeat, or scope down the claim (e.g., upstream middleware, DTO validation pipes, strict typing).
+- **Proof Gaps:** Material missing facts that prevent a stronger conclusion (e.g., dynamic dependency resolution, uninspected environment flags).
+
+> **Rule:** If Counterevidence proves the sink is unreachable or sanitized, the finding is discarded. If material Proof Gaps exist, confidence and severity must be explicitly downgraded.
+

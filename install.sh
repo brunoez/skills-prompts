@@ -138,6 +138,10 @@ PROMPT_FILES=(
   "security/vcs_security_history.md"
   "security/sec_advisor.md"
   "security/appsec_auditor.md"
+  "security/security_diff_scan.md"
+  "security/patch_risk_assessment.md"
+  "security/triage_findings.md"
+  "security/security_policy.md"
 
   "devops/cicd_pipeline.md"
   "devops/iac_docker_k8s.md"
@@ -155,9 +159,12 @@ PROMPT_FILES=(
 # Lista de Agent Skills
 SKILL_NAMES=(
   "appsec-auditor"
+  "assess-patch-risk"
   "driven-development"
   "full-app-validator"
   "jev-system-one"
+  "security-diff-scan"
+  "triage-finding"
 )
 
 # Identifica se está rodando localmente ou precisa baixar

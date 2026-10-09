@@ -196,12 +196,16 @@ seu-projeto/
 │   │   ├── exploit_chaining.md        # Composição de Kill Chains Multi-Stage
 │   │   ├── frontend.md                # Trusted Types, CSP & SPAs
 │   │   ├── input_validation.md        # Proactive C3 – Validação de Entrada & Exceções
+│   │   ├── patch_risk_assessment.md   # Avaliação de Risco de Patch & Auto-Merge Rubric
 │   │   ├── sec_advisor.md             # Developer Security Advisor (Shift-Left)
 │   │   ├── secrets.md                 # TruffleHog3 & Argon2id
 │   │   ├── secure_config.md           # Proactive C5 – Config Segura, Headers & CORS
+│   │   ├── security_diff_scan.md      # Auditoria Focada em PRs & Git Diffs (Codex Pattern)
+│   │   ├── security_policy.md         # Definição e Governança de SECURITY.md
 │   │   ├── ssrf.md                    # Proactive C10 – Server-Side Request Forgery
 │   │   ├── supply_chain.md            # SCVS, SBOM & Anti-Slopsquatting
 │   │   ├── threat_modeling.md         # Modelagem STRIDE-per-Element
+│   │   ├── triage_findings.md         # Triagem Rápida de Alertas SAST/SCA/Dependabot
 │   │   └── vcs_security_history.md    # Mineração de Segurança no Git (VCS History)
 │   ├── devops/                   # Infraestrutura, CI/CD & SRE (OWASP DSOMM)
 │   │   ├── cicd_pipeline.md           # Hardening de CI/CD, OIDC & DSOMM Build
@@ -222,6 +226,11 @@ seu-projeto/
 │   │   ├── references/           # Guias técnicos sob demanda (ASTF, ASVS, BOLA, SSRF)
 │   │   ├── scripts/              # sarif_builder.py & report_generator.py
 │   │   └── examples/             # Teste BOLA pytest & fetch seguro TypeScript
+│   ├── assess-patch-risk/        # Avaliação de Risco de Patches & Auto-Merge (Codex Pattern)
+│   │   ├── SKILL.md              # Rúbrica em 5 pontos e decisões de auto-merge
+│   │   ├── references/           # Rúbrica detalhada e critérios de regressão
+│   │   ├── scripts/              # patch_risk_checker.py (verificador de schema, auth e testes)
+│   │   └── examples/             # Patches seguros e sensíveis de exemplo
 │   ├── driven-development/       # Suíte Driven Design (DDD, DataDD, TypeDD, SDD, CDD, BDD, SecDD, TDD)
 │   │   ├── SKILL.md              # Ciclo em 6 fases (Domínio -> Storage -> Tipos -> Contratos -> Aceite -> TDD)
 │   │   ├── references/           # Guias modulares (DDD, DataDD, TypeDD, Pipeline Matrix, SDD, CDD, BDD, SecDD, TDD)
@@ -231,10 +240,19 @@ seu-projeto/
 │   │   ├── SKILL.md              # Workflow em 3 fases (Triagem, Fronteiras & Health Card)
 │   │   ├── references/           # Matriz de fronteiras herméticas e triagem em cascata
 │   │   └── scripts/              # health_card.py (gerador determinístico de Health Card)
-│   └── jev-system-one/           # Decisões e Guardrails de Alta Velocidade (<100ms)
-│       ├── SKILL.md              # Primitivas Choice, Score, Noul e cascades
-│       ├── references/           # API Reference, Primitivas e Anti-Patterns
-│       └── examples/             # Guardrails LangChain, TS Cascade, CVSS e PII
+│   ├── jev-system-one/           # Decisões e Guardrails de Alta Velocidade (<100ms)
+│   │   ├── SKILL.md              # Primitivas Choice, Score, Noul e cascades
+│   │   ├── references/           # API Reference, Primitivas e Anti-Patterns
+│   │   └── examples/             # Guardrails LangChain, TS Cascade, CVSS e PII
+│   ├── security-diff-scan/       # Auditoria cirúrgica de PRs e Git Diffs (Codex Pattern)
+│   │   ├── SKILL.md              # Workflow em 4 passos (Inventário, Call-sites, Tupla & PR Review)
+│   │   ├── references/           # Metodologia de Diff Review e Checklist de Regressões
+│   │   ├── scripts/              # diff_scanner.py (extrator de diff, scanner e exportador SARIF)
+│   │   └── examples/             # Patches de exemplo vulneráveis e corrigidos
+│   └── triage-finding/           # Triagem Estática de Alertas de Segurança & SCA (Codex Pattern)
+│       ├── SKILL.md              # Workflow em 4 fases e matriz de alcançabilidade
+│       ├── references/           # Critérios de triagem estática e tupla de evidência
+│       └── scripts/              # triage_evaluator.py (avaliador estático de pacotes e símbolos)
 ├── chatgpt/                      # Suíte Universal para ChatGPT, Web Chats & Modelos Locais
 │   ├── README.md                 # Guia agnóstico de uso em interfaces de chat
 │   ├── SYSTEM_INSTRUCTIONS.md    # System Prompt Mestre (Custom Instructions / Projects)
@@ -258,9 +276,12 @@ Além dos prompts estruturados invocados manualmente via `@`, este repositório 
 | Skill | Especialidade | Entregáveis & Ferramentas Integradas |
 | :--- | :--- | :--- |
 | [`skills/appsec-auditor`](skills/appsec-auditor/SKILL.md) | **Auditoria de Segurança AppSec (OWASP ASTF, ASVS L2 & Mantis-Enhanced)** | - Fluxo em 5 fases com **Crítica de Viabilidade de Release** e **Calibração de Risco Anti-Inflação (Score 1-10)**<br/>- `scripts/sarif_builder.py`: Gerador de relatórios SARIF 2.1.0 com metadados de calibração para GitHub Security<br/>- `scripts/report_generator.py`: Gerador de relatórios executivos em Markdown e Issues GitHub<br/>- `references/`: Guias modulares (ASTF, ASVS L2, BOLA, SSRF, Viability Critique, PoC Reproduction Harness)<br/>- `examples/`: Teste de abuso BOLA em pytest e cliente fetch seguro em TypeScript |
+| [`skills/assess-patch-risk`](skills/assess-patch-risk/SKILL.md) | **Avaliação de Risco de Patches & Auto-Merge (Codex Pattern)** | - Classificação de risco em 5 pontos (Escopo, Schema, Auth, Redução de Defesas, Testes)<br/>- Decisões padronizadas: `auto_merge_candidate`, `human_review_required`, `revise`, `block`<br/>- `scripts/patch_risk_checker.py`: CLI determinística para validação de PRs e automação de merge<br/>- `references/`: Rúbrica detalhada de pontuação e critérios de risco |
 | [`skills/driven-development`](skills/driven-development/SKILL.md) | **Engenharia de Software & Suíte Driven Design (DDD, DataDD, TypeDD, SDD, CDD, BDD, SecDD, TDD)** | - Ciclo em 6 fases: Domínio (DDD) → Storage (DataDD) → Tipos (TypeDD) → Schemas/Contratos (SDD/CDD) → Aceite/Abuso (BDD/SecDD) → TDD<br/>- `scripts/test_runner.py`: Executor universal com detecção automática de stack (Node, Python, Go, Rust)<br/>- `references/`: Guias modulares de DDD, DataDD, TypeDD, Matriz de Pipeline, SDD, TDD, BDD, CDD, SecDD e Pirâmide<br/>- `examples/`: Máquinas de estado TypeDD, DDL DataDD com regra ESR, schemas Zod, fixtures TDD e Gherkin |
 | [`skills/full-app-validator`](skills/full-app-validator/SKILL.md) | **Validação Holística 360° (Zero Overkill & Zero Overlap)** | - Avaliação 360° cobrindo Arquitetura, Segurança, Testes e SRE em 3 fases<br/>- `scripts/health_card.py`: Gerador determinístico de Health Card e métricas de maturidade (0-100)<br/>- `references/`: Matriz de 5 fronteiras herméticas e protocolo de triagem em cascata<br/>- Top 3 a 5 ações prioritárias sem sobreposição de escopo |
 | [`skills/jev-system-one`](skills/jev-system-one/SKILL.md) | **Decisões Estruturadas & Guardrails System One (TypeSafe AI)** | - Padrão de Two-Model Cascade (System 1 para decisões <100ms + System 2 para raciocínio)<br/>- Primitivas `Choice`, `Score` e `Noul` com calibração de probabilidade<br/>- `references/`: HTTP API Reference, Primitivas e Jaggedness / Anti-Patterns<br/>- `examples/`: Guardrails LangChain, cascade em TypeScript, scanner híbrido de segredos, auditor de MCP e cálculo de CVSS |
+| [`skills/security-diff-scan`](skills/security-diff-scan/SKILL.md) | **Auditoria de Segurança em PRs e Git Diffs (Codex Pattern)** | - Revisão cirúrgica de Pull Requests e commits focada em arquivos modificados/deletados e chamadores diretos<br/>- `scripts/diff_scanner.py`: Scanner determinístico de diffs com exportação SARIF 2.1.0 e parecer Markdown para PRs<br/>- `references/`: Metodologia de diff review, Tupla Estática e checklist de regressões de segurança<br/>- `examples/`: Patches de exemplo vulneráveis e corrigidos para testes de CI |
+| [`skills/triage-finding`](skills/triage-finding/SKILL.md) | **Triagem Estática de Alertas & SCA (Codex Pattern)** | - Triagem cirúrgica de alertas de SAST, SCA e CVEs (Dependabot/Snyk/CodeQL) contra o código real<br/>- Vereditos auditáveis: `confirmed`, `not_actionable` (código morto/não invocado), `needs_review`<br/>- `scripts/triage_evaluator.py`: Varredura estática de importações e call-sites com relatórios Markdown e JSON<br/>- `references/`: Critérios de alcançabilidade estática e tupla de evidência |
 
 
 ### 💡 Como Usar as Agent Skills no seu Ambiente
@@ -600,7 +621,7 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 ## 📚 Catálogo Completo de Prompts
 
 <details>
-<summary><b>Clique para expandir as tabelas de referência técnica de todos os 41 prompts</b></summary>
+<summary><b>Clique para expandir as tabelas de referência técnica de todos os 45 prompts</b></summary>
 <br/>
 
 ### 🎯 1. Driven Developments, Contexto & Testes (Guardrails contra Alucinação)
@@ -644,6 +665,10 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 | [`exploit_chaining.md`](prompts/security/exploit_chaining.md) | **Exploit Chaining & Kill Chains** | Composição de múltiplos achados baixos/médios em cadeias de ataque multi-stage (Super Findings), diagramas de sequência e choke points defensivos. |
 | [`vcs_security_history.md`](prompts/security/vcs_security_history.md) | **Mineração de Histórico Git (VCS Mining)** | Rastreamento de patches anteriores, detecção de regressões acidentais em merges/refatorações e mapeamento de invariantes históricos de segurança. |
 | [`sec_advisor.md`](prompts/security/sec_advisor.md) | **Developer Security Advisor (Shift-Left)** | Pair programming de segurança em tempo real durante a escrita de código, consultando modelos de ameaça, invariantes e propondo alternativas defensivas idiomáticas. |
+| [`security_diff_scan.md`](prompts/security/security_diff_scan.md) | **Auditoria de PRs & Git Diffs (Diff Scan)** | Revisão cirúrgica de segurança focada nas linhas alteradas do PR/diff, expansão de chamadores diretos e parecer para code review no GitHub/GitLab (Codex Pattern). |
+| [`patch_risk_assessment.md`](prompts/security/patch_risk_assessment.md) | **Risco de Patch & Auto-Merge** | Avaliação imutável de risco de regressão, contratos públicos, efeitos colaterais e rubrica formal de auto-merge (`auto_merge_candidate` vs `human_review_required`). |
+| [`triage_findings.md`](prompts/security/triage_findings.md) | **Triagem de Alertas SAST/SCA** | Triagem determinística de alertas de scanners externos (Dependabot, Snyk, Trivy, CodeQL) com evidência estática e veredictos (`confirmed`, `not_actionable`, `needs_review`). |
+| [`security_policy.md`](prompts/security/security_policy.md) | **Governança & Política SECURITY.md** | Redação e calibração de políticas `SECURITY.md`, definição de fronteiras do sistema, itens fora de escopo para humanos e agentes de IA, e canais de divulgação responsável. |
 
 ---
 

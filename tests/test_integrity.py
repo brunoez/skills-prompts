@@ -47,6 +47,10 @@ EXPECTED_PROMPTS = [
     "security/vcs_security_history.md",
     "security/sec_advisor.md",
     "security/appsec_auditor.md",
+    "security/security_diff_scan.md",
+    "security/patch_risk_assessment.md",
+    "security/triage_findings.md",
+    "security/security_policy.md",
     "devops/cicd_pipeline.md",
     "devops/iac_docker_k8s.md",
     "devops/resilience_observability.md",
@@ -79,14 +83,21 @@ SECURITY_PROMPTS = [
     "security/vcs_security_history.md",
     "security/sec_advisor.md",
     "security/appsec_auditor.md",
+    "security/security_diff_scan.md",
+    "security/patch_risk_assessment.md",
+    "security/triage_findings.md",
+    "security/security_policy.md",
     "driven-development/secdd_abuse_cases.md",
 ]
 
 EXPECTED_SKILLS = [
     "appsec-auditor",
+    "assess-patch-risk",
     "driven-development",
     "full-app-validator",
     "jev-system-one",
+    "security-diff-scan",
+    "triage-finding",
 ]
 
 
@@ -320,7 +331,14 @@ def test_skills_integrity():
             return False
 
     # Executa testes unitários dos scripts das skills
-    for test_file_name in ["test_appsec_auditor.py", "test_driven_development.py", "test_full_app_validator.py"]:
+    for test_file_name in [
+        "test_appsec_auditor.py",
+        "test_assess_patch_risk.py",
+        "test_driven_development.py",
+        "test_full_app_validator.py",
+        "test_security_diff_scan.py",
+        "test_triage_finding.py",
+    ]:
         test_file = ROOT_DIR / "tests" / test_file_name
 
         if test_file.is_file():

@@ -10,6 +10,15 @@ Em vez de atuar apenas como um scanner passivo ao final do ciclo, o Developer Se
 
 ---
 
+## 🎯 DEMARCAÇÃO DE FRONTEIRAS & QUANDO NÃO USAR (ZERO OVERLAP)
+
+* ✅ **USE ESTE PROMPT QUANDO:** Estiver ativamente criando ou refatorando código e desejar consultoria e pair programming defensivo em tempo real.
+* ⛔ **NÃO USE PARA AUDITORIA FORMAL DE PULL REQUEST OU CI/CD:** Para revisar e emitir parecer sobre um diff consolidado em PR, utilize [`prompts/security/security_diff_scan.md`](security_diff_scan.md).
+* ⛔ **NÃO USE PARA AUDITORIA GLOBAL 360°:** Para varredura completa da base de código, utilize [`prompts/security/appsec_auditor.md`](appsec_auditor.md).
+* ⛔ **NÃO USE PARA REMEDIAÇÃO ADVERSARIAL DE UMA FALHA CRÍTICA JÁ CONFIRMADA:** Utilize [`prompts/security/adversarial_patching.md`](adversarial_patching.md).
+
+---
+
 
 ## ESCOPO E OBRIGATORIEDADE DE LEITURA
 1. **Inspeção do Contexto Local:** Antes de opinar, leia os arquivos que definem as convenções do projeto:

@@ -1,0 +1,17 @@
+diff --git a/src/utils/math.ts b/src/utils/math.ts
+index 1111111..2222222 100644
+--- a/src/utils/math.ts
++++ b/src/utils/math.ts
+@@ -5,3 +5,5 @@ export function clamp(val: number, min: number, max: number): number {
++  if (min > max) throw new Error("min cannot exceed max");
+   return Math.min(Math.max(val, min), max);
+ }
+diff --git a/tests/test_math.ts b/tests/test_math.ts
+index 3333333..4444444 100644
+--- a/tests/test_math.ts
++++ b/tests/test_math.ts
+@@ -10,2 +10,4 @@ describe("clamp", () => {
++  it("throws on invalid bounds", () => {
++    expect(() => clamp(5, 10, 2)).toThrow();
++  });
+ });

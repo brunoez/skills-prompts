@@ -9,6 +9,13 @@ O diagnóstico deve correlacionar as alterações com os requisitos do **OWASP A
 
 Este prompt capacita o agente a minerar o histórico do Git, extrair lições aprendidas (*historical learnings*) e correlacionar modificações recentes com o histórico de correções de segurança do projeto.
 
+---
+
+## 🎯 DEMARCAÇÃO DE FRONTEIRAS & QUANDO NÃO USAR (ZERO OVERLAP)
+
+* ✅ **USE ESTE PROMPT QUANDO:** Quiser auditar a linha do tempo do Git, identificar regressões históricas, commits de segurança passados e hotspots de churn arriscado.
+* ⛔ **NÃO USE PARA AUDITORIA DE PULL REQUEST OU DIFF ESPECÍFICO:** Para revisar um PR em aberto ou diff de branch, utilize [`prompts/security/security_diff_scan.md`](security_diff_scan.md).
+* ⛔ **NÃO USE PARA AUDITORIA DE SEGURANÇA NO ESTADO ATUAL DO CÓDIGO:** Para escanear o código atual em busca de vulnerabilidades, utilize [`prompts/security/appsec_auditor.md`](appsec_auditor.md).
 
 ---
 

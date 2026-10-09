@@ -1,0 +1,9 @@
+diff --git a/prisma/schema.prisma b/prisma/schema.prisma
+index 1111111..2222222 100644
+--- a/prisma/schema.prisma
++++ b/prisma/schema.prisma
+@@ -10,3 +10,4 @@ model User {
+   id        String   @id @default(uuid())
+   email     String   @unique
++  tier      String   @default("free")
+ }
