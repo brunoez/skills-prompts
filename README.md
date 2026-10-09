@@ -10,7 +10,7 @@
 
 **A biblioteca definitiva de prompts estruturados e Agent Skills executáveis de auditoria profunda, arquitetura defensiva e metodologias *Driven Development* para desenvolvedores, arquitetos e agentes de Inteligência Artificial.**
 
-[Instalação Rápida](#-instalação-rápida) • [Instalação Global](#3-instalação-global-para-cada-llm--assistente) • [Comparação Local vs Global](#4-entendendo-os-diretórios-e-padrões-por-ferramenta) • [ChatGPT & Web Chats](chatgpt/README.md) • [Validação 360° (Destaque)](#-destaques-validação-holística--auditoria-360-da-aplicação) • [Agent Skills](#-agent-skills-claude-code-gemini--antigravity--codex--chatgpt) • [Uso em CI/CD Privado](#-como-executar-os-prompts-em-cicd-no-seu-projeto-privado) • [Qual Prompt Usar?](#-qual-prompt-usar-guia-de-ação-rápida-com-exemplos) • [Catálogo Completo](#-catálogo-completo-de-prompts) • [Contribuição](CONTRIBUTING.md)
+[Instalação Rápida](#-instalação-rápida) • [Instalação Global](#3-instalação-global-para-cada-llm--assistente) • [Comparação Local vs Global](#4-entendendo-os-diretórios-e-padrões-por-ferramenta) • [ChatGPT & Web Chats](chatgpt/README.md) • [Validação 360° (Destaque)](#-destaques-validação-holística--auditoria-360-da-aplicação) • [Agent Skills](#-agent-skills-claude-code-gemini--antigravity--codex--chatgpt) • [Uso em CI/CD Privado](#-como-executar-os-prompts-em-cicd-no-seu-projeto-privado) • [Router Rápido](#-matriz-de-roteamento-rápido-master-intent-router) • [Qual Prompt Usar?](#-qual-prompt-usar-guia-de-ação-rápida-com-exemplos) • [Catálogo Completo](#-catálogo-completo-de-prompts) • [Contribuição](CONTRIBUTING.md)
 
 </div>
 
@@ -39,8 +39,8 @@ O objetivo é transformar a velocidade do **Vibe Coding** em software de **níve
 >    ```
 > 
 > 2. **🛡️ AppSec Auditor 360° (Segurança em Profundidade & Pentest de Código):**
->    - **Propósito:** Auditoria minuciosa de vulnerabilidades e superfícies de ataque (**OWASP ASTF**, **ASVS v4.0.3 L2**), eliminando falsos positivos com Crítica de Viabilidade de Release (*Google Mantis Pattern*), cálculo determinístico de risco (*OWASP Risk Rating*) e PoCs de reprodução.
->    - **Entregável:** Matriz consolidada de vulnerabilidades, patches defensivos (*drop-in*) e relatórios **SARIF 2.1.0** para GitHub Code Scanning / GitLab SAST.
+>    - **Propósito:** Auditoria minuciosa de vulnerabilidades e superfícies de ataque (**OWASP ASTF**, **ASVS v4.0.3 L2**), eliminando falsos positivos com Crítica de Viabilidade de Release (*Google Mantis Pattern*), Cadeia Estrita de Evidência (*Evidence $\rightarrow$ Finding Contract* com fixity hash), cálculo determinístico de risco (*OWASP Risk Rating*) e PoCs de reprodução.
+>    - **Entregável:** Matriz calibrada de vulnerabilidades, patches defensivos (*drop-in*), comandos de reprodução imutáveis e relatórios **SARIF 2.1.0** para GitHub Code Scanning / GitLab SAST.
 >    - **Prompt:** [`prompts/security/appsec_auditor.md`](prompts/security/appsec_auditor.md) | **Skill:** [`skills/appsec-auditor`](skills/appsec-auditor/SKILL.md) | **Scripts:** `sarif_builder.py` e `report_generator.py`
 >    ```markdown
 >    @[.claude/prompts/security/appsec_auditor.md]
@@ -222,7 +222,7 @@ seu-projeto/
 │       └── vulnerability_triage_cvss.md # Triagem de Falhas e Cálculo Determinístico de CVSS v3.1/v4.0
 ├── skills/                       # Agent Skills Executáveis (Padrão aberto agentskills.io)
 │   ├── appsec-auditor/           # Auditoria completa OWASP com geradores SARIF & relatórios
-│   │   ├── SKILL.md              # Workflow em 4 fases e gatilhos autônomos
+│   │   ├── SKILL.md              # Workflow em 5 fases (com Cadeia de Evidência & Consent Gate)
 │   │   ├── references/           # Guias técnicos sob demanda (ASTF, ASVS, BOLA, SSRF)
 │   │   ├── scripts/              # sarif_builder.py & report_generator.py
 │   │   └── examples/             # Teste BOLA pytest & fetch seguro TypeScript
@@ -275,7 +275,7 @@ Além dos prompts estruturados invocados manualmente via `@`, este repositório 
 
 | Skill | Especialidade | Entregáveis & Ferramentas Integradas |
 | :--- | :--- | :--- |
-| [`skills/appsec-auditor`](skills/appsec-auditor/SKILL.md) | **Auditoria de Segurança AppSec (OWASP ASTF, ASVS L2 & Mantis-Enhanced)** | - Fluxo em 5 fases com **Crítica de Viabilidade de Release** e **Calibração de Risco Anti-Inflação (Score 1-10)**<br/>- `scripts/sarif_builder.py`: Gerador de relatórios SARIF 2.1.0 com metadados de calibração para GitHub Security<br/>- `scripts/report_generator.py`: Gerador de relatórios executivos em Markdown e Issues GitHub<br/>- `references/`: Guias modulares (ASTF, ASVS L2, BOLA, SSRF, Viability Critique, PoC Reproduction Harness)<br/>- `examples/`: Teste de abuso BOLA em pytest e cliente fetch seguro em TypeScript |
+| [`skills/appsec-auditor`](skills/appsec-auditor/SKILL.md) | **Auditoria de Segurança AppSec (OWASP ASTF, ASVS L2 & Mantis-Enhanced)** | - Fluxo em 5 fases com **Crítica de Viabilidade de Release**, **Contrato de Evidência (`Evidence → Finding`)** e **Calibração de Risco (Score 1-10)**<br/>- `scripts/sarif_builder.py`: Gerador SARIF 2.1.0 com metadados de calibração, `repro_command` e fixity hash para GitHub Security<br/>- `scripts/report_generator.py`: Gerador de relatórios executivos em Markdown e Issues GitHub com comandos reprodutíveis<br/>- `references/`: Guias modulares (ASTF, ASVS L2, BOLA, SSRF, Viability Critique com Evidence Contract, PoC Harness)<br/>- `examples/`: Teste de abuso BOLA em pytest e cliente fetch seguro em TypeScript |
 | [`skills/assess-patch-risk`](skills/assess-patch-risk/SKILL.md) | **Avaliação de Risco de Patches & Auto-Merge (Codex Pattern)** | - Classificação de risco em 5 pontos (Escopo, Schema, Auth, Redução de Defesas, Testes)<br/>- Decisões padronizadas: `auto_merge_candidate`, `human_review_required`, `revise`, `block`<br/>- `scripts/patch_risk_checker.py`: CLI determinística para validação de PRs e automação de merge<br/>- `references/`: Rúbrica detalhada de pontuação e critérios de risco |
 | [`skills/driven-development`](skills/driven-development/SKILL.md) | **Engenharia de Software & Suíte Driven Design (DDD, DataDD, TypeDD, SDD, CDD, BDD, SecDD, TDD)** | - Ciclo em 6 fases: Domínio (DDD) → Storage (DataDD) → Tipos (TypeDD) → Schemas/Contratos (SDD/CDD) → Aceite/Abuso (BDD/SecDD) → TDD<br/>- `scripts/test_runner.py`: Executor universal com detecção automática de stack (Node, Python, Go, Rust)<br/>- `references/`: Guias modulares de DDD, DataDD, TypeDD, Matriz de Pipeline, SDD, TDD, BDD, CDD, SecDD e Pirâmide<br/>- `examples/`: Máquinas de estado TypeDD, DDL DataDD com regra ESR, schemas Zod, fixtures TDD e Gherkin |
 | [`skills/full-app-validator`](skills/full-app-validator/SKILL.md) | **Validação Holística 360° (Zero Overkill & Zero Overlap)** | - Avaliação 360° cobrindo Arquitetura, Segurança, Testes e SRE em 3 fases<br/>- `scripts/health_card.py`: Gerador determinístico de Health Card e métricas de maturidade (0-100)<br/>- `references/`: Matriz de 5 fronteiras herméticas e protocolo de triagem em cascata<br/>- Top 3 a 5 ações prioritárias sem sobreposição de escopo |
