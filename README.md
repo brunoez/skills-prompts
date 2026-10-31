@@ -174,11 +174,13 @@ seu-projeto/
 │   ├── driven-development/       # Metodologias & Testes
 │   │   ├── bdd_behavior_driven.md     # BDD & Gherkin
 │   │   ├── cdd_contract_driven.md     # Contratos & OpenAPI
+│   │   ├── codebase_drift_auditor.md  # Detecção de Drift Documentação vs Código (EGM)
 │   │   ├── datadd_data_driven.md      # Data-Driven Design & Access Patterns
 │   │   ├── ddd_domain_driven.md       # Domain-Driven Design & Aggregates
 │   │   ├── full_app_validator.md      # Validação Holística 360° (Zero Overkill & Overlap)
 │   │   ├── project_context.md         # Dicionário & Regras IA
-│   │   ├── sdd_spec_driven.md         # SDD & Schemas Zod
+│   │   ├── sdd_goldfish_review.md     # Revisão Cega Goldfish (Zero-Decision & 5 Estágios)
+│   │   ├── sdd_spec_driven.md         # SDD & Schemas Zod (EGM Spec Authoring)
 │   │   ├── secdd_abuse_cases.md       # Casos de Abuso & SecDD
 │   │   ├── tdd_test_driven.md         # TDD Red-Green-Refactor
 │   │   ├── test_suite_generator.md    # Gerador de Testes QA
@@ -279,6 +281,7 @@ Além dos prompts estruturados invocados manualmente via `@`, este repositório 
 | [`skills/assess-patch-risk`](skills/assess-patch-risk/SKILL.md) | **Avaliação de Risco de Patches & Auto-Merge (Codex Pattern)** | - Classificação de risco em 5 pontos (Escopo, Schema, Auth, Redução de Defesas, Testes)<br/>- Decisões padronizadas: `auto_merge_candidate`, `human_review_required`, `revise`, `block`<br/>- `scripts/patch_risk_checker.py`: CLI determinística para validação de PRs e automação de merge<br/>- `references/`: Rúbrica detalhada de pontuação e critérios de risco |
 | [`skills/driven-development`](skills/driven-development/SKILL.md) | **Engenharia de Software & Suíte Driven Design (DDD, DataDD, TypeDD, SDD, CDD, BDD, SecDD, TDD)** | - Ciclo em 6 fases: Domínio (DDD) → Storage (DataDD) → Tipos (TypeDD) → Schemas/Contratos (SDD/CDD) → Aceite/Abuso (BDD/SecDD) → TDD<br/>- `scripts/test_runner.py`: Executor universal com detecção automática de stack (Node, Python, Go, Rust)<br/>- `references/`: Guias modulares de DDD, DataDD, TypeDD, Matriz de Pipeline, SDD, TDD, BDD, CDD, SecDD e Pirâmide<br/>- `examples/`: Máquinas de estado TypeDD, DDL DataDD com regra ESR, schemas Zod, fixtures TDD e Gherkin |
 | [`skills/full-app-validator`](skills/full-app-validator/SKILL.md) | **Validação Holística 360° (Zero Overkill & Zero Overlap)** | - Avaliação 360° cobrindo Arquitetura, Segurança, Testes e SRE em 3 fases<br/>- `scripts/health_card.py`: Gerador determinístico de Health Card e métricas de maturidade (0-100)<br/>- `references/`: Matriz de 5 fronteiras herméticas e protocolo de triagem em cascata<br/>- Top 3 a 5 ações prioritárias sem sobreposição de escopo |
+| [`skills/goldfish-reviewer`](skills/goldfish-reviewer/SKILL.md) | **Estresse de Especificação & Zero-Decisão (EGM Pattern)** | - Protocolo de revisão cega em 5 estágios (Zoom Out, Compreensão, Crítica Técnica, Anti-Bloat e Prontidão de Implementação)<br/>- Avaliação rigorosa pelas 6 lentes Goldfish (YAGNI, Custos/Quotas, DX, Compatibilidade, Observabilidade e Débito Técnico)<br/>- Validação estrita da **Regra Zero-Decisão (*Zero-Decision Rule*)** e Catecismo de Heilmeier<br/>- `scripts/run_review.py`: CLI determinística para auditoria estática de especificações em Markdown e exportação JSON |
 | [`skills/jev-system-one`](skills/jev-system-one/SKILL.md) | **Decisões Estruturadas & Guardrails System One (TypeSafe AI)** | - Padrão de Two-Model Cascade (System 1 para decisões <100ms + System 2 para raciocínio)<br/>- Primitivas `Choice`, `Score` e `Noul` com calibração de probabilidade<br/>- `references/`: HTTP API Reference, Primitivas e Jaggedness / Anti-Patterns<br/>- `examples/`: Guardrails LangChain, cascade em TypeScript, scanner híbrido de segredos, auditor de MCP e cálculo de CVSS |
 | [`skills/security-diff-scan`](skills/security-diff-scan/SKILL.md) | **Auditoria de Segurança em PRs e Git Diffs (Codex Pattern)** | - Revisão cirúrgica de Pull Requests e commits focada em arquivos modificados/deletados e chamadores diretos<br/>- `scripts/diff_scanner.py`: Scanner determinístico de diffs com exportação SARIF 2.1.0 e parecer Markdown para PRs<br/>- `references/`: Metodologia de diff review, Tupla Estática e checklist de regressões de segurança<br/>- `examples/`: Patches de exemplo vulneráveis e corrigidos para testes de CI |
 | [`skills/triage-finding`](skills/triage-finding/SKILL.md) | **Triagem Estática de Alertas & SCA (Codex Pattern)** | - Triagem cirúrgica de alertas de SAST, SCA e CVEs (Dependabot/Snyk/CodeQL) contra o código real<br/>- Vereditos auditáveis: `confirmed`, `not_actionable` (código morto/não invocado), `needs_review`<br/>- `scripts/triage_evaluator.py`: Varredura estática de importações e call-sites com relatórios Markdown e JSON<br/>- `references/`: Critérios de alcançabilidade estática e tupla de evidência |
@@ -335,6 +338,8 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 | **Decisão de Auto-Merge em PR** | Avaliar risco de merge com rubrica de 5 critérios | [`skills/assess-patch-risk`](skills/assess-patch-risk/SKILL.md) · [`prompts/security/patch_risk_assessment.md`](prompts/security/patch_risk_assessment.md) | Skill / Prompt |
 | **Auditoria profunda de API / Código** | OWASP ASTF, ASVS L2, PoCs reprodutíveis & SARIF | [`skills/appsec-auditor`](skills/appsec-auditor/SKILL.md) · [`prompts/security/appsec_auditor.md`](prompts/security/appsec_auditor.md) | Skill / Prompt |
 | **Diagnóstico Geral da Aplicação** | Health Card 360° (Arquitetura, SRE, Testes) sem overkill | [`skills/full-app-validator`](skills/full-app-validator/SKILL.md) · [`prompts/driven-development/full_app_validator.md`](prompts/driven-development/full_app_validator.md) | Skill / Prompt |
+| **Revisão de Design / Spec Stress-Test** | Revisão cega em 5 estágios com regra Zero-Decisão e YAGNI (EGM) | [`skills/goldfish-reviewer`](skills/goldfish-reviewer/SKILL.md) · [`prompts/driven-development/sdd_goldfish_review.md`](prompts/driven-development/sdd_goldfish_review.md) | Skill / Prompt |
+| **Auditoria de Drift Documentação vs Código** | Detectar atalhos de lógica, missing features e divergência arquitetural | [`prompts/driven-development/codebase_drift_auditor.md`](prompts/driven-development/codebase_drift_auditor.md) | Prompt |
 | **Nova Feature / Refatoração Crítica** | Ciclo DDD $\rightarrow$ DataDD $\rightarrow$ TypeDD $\rightarrow$ SDD $\rightarrow$ TDD | [`skills/driven-development`](skills/driven-development/SKILL.md) · [`prompts/driven-development/tdd_test_driven.md`](prompts/driven-development/tdd_test_driven.md) | Skill / Prompt |
 | **Guardrails de IA / Decisão <100ms** | Triagem System One de prompts, PII e ferramentas | [`skills/jev-system-one`](skills/jev-system-one/SKILL.md) · [`prompts/jev/intent_routing_dispatch.md`](prompts/jev/intent_routing_dispatch.md) | Skill / Prompt |
 | **Hardening de CI/CD, Docker & K8s** | Segurança de pipelines, containers rootless e DSOMM | [`prompts/devops/cicd_pipeline.md`](prompts/devops/cicd_pipeline.md) · [`prompts/devops/iac_docker_k8s.md`](prompts/devops/iac_docker_k8s.md) | Prompts |
@@ -467,6 +472,22 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
     ```markdown
     @[.claude/prompts/driven-development/sdd_spec_driven.md]
     Crie o Software Design Document e os Schemas Zod para a nova feature.
+    ```
+
+* **Para submeter uma especificação ou plano a uma revisão cega rigorosa (Protocolo Goldfish EGM):**
+  * **Use:** [`prompts/driven-development/sdd_goldfish_review.md`](prompts/driven-development/sdd_goldfish_review.md)
+  * **Comando:**
+    ```markdown
+    @[.claude/prompts/driven-development/sdd_goldfish_review.md]
+    Revise esta especificação com contexto zero, avaliando YAGNI e a regra de zero decisão.
+    ```
+
+* **Para auditar divergências entre documentação e código real (Detecção de Drift):**
+  * **Use:** [`prompts/driven-development/codebase_drift_auditor.md`](prompts/driven-development/codebase_drift_auditor.md)
+  * **Comando:**
+    ```markdown
+    @[.claude/prompts/driven-development/codebase_drift_auditor.md]
+    Audite as especificações e READMEs contra o código vivo e aponte apenas os drifts encontrados.
     ```
 
 * **Para criar testes automáticos de invasão, BOLA/IDOR, Mass Assignment e concorrência:**
@@ -640,7 +661,7 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 ## 📚 Catálogo Completo de Prompts
 
 <details>
-<summary><b>Clique para expandir as tabelas de referência técnica de todos os 45 prompts</b></summary>
+<summary><b>Clique para expandir as tabelas de referência técnica de todos os 47 prompts</b></summary>
 <br/>
 
 ### 🎯 1. Driven Developments, Contexto & Testes (Guardrails contra Alucinação)
@@ -650,7 +671,9 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 | [`project_context.md`](prompts/driven-development/project_context.md) | **Engenheiro de Contexto & Onboarding de IA** | Mapeia o vocabulário e regras do projeto e gera os arquivos de contexto para IAs: **`CLAUDE.md`** (Claude Code), **`.github/copilot-instructions.md`** (VSCode), **`.cursorrules`** (Cursor) e **`CONTEXT.md`** (glossário universal). |
 | [`technical_documentation.md`](prompts/driven-development/technical_documentation.md) | **Arquiteto de Software (Docs-as-Code)** | Mapeia e gera a documentação técnica completa: **Stack & Versões, Diagramas C4 Model, Diagrama ERD do Banco de Dados, Catálogo de Endpoints/Entrypoints, Mensageria, Guia de Onboarding/Setup Local e Deploy/Observabilidade**. |
 | [`test_suite_generator.md`](prompts/driven-development/test_suite_generator.md) | **Engenheiro de QA & Test Automation** | Varre a aplicação, identifica código sem testes e **gera, implementa e executa fisicamente** a Pirâmide de Testes completa (Unitários, Integração com Supertest/Testcontainers, E2E com Playwright e carga com K6). |
-| [`sdd_spec_driven.md`](prompts/driven-development/sdd_spec_driven.md) | **Spec & Schema-Driven** | Especificação técnica formal prévia (SDD/RFC), Schemas Zod/TypeBox como fonte única da verdade, inferência estrita de tipos e prevenção de *Spec Drift*. |
+| [`sdd_spec_driven.md`](prompts/driven-development/sdd_spec_driven.md) | **Spec & Schema-Driven (EGM Authoring)** | Especificação técnica formal prévia (SDD/RFC), Schemas Zod/TypeBox como fonte única da verdade, Separação Semântica, Catecismo de Heilmeier e Regra Zero-Decisão. |
+| [`sdd_goldfish_review.md`](prompts/driven-development/sdd_goldfish_review.md) | **Goldfish Spec Review (EGM Protocol)** | Revisão cega de contexto zero em 5 estágios (Zoom Out, Compreensão, Crítica Técnica, Anti-Bloat e Prontidão de Implementação) com validação estrita da Regra Zero-Decisão. |
+| [`codebase_drift_auditor.md`](prompts/driven-development/codebase_drift_auditor.md) | **Detecção de Drift Código vs Especificação** | Varredura e auditoria sistemática de divergência entre READMEs/SDDs e código real, identificando Missing Features, Modelos Incompletos, Atalhos de Lógica e Quebra de Arquitetura. |
 | [`secdd_abuse_cases.md`](prompts/driven-development/secdd_abuse_cases.md) | **Security-Driven (SecDD)** | Criação de testes automatizados de *Abuse Cases*, simulações de BOLA/IDOR cross-tenant, injeção de Mass Assignment, testes de concorrência em saldo e ReDoS. |
 | [`bdd_behavior_driven.md`](prompts/driven-development/bdd_behavior_driven.md) | **Behavior-Driven (BDD)** | Documentação viva em linguagem Gherkin (`.feature`), validação de transições ilegais em máquinas de estado e critérios de aceite executáveis. |
 | [`tdd_test_driven.md`](prompts/driven-development/tdd_test_driven.md) | **Test-Driven (TDD)** | Ciclo Red-Green-Refactor, cobertura rigorosa de *Edge Cases*, eliminação de over-mocking e testes determinísticos ultrarrápidos. |

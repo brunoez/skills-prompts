@@ -108,6 +108,8 @@ fi
 # Lista de categorias e arquivos de prompts
 PROMPT_FILES=(
   "driven-development/sdd_spec_driven.md"
+  "driven-development/sdd_goldfish_review.md"
+  "driven-development/codebase_drift_auditor.md"
   "driven-development/secdd_abuse_cases.md"
   "driven-development/bdd_behavior_driven.md"
   "driven-development/tdd_test_driven.md"
@@ -162,6 +164,7 @@ SKILL_NAMES=(
   "assess-patch-risk"
   "driven-development"
   "full-app-validator"
+  "goldfish-reviewer"
   "jev-system-one"
   "security-diff-scan"
   "triage-finding"
@@ -289,6 +292,8 @@ install_claude_commands() {
     cmd_name="$clean_name"
 
     case "$file" in
+      driven-development/sdd_goldfish_review.md) cmd_name="sdd-goldfish-review" ;;
+      driven-development/codebase_drift_auditor.md) cmd_name="codebase-drift-auditor" ;;
       driven-development/sdd_*) cmd_name="sdd" ;;
       driven-development/secdd_*) cmd_name="secdd" ;;
       driven-development/bdd_*) cmd_name="bdd" ;;

@@ -17,6 +17,8 @@ PROMPTS_DIR = ROOT_DIR / "prompts"
 
 EXPECTED_PROMPTS = [
     "driven-development/sdd_spec_driven.md",
+    "driven-development/sdd_goldfish_review.md",
+    "driven-development/codebase_drift_auditor.md",
     "driven-development/secdd_abuse_cases.md",
     "driven-development/bdd_behavior_driven.md",
     "driven-development/tdd_test_driven.md",
@@ -95,6 +97,7 @@ EXPECTED_SKILLS = [
     "assess-patch-risk",
     "driven-development",
     "full-app-validator",
+    "goldfish-reviewer",
     "jev-system-one",
     "security-diff-scan",
     "triage-finding",
@@ -336,6 +339,7 @@ def test_skills_integrity():
         "test_assess_patch_risk.py",
         "test_driven_development.py",
         "test_full_app_validator.py",
+        "test_goldfish_reviewer.py",
         "test_security_diff_scan.py",
         "test_triage_finding.py",
     ]:

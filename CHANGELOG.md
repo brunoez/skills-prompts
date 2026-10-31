@@ -5,6 +5,32 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico (SemVer)](https://semver.org/lang/pt-BR/).
 
+## [2.9.0] - 2026-10-31
+
+### Adicionado & Aprimorado (Integração do Elephant-Goldfish Model: Goldfish Reviewer, Regra Zero-Decisão e Drift Detection)
+
+- **Nova Agent Skill Executável: `skills/goldfish-reviewer` (Padrão agentskills.io & EGM):**
+  - Avaliação de especificações técnicas (SDD/RFC) e planos de implementação com subagentes de contexto zero (*Zero-Context Goldfish Reviewers*), eliminando viés conversacional, prevenindo a síndrome do "mato alto" (*Weeds Syndrome*) e combatendo a bajulação da IA (*Anti-Sycophancy / No Glazing*).
+  - Avaliação disciplinada sob as **6 Lentes Goldfish**: YAGNI/Complexidade Mínima, Custos & Quotas/Tokens, UX & Ergonomia do Desenvolvedor, Migração & Retrocompatibilidade, Observabilidade & SRE Debuggability e Débito Técnico de Longo Prazo.
+  - Validação estrita da **Regra Zero-Decisão (*Zero-Decision Rule*)**: o plano é reprovado se deixar qualquer escolha arquitetural para o implementador/agente de IA durante o código.
+  - Verificação das perguntas fundamentais do **Catecismo de Heilmeier (DARPA/Google)**.
+  - CLI determinística [`skills/goldfish-reviewer/scripts/run_review.py`](skills/goldfish-reviewer/scripts/run_review.py) para auditoria estática de especificações em Markdown com suporte a formatos de terminal e exportação JSON estruturada.
+  - Guia de rubricas e padrões de qualidade em [`skills/goldfish-reviewer/references/review_rubrics.md`](skills/goldfish-reviewer/references/review_rubrics.md).
+  - Bateria de testes unitários dedicada em [`tests/test_goldfish_reviewer.py`](tests/test_goldfish_reviewer.py).
+- **Novos Prompts de Engenharia & Spec-Driven (`prompts/driven-development/`):**
+  - [`sdd_goldfish_review.md`](prompts/driven-development/sdd_goldfish_review.md): Protocolo formal de revisão cega de especificações técnicas em 5 estágios (Zoom Out Inicial, Teste de Compreensão, Crítica Técnica, Zoom Out Intermediário e Prontidão de Implementação).
+  - [`codebase_drift_auditor.md`](prompts/driven-development/codebase_drift_auditor.md): Auditoria e diagnóstico de divergências (*Drift*) entre especificações documentadas (READMEs, RFCs, SDDs, ADRs) e código-fonte real (*Missing Features, Incomplete Models, Logic Shortcuts e Architectural Divergence*), relatando estritamente diferenças confirmadas (*Report ONLY Differences*).
+- **Aprimoramento do Prompt `prompts/driven-development/sdd_spec_driven.md`:**
+  - Incorporação do paradigma EGM ("Design with an elephant, review with a goldfish").
+  - Obrigatoriedade de **Separação Semântica (*Semantic Split*)** entre visão de alto nível do sistema (`FeatureRange`) e plano de implementação executável (`DetailedRange`).
+  - Adição do checklist do Catecismo de Heilmeier e validação da Regra Zero-Decisão.
+  - Diretivas comportamentais obrigatórias de antissicofania (*No Glazing* e *Critique First*).
+- **Governança, Sincronização & Testes:**
+  - `install.sh`: Atualizado catálogo para 47 prompts e 8 Agent Skills, mapeando os comandos `/sdd-goldfish-review` e `/codebase-drift-auditor`.
+  - `tests/test_integrity.py`: Atualizados `EXPECTED_PROMPTS` e `EXPECTED_SKILLS`, adicionados testes da nova skill e validação de sincronia do instalador.
+  - `README.md`: Atualizada a árvore de arquivos, tabela de Agent Skills, rotas do Master Intent Router, exemplos práticos e catálogo completo.
+  - Suíte de testes expandida para 61 testes no `pytest` com 100% de aprovação.
+
 ## [2.8.0] - 2026-10-08
 
 ### Adicionado & Aprimorado (Cadeia de Evidência Formal, Gate de Consentimento e Master Intent Router)
