@@ -11,6 +11,8 @@ O objetivo principal é eliminar a prolixidade da IA, evitar alucinações de te
 1. **Leitura de Domínio e Negócio:** Analise o `README.md`, documentações em `docs/`, nomes de entidades, tabelas de banco de dados, enums e serviços para extrair os termos e conceitos centrais do negócio.
 2. **Leitura de Stack e Scripts:** Leia os manifestos (`package.json`, `pyproject.toml`, `go.mod`, `Makefile`, `Dockerfile`) para identificar comandos de build, testes, linters e inicialização.
 3. **Leitura de Padrões e Arquitetura:** Identifique as convenções de pastas (`src/`, `modules/`, `domain/`), padrões de tratamento de erro, autenticação e bibliotecas preferenciais.
+4. **Aplicação da Economia de Tokens do Harness² (Google Research):** Ao projetar arquivos de contexto sempre ativos (`AGENTS.md`, `CLAUDE.md`, `.cursorrules`), aplique a máxima *"Always-on prose is the expensive option"*. Nunca infle o contexto contínuo com procedimentos longos ou manuais completos; preserve o contexto sempre ativo conciso e delegue procedimentos complexos para **Skills sob demanda** (`skills/<nome>/SKILL.md`) ou **Scripts determinísticos** (`scripts/<nome>.py`).
+5. **Verificação de Invariantes de Scaffolding:** Garanta que todo comando ou script referenciado nos arquivos de contexto exista fisicamente no repositório (*Script Existence Invariant*) e que eventuais skills possuam uma linha de ativação direta de 1 frase (*Trigger Line Invariant*).
 
 ---
 

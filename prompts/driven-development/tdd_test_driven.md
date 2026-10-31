@@ -13,6 +13,7 @@ Ao final da auditoria, você deve listar os achados no chat/terminal e gerar um 
 3. Identifique e analise a estratégia de dublês de teste (Mocks, Stubs, Spies, Fakes, In-Memory DBs).
 4. Você DEVE ler e analisar cada arquivo de teste e função crítica, verificando se os testes validam o comportamento real da unidade ou apenas "enganam" a métrica de cobertura.
 5. **Regra Inviolável do Bugfix (Failing-Test-First & Teste Travado):** Para cada bug reportado ou nova regra: (1) Escreva primeiro o teste de regressão que reproduz o problema e execute-o comprovando que ele falha (RED); (2) O teste está formalmente travado — é estritamente proibido alterar o arquivo de teste, enfraquecer asserções (`expect`), pular (`it.skip`) ou injetar mocks vazios para fazê-lo passar; (3) A correção deve ser implementada exclusivamente no código de produção até que a suíte passe integralmente (GREEN).
+6. **Alinhamento ao Ciclo Propose–Probe–Compose (Google Research Harness²):** O teste automatizado atua como a sonda (*probe*) invariante (`[INV]`) do sistema, enquanto o código de produção representa as edições de domínio (`[DOM]`). O agente opera propondo a menor mudança de domínio necessária, sondando contra o teste invariante e compondo a solução somente quando o teste verde comprovar a conformidade sem violar o contrato original.
 
 ---
 
@@ -20,6 +21,7 @@ Ao final da auditoria, você deve listar os achados no chat/terminal e gerar um 
 
 ### 1. Rigor do Ciclo Red-Green-Refactor & Testes de Unidade
 - [ ] **Testes Isolados e Determinísticos:** Verifique se os testes unitários são totalmente independentes de rede, banco externo ou ordem de execução, rodando de forma ultrarrápida em memória.
+- [ ] **Preservação de Invariantes de Teste (*Task Invariant Preservation*):** Garanta que stubs, mocks e fixtures de suporte nunca alterem ou mascarem o contrato e a assinatura dos métodos reais sob teste.
 - [ ] **Cobertura Efetiva de Casos de Borda (Edge Cases):** Identifique se as funções matemáticas, conversores, formatadores e parsers possuem testes para valores nulos (`null`/`undefined`), strings vazias, caracteres Unicode especiais, limites numéricos (`MAX_SAFE_INTEGER`, `-Infinity`, `NaN`) e arrays vazios.
 - [ ] **Padrão AAA (Arrange, Act, Assert):** Verifique se os testes estão estruturados de forma legível e modular dividindo claramente a preparação de dados (*Arrange*), a execução da função (*Act*) e as validações estritas (*Assert*).
 - [ ] **Um Conceito Lógico por Teste:** Identifique testes inflados que testam múltiplos comportamentos não correlacionados no mesmo bloco `it()` / `test()`.

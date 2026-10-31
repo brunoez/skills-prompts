@@ -5,6 +5,23 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico (SemVer)](https://semver.org/lang/pt-BR/).
 
+## [2.11.1] - 2026-10-31
+
+### Aprimorado (Retrofit dos Princípios do Google Research Harness² nos Prompts Pré-Existentes)
+
+- **Aprimoramento do Prompt [`project_context.md`](prompts/driven-development/project_context.md):**
+  - Incorporação do princípio de *Token Economics*: regra mandatória para evitar inchaço de contexto contínuo (*"Always-on prose is the expensive option"*), delegando procedimentos longos para skills sob demanda e scripts determinísticos.
+  - Adição de verificação das invariantes de scaffolding (*Script Existence Invariant* e *Trigger Line Invariant*) ao gerar arquivos de contexto (`AGENTS.md`, `CLAUDE.md`, `.cursorrules`).
+- **Aprimoramento do Prompt [`agents_md_generator.md`](prompts/driven-development/agents_md_generator.md):**
+  - Nova seção no checklist prático: **Economia de Tokens & Invariantes de Scaffolding (Google Research Harness²)**.
+  - Exigência de manter o `AGENTS.md` enxuto (< 250 linhas), validando se scripts citados existem fisicamente e se skills possuem linhas de ativação direta.
+- **Aprimoramento do Prompt [`sdd_spec_driven.md`](prompts/driven-development/sdd_spec_driven.md):**
+  - Incorporação da taxonomia de edições do Harness²: classificação obrigatória de tarefas no `DetailedRange` entre Invariantes de Sistema (`[INV]`: schemas, contratos, DDLs, testes) e Domínio (`[DOM]`: lógica interna de negócio).
+  - Exigência estrita de Preservação de Invariantes da Tarefa (*Task Invariant Preservation*).
+- **Aprimoramento do Prompt [`tdd_test_driven.md`](prompts/driven-development/tdd_test_driven.md):**
+  - Alinhamento formal ao ciclo *Propose–Probe–Compose* do Harness², tratando o teste de regressão como a sonda invariante (`[INV]`) e o código de produção como domínio (`[DOM]`).
+  - Proibição de adulteração de contratos ou mascaramento de comportamento real via dublês e fixtures (*Task Invariant Preservation*).
+
 ## [2.11.0] - 2026-10-31
 
 ### Adicionado & Aprimorado (Integração do Google Research Harness²: Otimização de Scaffolding & Meta-Harnessing de Agentes)

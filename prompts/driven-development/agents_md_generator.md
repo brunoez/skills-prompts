@@ -43,6 +43,11 @@ O `AGENTS.md` funciona como um **"README para Agentes de Código"**: um local de
 - [ ] **Segredos e Credenciais:** Proibição estrita de commitar chaves de API, senhas ou tokens mockados em texto aberto.
 - [ ] **Permissões Mínimas:** Instruções para rodar comandos sem privilégios desnecessários de root/sudo.
 
+### 6. Economia de Tokens & Invariantes de Scaffolding (Google Research Harness²)
+- [ ] **Princípio de Economia de Contexto (*Token Economics*):** O `AGENTS.md` deve ser mantido enxuto e operacional (< 250 linhas). Procedimentos complexos, migrações de dados e auditorias profundas não devem inchar o contexto contínuo; delegue-os para **Skills sob demanda** (`skills/<nome>/SKILL.md`) ou **Scripts determinísticos** (`scripts/<nome>.py`), pois *"always-on prose is the expensive option"*.
+- [ ] **Invariante de Existência de Scripts (*Script Existence Invariant*):** Todo comando, script Python (`.py`) ou shell script (`.sh`) referenciado no `AGENTS.md` DEVE existir fisicamente no repositório e ter permissões de execução válidas.
+- [ ] **Invariante de Linha de Gatilho (*Trigger Line Invariant*):** Se o repositório contiver Agent Skills locais, o `AGENTS.md` deve apresentar uma linha concisa de ativação (1 frase de gatilho) por skill, permitindo que os agentes as descubram e carreguem apenas quando necessário.
+
 ---
 
 ## SAÍDA NO CHAT / TERMINAL

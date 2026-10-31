@@ -36,6 +36,10 @@ Ao final da auditoria/planejamento, você deve listar os achados e lacunas arqui
   - *Quais os riscos técnicos, quotas, custos de infraestrutura e tokens?*
   - *Quais são os exames/métricas intermediárias e finais de validação?*
 - [ ] **Separação Semântica (*Semantic Split*):** O documento estabelece fronteira clara entre a visão de alto nível do sistema (`FeatureRange`: metas, contratos, YAGNI, ausência de mato alto) e o plano de implementação executável (`DetailedRange`: tarefas ordenadas, arquivos alterados, migrações).
+- [ ] **Taxonomia de Edições do Harness² (`[INV]` vs `[DOM]`):** O plano de implementação no `DetailedRange` categoriza formalmente cada modificação proposta:
+  - `[INV]` (**System Invariants**): Edições estruturais em contratos de API, schemas de validação, DDLs/migrações de banco, regras de isolamento e suítes de testes de regressão.
+  - `[DOM]` (**Domain Edits**): Edições na lógica de domínio interna que operam estritamente delimitadas pelas invariantes estabelecidas.
+- [ ] **Preservação de Invariantes da Tarefa (*Task Invariant Preservation*):** O scaffolding de suporte, stubs ou utilitários efêmeros gerados para apoiar a tarefa de desenvolvimento nunca devem modificar ou distorcer a forma e os contratos dos entregáveis finais.
 - [ ] **Cumprimento da Regra Zero-Decisão (*Zero-Decision Rule*):** O plano de implementação NÃO deixa nenhuma escolha arquitetural para o implementador/agente de IA. Todos os paths de arquivos, nomes de tabelas/colunas, schemas de entrada/saída, tratamento de erros e casos de borda estão decididos na especificação. Se o implementador precisar "adivinhar" ou fazer design durante a codificação, o plano é REPROVADO.
 - [ ] **Prevenção de "Vibe Coding Desgovernado":** Identifique código implementado diretamente sem especificação formal de requisitos, gerando arquivos desestruturados, duplicação de lógicas de negócio ou arquiteturas circulares.
 - [ ] **Mapeamento Explícito de Casos de Borda (*Edge Cases*):** Verifique se o design do sistema documenta o comportamento para timeouts, perda de conectividade com banco/serviços externos, duplicidade de requisições e concorrência simultânea.
