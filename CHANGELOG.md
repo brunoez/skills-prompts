@@ -5,6 +5,29 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico (SemVer)](https://semver.org/lang/pt-BR/).
 
+## [2.10.0] - 2026-10-31
+
+### Adicionado & Aprimorado (Integração do Padrão Aberto AGENTS.md da Linux Foundation)
+
+- **Adoção Oficial do `AGENTS.md` no Repositório:**
+  - Criação do arquivo [`AGENTS.md`](AGENTS.md) na raiz do repositório, fornecendo diretrizes operacionais, comandos com saídas esperadas, contratos estruturais de prompts e invariantes de segurança para assistentes de IA (Claude Code, Google Antigravity, OpenAI Codex, Cursor).
+- **Nova Agent Skill Executável: `skills/agents-md-generator` (Padrão agentskills.io & Linux Foundation):**
+  - Geração, auditoria e manutenção de arquivos `AGENTS.md` ("README para Agentes de Código"), separando contexto de IA das instruções voltadas para humanos no `README.md`.
+  - Cobertura das 4 seções padronizadas: *Dev Environment Tips* (com salvaguarda anti-build para proteção de HMR), *Testing Instructions* (comandos de suíte completa e filtros por teste unitário), *Coding Conventions* e *PR/Git Instructions*.
+  - Suporte completo a monorepos (Turborepo, pnpm workspaces, Cargo workspaces) via arquivos `AGENTS.md` aninhados por pacote com precedência por proximidade.
+  - CLI determinística [`skills/agents-md-generator/scripts/validate_agents_md.py`](skills/agents-md-generator/scripts/validate_agents_md.py) para validação estática de conformidade contra a especificação aberta e exportação JSON estruturada.
+  - Especificação detalhada em [`skills/agents-md-generator/references/agents_md_spec.md`](skills/agents-md-generator/references/agents_md_spec.md).
+  - Bateria de testes unitários dedicada em [`tests/test_agents_md_generator.py`](tests/test_agents_md_generator.py).
+- **Novo Prompt de Engenharia de Contexto (`prompts/driven-development/`):**
+  - [`agents_md_generator.md`](prompts/driven-development/agents_md_generator.md): Prompt especializado para varredura de stack e geração automatizada de `AGENTS.md` na raiz e subprojetos de monorepo.
+- **Aprimoramento do Prompt `prompts/driven-development/project_context.md`:**
+  - Inclusão do `AGENTS.md` como artefato primário de primeira classe ao lado de `CLAUDE.md`, `.github/copilot-instructions.md`, `.cursorrules` e `CONTEXT.md`.
+- **Governança, Sincronização & Testes:**
+  - `install.sh`: Atualizado catálogo para 48 prompts e 9 Agent Skills, mapeando o comando `/agents-md-generator`.
+  - `tests/test_integrity.py`: Atualizados `EXPECTED_PROMPTS` e `EXPECTED_SKILLS`, adicionados testes da nova skill e validação de sincronia do instalador.
+  - `README.md`: Atualizada a árvore de arquivos, tabela de Agent Skills, rotas do Master Intent Router, exemplos práticos e catálogo completo.
+  - Suíte de testes expandida para 64 testes no `pytest` com 100% de aprovação.
+
 ## [2.9.0] - 2026-10-31
 
 ### Adicionado & Aprimorado (Integração do Elephant-Goldfish Model: Goldfish Reviewer, Regra Zero-Decisão e Drift Detection)

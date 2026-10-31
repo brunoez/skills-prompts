@@ -172,6 +172,7 @@ Se você utiliza **ChatGPT (Web ou Desktop)**, **Claude Web**, **Gemini**, ou mo
 seu-projeto/
 ├── .claude/prompts/              # Prompts oficiais para Claude Code (ou .agent/prompts/)
 │   ├── driven-development/       # Metodologias & Testes
+│   │   ├── agents_md_generator.md     # README para Agentes de IA (Padrão agents.md)
 │   │   ├── bdd_behavior_driven.md     # BDD & Gherkin
 │   │   ├── cdd_contract_driven.md     # Contratos & OpenAPI
 │   │   ├── codebase_drift_auditor.md  # Detecção de Drift Documentação vs Código (EGM)
@@ -277,6 +278,7 @@ Além dos prompts estruturados invocados manualmente via `@`, este repositório 
 
 | Skill | Especialidade | Entregáveis & Ferramentas Integradas |
 | :--- | :--- | :--- |
+| [`skills/agents-md-generator`](skills/agents-md-generator/SKILL.md) | **Geração e Auditoria de AGENTS.md (Padrão Linux Foundation / agents.md)** | - Estruturação de "README para Agentes de Código" padronizado para mais de 60k repositórios (Codex, Claude Code, Antigravity, Cursor, Copilot)<br/>- 4 seções centrais: Dev Environment (com aviso anti-build para proteção de HMR), Testing Instructions (com filtros por teste unitário), Coding Conventions e PR Guidelines<br/>- Suporte a monorepos com arquivos `AGENTS.md` aninhados por pacote<br/>- `scripts/validate_agents_md.py`: CLI determinística para validação estática de conformidade contra a especificação aberta e exportação JSON |
 | [`skills/appsec-auditor`](skills/appsec-auditor/SKILL.md) | **Auditoria de Segurança AppSec (OWASP ASTF, ASVS L2 & Mantis-Enhanced)** | - Fluxo em 5 fases com **Crítica de Viabilidade de Release**, **Contrato de Evidência (`Evidence → Finding`)** e **Calibração de Risco (Score 1-10)**<br/>- `scripts/sarif_builder.py`: Gerador SARIF 2.1.0 com metadados de calibração, `repro_command` e fixity hash para GitHub Security<br/>- `scripts/report_generator.py`: Gerador de relatórios executivos em Markdown e Issues GitHub com comandos reprodutíveis<br/>- `references/`: Guias modulares (ASTF, ASVS L2, BOLA, SSRF, Viability Critique com Evidence Contract, PoC Harness)<br/>- `examples/`: Teste de abuso BOLA em pytest e cliente fetch seguro em TypeScript |
 | [`skills/assess-patch-risk`](skills/assess-patch-risk/SKILL.md) | **Avaliação de Risco de Patches & Auto-Merge (Codex Pattern)** | - Classificação de risco em 5 pontos (Escopo, Schema, Auth, Redução de Defesas, Testes)<br/>- Decisões padronizadas: `auto_merge_candidate`, `human_review_required`, `revise`, `block`<br/>- `scripts/patch_risk_checker.py`: CLI determinística para validação de PRs e automação de merge<br/>- `references/`: Rúbrica detalhada de pontuação e critérios de risco |
 | [`skills/driven-development`](skills/driven-development/SKILL.md) | **Engenharia de Software & Suíte Driven Design (DDD, DataDD, TypeDD, SDD, CDD, BDD, SecDD, TDD)** | - Ciclo em 6 fases: Domínio (DDD) → Storage (DataDD) → Tipos (TypeDD) → Schemas/Contratos (SDD/CDD) → Aceite/Abuso (BDD/SecDD) → TDD<br/>- `scripts/test_runner.py`: Executor universal com detecção automática de stack (Node, Python, Go, Rust)<br/>- `references/`: Guias modulares de DDD, DataDD, TypeDD, Matriz de Pipeline, SDD, TDD, BDD, CDD, SecDD e Pirâmide<br/>- `examples/`: Máquinas de estado TypeDD, DDL DataDD com regra ESR, schemas Zod, fixtures TDD e Gherkin |
@@ -338,6 +340,7 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 | **Decisão de Auto-Merge em PR** | Avaliar risco de merge com rubrica de 5 critérios | [`skills/assess-patch-risk`](skills/assess-patch-risk/SKILL.md) · [`prompts/security/patch_risk_assessment.md`](prompts/security/patch_risk_assessment.md) | Skill / Prompt |
 | **Auditoria profunda de API / Código** | OWASP ASTF, ASVS L2, PoCs reprodutíveis & SARIF | [`skills/appsec-auditor`](skills/appsec-auditor/SKILL.md) · [`prompts/security/appsec_auditor.md`](prompts/security/appsec_auditor.md) | Skill / Prompt |
 | **Diagnóstico Geral da Aplicação** | Health Card 360° (Arquitetura, SRE, Testes) sem overkill | [`skills/full-app-validator`](skills/full-app-validator/SKILL.md) · [`prompts/driven-development/full_app_validator.md`](prompts/driven-development/full_app_validator.md) | Skill / Prompt |
+| **Contexto de Agentes / AGENTS.md** | Gerar README para Agentes (Padrão Linux Foundation / agents.md) | [`skills/agents-md-generator`](skills/agents-md-generator/SKILL.md) · [`prompts/driven-development/agents_md_generator.md`](prompts/driven-development/agents_md_generator.md) | Skill / Prompt |
 | **Revisão de Design / Spec Stress-Test** | Revisão cega em 5 estágios com regra Zero-Decisão e YAGNI (EGM) | [`skills/goldfish-reviewer`](skills/goldfish-reviewer/SKILL.md) · [`prompts/driven-development/sdd_goldfish_review.md`](prompts/driven-development/sdd_goldfish_review.md) | Skill / Prompt |
 | **Auditoria de Drift Documentação vs Código** | Detectar atalhos de lógica, missing features e divergência arquitetural | [`prompts/driven-development/codebase_drift_auditor.md`](prompts/driven-development/codebase_drift_auditor.md) | Prompt |
 | **Nova Feature / Refatoração Crítica** | Ciclo DDD $\rightarrow$ DataDD $\rightarrow$ TypeDD $\rightarrow$ SDD $\rightarrow$ TDD | [`skills/driven-development`](skills/driven-development/SKILL.md) · [`prompts/driven-development/tdd_test_driven.md`](prompts/driven-development/tdd_test_driven.md) | Skill / Prompt |
@@ -488,6 +491,14 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
     ```markdown
     @[.claude/prompts/driven-development/codebase_drift_auditor.md]
     Audite as especificações e READMEs contra o código vivo e aponte apenas os drifts encontrados.
+    ```
+
+* **Para gerar ou auditar o AGENTS.md oficial da aplicação (Padrão Linux Foundation / agents.md):**
+  * **Use:** [`prompts/driven-development/agents_md_generator.md`](prompts/driven-development/agents_md_generator.md)
+  * **Comando:**
+    ```markdown
+    @[.claude/prompts/driven-development/agents_md_generator.md]
+    Mapeie este repositório e gere o arquivo AGENTS.md padronizado com dicas de dev, comandos de teste e convenções.
     ```
 
 * **Para criar testes automáticos de invasão, BOLA/IDOR, Mass Assignment e concorrência:**
@@ -661,7 +672,7 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 ## 📚 Catálogo Completo de Prompts
 
 <details>
-<summary><b>Clique para expandir as tabelas de referência técnica de todos os 47 prompts</b></summary>
+<summary><b>Clique para expandir as tabelas de referência técnica de todos os 48 prompts</b></summary>
 <br/>
 
 ### 🎯 1. Driven Developments, Contexto & Testes (Guardrails contra Alucinação)
@@ -669,6 +680,7 @@ Disponibilizamos modelos prontos para copiar e colar na pasta [`examples/ci-cd/`
 | Prompt | Especialidade | Descrição & Escopo |
 | :--- | :--- | :--- |
 | [`project_context.md`](prompts/driven-development/project_context.md) | **Engenheiro de Contexto & Onboarding de IA** | Mapeia o vocabulário e regras do projeto e gera os arquivos de contexto para IAs: **`CLAUDE.md`** (Claude Code), **`.github/copilot-instructions.md`** (VSCode), **`.cursorrules`** (Cursor) e **`CONTEXT.md`** (glossário universal). |
+| [`agents_md_generator.md`](prompts/driven-development/agents_md_generator.md) | **README para Agentes de Código (Padrão agents.md)** | Varredura e estruturação do arquivo **`AGENTS.md`** (Linux Foundation) na raiz e monorepos: dicas de dev com hot-reload ativo, comandos de teste focalizados e regras de PR. |
 | [`technical_documentation.md`](prompts/driven-development/technical_documentation.md) | **Arquiteto de Software (Docs-as-Code)** | Mapeia e gera a documentação técnica completa: **Stack & Versões, Diagramas C4 Model, Diagrama ERD do Banco de Dados, Catálogo de Endpoints/Entrypoints, Mensageria, Guia de Onboarding/Setup Local e Deploy/Observabilidade**. |
 | [`test_suite_generator.md`](prompts/driven-development/test_suite_generator.md) | **Engenheiro de QA & Test Automation** | Varre a aplicação, identifica código sem testes e **gera, implementa e executa fisicamente** a Pirâmide de Testes completa (Unitários, Integração com Supertest/Testcontainers, E2E com Playwright e carga com K6). |
 | [`sdd_spec_driven.md`](prompts/driven-development/sdd_spec_driven.md) | **Spec & Schema-Driven (EGM Authoring)** | Especificação técnica formal prévia (SDD/RFC), Schemas Zod/TypeBox como fonte única da verdade, Separação Semântica, Catecismo de Heilmeier e Regra Zero-Decisão. |

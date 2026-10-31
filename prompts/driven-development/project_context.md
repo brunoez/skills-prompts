@@ -1,9 +1,9 @@
-# PROMPT DE CONFIGURAÇÃO DE CONTEXTO, DICIONÁRIO DO PROJETO E REGRAS PARA IAs (CLAUDE CODE, VSCODE, CURSOR, CONTEXT.md)
+# PROMPT DE CONFIGURAÇÃO DE CONTEXTO, DICIONÁRIO DO PROJETO E REGRAS PARA IAs (AGENTS.md, CLAUDE.md, VSCODE, CURSOR, CONTEXT.md)
 
 ## OBJETIVO
-Atuar como Engenheiro Principal de Contexto e Arquitetura de Software. Sua missão é realizar uma varredura completa no repositório para mapear o vocabulário do negócio, os termos técnicos e os padrões de desenvolvimento, gerando de forma automatizada os **arquivos de contexto e diretrizes para IAs e Agentes de Código** (**`CLAUDE.md`** [Claude Code], **`.github/copilot-instructions.md`** [VSCode], **`.cursorrules`** [Cursor], **`CONTEXT.md`** e **`.agent/rules/`**).
+Atuar como Engenheiro Principal de Contexto e Arquitetura de Software. Sua missão é realizar uma varredura completa no repositório para mapear o vocabulário do negócio, os termos técnicos e os padrões de desenvolvimento, gerando de forma automatizada os **arquivos de contexto e diretrizes para IAs e Agentes de Código** (**`AGENTS.md`** [Padrão Aberto Linux Foundation / agents.md], **`CLAUDE.md`** [Claude Code], **`.github/copilot-instructions.md`** [VSCode], **`.cursorrules`** [Cursor], **`CONTEXT.md`** e **`.agent/rules/`**).
 
-O objetivo principal é eliminar a prolixidade da IA, evitar alucinações de termos inexistentes e garantir que qualquer modelo ou agente (Claude Code, VSCode / GitHub Copilot, Cursor e outros editores) entenda perfeitamente o jargão da empresa, os comandos de execução e as regras de arquitetura do projeto.
+O objetivo principal é eliminar a prolixidade da IA, evitar alucinações de termos inexistentes e garantir que qualquer modelo ou agente (Claude Code, Google Antigravity, OpenAI Codex, VSCode / GitHub Copilot, Cursor e outros editores) entenda perfeitamente o jargão da empresa, os comandos de execução e as regras de arquitetura do projeto.
 
 ---
 
@@ -18,7 +18,15 @@ O objetivo principal é eliminar a prolixidade da IA, evitar alucinações de te
 
 O prompt deve criar ou atualizar os seguintes arquivos conforme as ferramentas utilizadas no projeto:
 
-### 1. 🤖 `CLAUDE.md` (Diretrizes Principais para Claude Code / Antigravity)
+### 1. 🤖 `AGENTS.md` (Padrão Universal da Linux Foundation / agents.md)
+O "README para Agentes de Código": formato aberto universal adotado por mais de 60 mil projetos open-source e suportado nativamente por OpenAI Codex, Gemini CLI, Cursor, RooCode, Aider, GitHub Copilot e Claude Code.
+* **Dev Environment Tips:** Comandos reais de desenvolvimento sem travar HMR (evitando `npm run build` interativo).
+* **Testing Instructions:** Comandos de execução de teste em lote e filtros por teste unitário.
+* **Code Conventions:** Estilo de código, tipagem e localização de arquivos.
+* **PR Instructions:** Formato de títulos e commits.
+* **Suporte a Monorepos:** Arquivos `AGENTS.md` aninhados nos pacotes do monorepo para regras modulares.
+
+### 2. 🧠 `CLAUDE.md` (Diretrizes Principais para Claude Code / Antigravity)
 Arquivo de instruções específico lido na raiz do projeto a cada sessão (deve ter no máximo 1 página para não consumir contexto desnecessário):
 * **Comandos Principais:** Como rodar build, testes e linters com comandos únicos e rápidos.
 * **Convenções & Arquitetura:** Stack exata, padrões de validação e restrições inegociáveis.
