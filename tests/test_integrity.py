@@ -20,6 +20,7 @@ EXPECTED_PROMPTS = [
     "driven-development/sdd_goldfish_review.md",
     "driven-development/codebase_drift_auditor.md",
     "driven-development/agents_md_generator.md",
+    "driven-development/agent_harness_optimizer.md",
     "driven-development/secdd_abuse_cases.md",
     "driven-development/bdd_behavior_driven.md",
     "driven-development/tdd_test_driven.md",
@@ -94,6 +95,7 @@ SECURITY_PROMPTS = [
 ]
 
 EXPECTED_SKILLS = [
+    "agent-harness-optimizer",
     "agents-md-generator",
     "appsec-auditor",
     "assess-patch-risk",
@@ -337,6 +339,7 @@ def test_skills_integrity():
 
     # Executa testes unitários dos scripts das skills
     for test_file_name in [
+        "test_agent_harness_optimizer.py",
         "test_agents_md_generator.py",
         "test_appsec_auditor.py",
         "test_assess_patch_risk.py",

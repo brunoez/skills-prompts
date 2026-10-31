@@ -111,6 +111,7 @@ PROMPT_FILES=(
   "driven-development/sdd_goldfish_review.md"
   "driven-development/codebase_drift_auditor.md"
   "driven-development/agents_md_generator.md"
+  "driven-development/agent_harness_optimizer.md"
   "driven-development/secdd_abuse_cases.md"
   "driven-development/bdd_behavior_driven.md"
   "driven-development/tdd_test_driven.md"
@@ -161,6 +162,7 @@ PROMPT_FILES=(
 
 # Lista de Agent Skills
 SKILL_NAMES=(
+  "agent-harness-optimizer"
   "agents-md-generator"
   "appsec-auditor"
   "assess-patch-risk"
@@ -297,6 +299,7 @@ install_claude_commands() {
       driven-development/sdd_goldfish_review.md) cmd_name="sdd-goldfish-review" ;;
       driven-development/codebase_drift_auditor.md) cmd_name="codebase-drift-auditor" ;;
       driven-development/agents_md_generator.md) cmd_name="agents-md-generator" ;;
+      driven-development/agent_harness_optimizer.md) cmd_name="agent-harness-optimizer" ;;
       driven-development/sdd_*) cmd_name="sdd" ;;
       driven-development/secdd_*) cmd_name="secdd" ;;
       driven-development/bdd_*) cmd_name="bdd" ;;

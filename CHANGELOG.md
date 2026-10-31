@@ -5,6 +5,31 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico (SemVer)](https://semver.org/lang/pt-BR/).
 
+## [2.11.0] - 2026-10-31
+
+### Adicionado & Aprimorado (Integração do Google Research Harness²: Otimização de Scaffolding & Meta-Harnessing de Agentes)
+
+- **Nova Agent Skill Executável: `skills/agent-harness-optimizer` (Padrão agentskills.io & Google Research Harness²):**
+  - Auditoria, refatoração e otimização de todo o scaffolding (*harness*) ao redor de agentes de IA: instruções globais, memory prompts, tool guidance, skills, subagentes e hooks/plugins.
+  - Implementação da **Hierarquia de Custo de Tokens (*Token Economics*)**: *"Always-on prose is the expensive option"* — migração sistemática de regras verbosas em texto contínuo para *Skills on-demand*, *Scripts determinísticos*, *Subagentes com I/O delimitado* e *Hooks/Plugins de ciclo de ferramenta*.
+  - Protocolo de **Recursão em Dois Níveis**:
+    - Nível de Tarefa: ciclo *Propose–Probe–Compose* com classificação rigorosa de edições entre invariantes arquiteturais (`[INV]`) e de domínio (`[DOM]`).
+    - Nível de Harnessing: retenção de aprendizados e padrões corrigidos de volta ao harness do repositório para evitar regressões comportamentais futuras.
+  - Verificação das invariantes fundamentais do Harness²:
+    - *Trigger Line Invariant*: toda skill deve possuir linha de ativação de 1 frase no contexto always-on.
+    - *Script Existence Invariant*: todo script Python/Bash referenciado deve existir fisicamente e ser executável.
+    - *Task Invariant Preservation*: o harness nunca altera a estrutura e contrato dos entregáveis da tarefa.
+  - CLI determinística [`skills/agent-harness-optimizer/scripts/audit_harness.py`](skills/agent-harness-optimizer/scripts/audit_harness.py) para varredura estática de harnesses com score 0–100, verificação de invariantes, detecção de custos e exportação JSON estruturada.
+  - Guia de componentes e rubricas em [`skills/agent-harness-optimizer/references/harness2_components.md`](skills/agent-harness-optimizer/references/harness2_components.md).
+  - Bateria de testes unitários dedicada em [`tests/test_agent_harness_optimizer.py`](tests/test_agent_harness_optimizer.py).
+- **Novo Prompt de Engenharia de Agentes (`prompts/driven-development/`):**
+  - [`agent_harness_optimizer.md`](prompts/driven-development/agent_harness_optimizer.md): Protocolo formal de otimização de scaffolding cobrindo os 8 componentes do Harness², análise orçamentária de tokens, matriz de transição e preservação de invariantes.
+- **Governança, Sincronização & Testes:**
+  - `install.sh`: Atualizado catálogo para 49 prompts e 10 Agent Skills, mapeando o comando `/agent-harness-optimizer`.
+  - `tests/test_integrity.py`: Atualizados `EXPECTED_PROMPTS` e `EXPECTED_SKILLS`, adicionados testes da nova skill e validação de integridade.
+  - `README.md`: Atualizada a árvore de arquivos, tabela de Agent Skills, rotas do Master Intent Router, exemplos práticos e catálogo completo.
+  - Suíte de testes expandida para 67 testes no `pytest` com 100% de aprovação.
+
 ## [2.10.0] - 2026-10-31
 
 ### Adicionado & Aprimorado (Integração do Padrão Aberto AGENTS.md da Linux Foundation)
